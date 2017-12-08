@@ -670,6 +670,22 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 	if s4connector.isInCreationList(object['dn']):
 		s4connector.removeFromCreationList(object['dn'])
+		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
+		krb5Principal = ucs_object_attributes['krb5PrincipalName'][0]
+		if krb5Principal:
+			krb5KeyVersionNumber = ucs_object_attributes.get('krb5KeyVersionNumber', [None])[0]
+
+			objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
+			filter_expr = format_escaped('(objectSid={0!e})', objectSid)
+			res = s4connector.lo_s4.search(filter=filter_expr, attr=['msDS-KeyVersionNumber'])
+			s4_search_attributes = res[0][1]
+			msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
+
+			if int(msDS_KeyVersionNumber) != int(krb5KeyVersionNumber):
+				ud.debug(ud.LDAP, ud.PROCESS, "password_sync_s4_to_ucs: updating krb5KeyVersionNumber")
+				modlist = [('krb5KeyVersionNumber', krb5KeyVersionNumber, msDS_KeyVersionNumber)]
+				s4connector.lo.lo.modify(ucs_object['dn'], modlist)
+
 		ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: Synchronisation of password has been canceled. Object was just created.")
 		return
 
@@ -744,10 +760,7 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 			if krb5Principal:
 				# decoding of Samba4 supplementalCredentials
 				krb5Key_new = calculate_krb5key(unicodePwd_attr, supplementalCredentials, int(msDS_KeyVersionNumber))
-
 				modlist.append(('krb5Key', krb5Key_ucs, krb5Key_new))
-				if int(msDS_KeyVersionNumber) != int(krb5KeyVersionNumber):
-					modlist.append(('krb5KeyVersionNumber', krb5KeyVersionNumber, msDS_KeyVersionNumber))
 
 			# Append modification as well to modlist, to apply in one transaction
 			if modifyUserPassword:
@@ -782,6 +795,11 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 				modlist.append(('krb5PasswordEnd', old_krb5end, new_krb5end))
 		else:
 			ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: No password change to sync to UCS")
+
+		if krb5Principal:
+			if int(msDS_KeyVersionNumber) != int(krb5KeyVersionNumber):
+				ud.debug(ud.LDAP, ud.INFO, "password_sync_s4_to_ucs: updating krb5KeyVersionNumber")
+				modlist.append(('krb5KeyVersionNumber', krb5KeyVersionNumber, msDS_KeyVersionNumber))
 
 		if pwd_changed and (pwdLastSet or pwdLastSet == 0):
 			newSambaPwdMustChange = sambaPwdMustChange
