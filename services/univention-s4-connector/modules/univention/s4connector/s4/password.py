@@ -670,15 +670,14 @@ def password_sync_s4_to_ucs(s4connector, key, ucs_object, modifyUserPassword=Tru
 
 	if s4connector.isInCreationList(object['dn']):
 		s4connector.removeFromCreationList(object['dn'])
-		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['sambaPwdMustChange', 'sambaPwdLastSet', 'sambaNTPassword', 'sambaLMPassword', 'krb5PrincipalName', 'krb5Key', 'krb5KeyVersionNumber', 'userPassword', 'shadowLastChange', 'shadowMax', 'krb5PasswordEnd', 'univentionService'])
-		krb5Principal = ucs_object_attributes['krb5PrincipalName'][0]
+		ucs_object_attributes = s4connector.lo.get(ucs_object['dn'], ['krb5PrincipalName', 'krb5KeyVersionNumber'])
+		krb5Principal = ucs_object_attributes.get('krb5PrincipalName', [None])[0]
 		if krb5Principal:
 			krb5KeyVersionNumber = ucs_object_attributes.get('krb5KeyVersionNumber', [None])[0]
 
 			objectSid = univention.s4connector.s4.decode_sid(s4_object_attributes['objectSid'][0])
 			filter_expr = format_escaped('(objectSid={0!e})', objectSid)
-			res = s4connector.lo_s4.search(filter=filter_expr, attr=['msDS-KeyVersionNumber'])
-			s4_search_attributes = res[0][1]
+			s4_search_attributes = s4connector.lo_s4.search(filter=filter_expr, attr=['msDS-KeyVersionNumber'])[0][1]
 			msDS_KeyVersionNumber = s4_search_attributes.get('msDS-KeyVersionNumber', [0])[0]
 
 			if int(msDS_KeyVersionNumber) != int(krb5KeyVersionNumber):
