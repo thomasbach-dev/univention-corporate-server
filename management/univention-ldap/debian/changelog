@@ -1,3 +1,9 @@
+univention-ldap (14.0.2-15) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 07 Feb 2018 17:43:00 +0100
+
 univention-ldap (14.0.2-14) unstable; urgency=medium
 
   * Bug #46117: Revert locking for dn
@@ -33,7 +39,6 @@ univention-ldap (14.0.2-9) unstable; urgency=medium
   * Bug #46270: Add ldap attribute for portal entries ordering
 
  -- Johannes Keiser <keiser@univention.de>  Fri, 09 Feb 2018 20:19:43 +0100
-
 univention-ldap (14.0.2-8) unstable; urgency=medium
 
   * Bug #46066: version bump
