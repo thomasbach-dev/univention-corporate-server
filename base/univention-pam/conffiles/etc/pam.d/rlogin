@@ -1,5 +1,8 @@
 @%@UCRWARNING=# @%@
 
+auth		required	pam_nologin.so
+auth		required	pam_securetty.so
+auth		sufficient	pam_rhosts.so
 @include common-auth
 @!@
 scope = "rlogin"
@@ -20,7 +23,4 @@ if configRegistry.is_true(accessfileFlag, False):
 @!@
 @include common-account
 @include common-session
-session    optional   pam_lastlog.so
-session    optional   pam_mail.so standard noenv
-session    optional   pam_motd.so
 @include common-password

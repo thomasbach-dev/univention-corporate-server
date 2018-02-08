@@ -20,4 +20,3 @@ if configRegistry.is_true(accessfileFlag, False):
 @!@
 @include common-account
 @include common-session
-@include common-password

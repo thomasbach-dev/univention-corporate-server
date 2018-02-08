@@ -1,3 +1,4 @@
+#%PAM-1.0
 @%@UCRWARNING=# @%@
 
 @include common-auth
@@ -19,5 +20,4 @@ if configRegistry.is_true(accessfileFlag, False):
 	print ' '.join(line)
 @!@
 @include common-account
-@include common-session
-@include common-password
+@include common-session-noninteractive

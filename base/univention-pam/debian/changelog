@@ -1,3 +1,9 @@
+univention-pam (11.0.1-5) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 08 Feb 2018 13:29:42 +0100
+
 univention-pam (11.0.1-4) unstable; urgency=medium
 
   * Bug #39817: re-add the locking too, otherwise the faillog listener

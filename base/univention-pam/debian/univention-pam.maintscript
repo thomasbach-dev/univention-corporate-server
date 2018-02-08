@@ -1,0 +1,2 @@
+rm_conffile /etc/univention/templates/files/etc/pam.d/ftp 11.0.1-5~
+rm_conffile /etc/univention/templates/files/etc/security/access-ftp.conf 11.0.1-5~

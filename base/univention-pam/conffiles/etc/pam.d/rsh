@@ -1,6 +1,13 @@
 @%@UCRWARNING=# @%@
+#
+# The PAM configuration file for the rsh (Remote Shell) service
+#
+# Due to limitations in the rsh protocol, modules depending on the conversation
+# function to work cannot be used.  This includes authentication modules such
+# as pam_unix.so.
 
-@include common-auth
+auth	required	pam_env.so
+auth	required	pam_rhosts.so
 @!@
 scope = "rsh"
 accessfileFlag = "auth/%s/restrict" % (scope,)
@@ -20,7 +27,3 @@ if configRegistry.is_true(accessfileFlag, False):
 @!@
 @include common-account
 @include common-session
-session    optional   pam_lastlog.so
-session    optional   pam_mail.so standard noenv
-session    optional   pam_motd.so
-@include common-password
