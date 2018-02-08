@@ -6,7 +6,10 @@
 # WARNING: please read README.spamd before using.
 # There may be security risks.
 
-# Change to one to enable spamd
+# If you're using systemd (default for jessie), the ENABLED setting is
+# not used. Instead, enable spamd by issuing:
+# systemctl enable spamassassin.service
+# Change to "1" to enable spamd on systems using sysvinit:
 ENABLED=1
 
 # Options
@@ -16,7 +19,7 @@ ENABLED=1
 # make sure --max-children is not set to anything higher than 5,
 # unless you know what you're doing.
 
-OPTIONS="--create-prefs --max-children 10 --helper-home-dir"
+OPTIONS="--create-prefs --max-children 5 --helper-home-dir"
 
 # Pid file
 # Where should spamd write its PID to file? If you use the -u or
