@@ -1,48 +1,36 @@
 @!@
 @%@UCRWARNING=# @%@
 
-if   configRegistry.get('server/role') == 'fatclient':
-	menutitle="Univention Managed Client"
-elif configRegistry.get('server/role') =='mobileclient':
-	menutitle="Univention Mobile Client"
-elif configRegistry.get('server/role') =='domaincontroller_master':
-	menutitle="Univention DC Master"
-elif configRegistry.get('server/role') =='domaincontroller_backup':
-	menutitle="Univention DC Backup"
-elif configRegistry.get('server/role') =='domaincontroller_slave':
-	menutitle="Univention DC Slave"
-elif configRegistry.get('server/role') =='memberserver':
-	menutitle="Univention Memberserver"
-else:
-	menutitle="Univention Corporate Server"
+DOMAIN_SERVER = {
+	'domaincontroller_master': Univention DC Master",
+	'domaincontroller_backup': Univention DC Backup",
+	'domaincontroller_slave': Univention DC Slave",
+	'memberserver': Univention Memberserver",
+}
+role = configRegistry.get('server/role')
+menutitle = DOMAIN_SERVER.get(role, "Univention Corporate Server")
+version = '%(version/version)s-%(version/patchlevel)s' % configRegistry
+if all(version.split('-')):
+	menutitle += ' %s' % (version,)
 
-if configRegistry.get('version/version'):
-	print  '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))
-else:
-	print menutitle
+print menutitle
 
-
-if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver']:
+if role in DOMAIN_SERVER:
 	print
-	startsite = ""
-	host = configRegistry.get('hostname')
-	domain = configRegistry.get('domainname')
-
-	if host and domain:
-		startsite = "%s.%s/" % (host, domain)
+	startsite = "https://%(hostname)s.%(domainname)s/"
 
 	from univention.config_registry.interfaces import Interfaces
 	address = Interfaces(configRegistry).get_default_ip_address()
 	if address:
 		ip = str(address.ip)
 		if ip:
-			startsite = "%s (%s)" % (startsite, ip)
+			startsite += " (%s)" % (ip,)
 
-	if configRegistry.get('server/role') =='domaincontroller_master':
-		print 'The UCS management system is available at https://' + startsite
+	if role =='domaincontroller_master':
+		print 'The UCS management system is available at %s' % (startsite,)
 	else:
-		print 'The UCS management system can be reached by following the link to the domain controller'
-		print 'master at https://' + startsite + ' and selecting the'
+		print 'The UCS management system can be reached by following the link to the Univention DC'
+		print 'Master at %s and selecting the' % (startsite,)
 		print 'Univention Management Console.'
 
 	print

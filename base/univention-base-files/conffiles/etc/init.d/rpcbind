@@ -36,11 +36,6 @@ fi
 
 start ()
 {
-    # check ucr autostart setting
-    if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-        . "/usr/share/univention-config-registry/init-autostart.lib"
-        check_autostart rpcbind rpcbind/autostart
-    fi
     if [ ! -d $STATEDIR ] ; then
         mkdir $STATEDIR
     fi
@@ -49,22 +44,14 @@ start ()
         log_end_msg 1
         exit 1
     fi
-    if [ ! -f $STATEDIR/rpcbind.xdr ]
-    then
-        touch $STATEDIR/rpcbind.xdr
-    fi
-    if [ ! -f $STATEDIR/portmap.xdr ]
-    then
-        touch $STATEDIR/portmap.xdr
-    fi
-    [ -x /sbin/restorecon ] && /sbin/restorecon $STATEDIR/*.xdr
+    [ -x /sbin/restorecon ] && /sbin/restorecon $STATEDIR
     pid=$( pidofproc /sbin/rpcbind )
     if [ -n "$pid" ]
     then
         log_action_msg "Already running: rcpbind"
         exit 0
     fi
-    log_begin_msg "Starting rpcbind daemon..."
+    log_daemon_msg "Starting RPC port mapper daemon" "rpcbind"
     start-stop-daemon --start --quiet --oknodo --exec /sbin/rpcbind -- "$@"
     pid=$( pidofproc /sbin/rpcbind )
     echo -n "$pid" >"$PIDFILE"
@@ -76,7 +63,7 @@ start ()
 
 stop ()
 {
-    log_begin_msg "Stopping rpcbind daemon..."
+    log_daemon_msg "Stopping RPC port mapper daemon" "rpcbind"
     start-stop-daemon --stop --quiet --oknodo --exec /sbin/rpcbind
     rm -f "$PIDFILE"
     log_end_msg $?

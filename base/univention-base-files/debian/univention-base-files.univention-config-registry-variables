@@ -728,18 +728,6 @@ Description[en]=This option can be used to manually configure a selector for log
 Type=str
 Categories=system-base
 
-[syslog/xconsole]
-Description[de]=Ist diese Option deaktiviert, werden Logmeldungen nicht in das Device '/dev/xconsole' geschrieben.
-Description[en]=If this option is deactivated, log messages are not written to the device '/dev/xconsole'.
-Type=bool
-Categories=system-base
-
-[syslog/xconsole/selector]
-Description[de]=Diese Option kann genutzt werden, um manuell einen Selektor für die Auswahl von Logmeldung für das Device '/dev/xconsole' zu konfigurieren.
-Description[en]=This option can be used to manually configure a selector for log xconsole to be written to '/dev/xconsole'.
-Type=str
-Categories=system-base
-
 [syslog/mail/mirrorto/syslog]
 Description[de]=Ist diese Option aktiviert, werden Logdaten des Mail-Dienstes nicht nur in den Logdateien '/var/log/mail.*', sondern auch in '/var/log/syslog' gespeichert.
 Description[en]=If this option is activated, log files of the mail service or not only logged in '/var/log/mail.*', but additionally in '/var/log/syslog' as well.

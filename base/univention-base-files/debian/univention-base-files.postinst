@@ -130,7 +130,6 @@ fi
 if [ -n "$locale" ]; then
 	locale-gen || true
 fi
-dpkg-maintscript-helper rm_conffile /etc/univention/templates/modules/keymap.py 4~ -- "$@"
 
 univention-config-registry set kernel/do_initrd?yes \
 	kernel/do_bootfloppy?no \

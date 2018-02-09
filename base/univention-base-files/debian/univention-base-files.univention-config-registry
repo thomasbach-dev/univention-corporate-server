@@ -44,9 +44,6 @@ Variables: systemd/journald/MaxRetentionSec
 Variables: systemd/journald/MaxFileSec
 
 Type: file
-File: etc/default/ssh
-
-Type: file
 File: etc/init.d/networking
 Mode: 0755
 
@@ -91,9 +88,6 @@ Variables: timeserver
 Variables: timeserver2
 Variables: timeserver3
 Variables: server/role
-
-Type: file
-File: boot/boot.msg
 
 Type: file
 File: etc/modules
@@ -252,21 +246,6 @@ Type: file
 File: etc/security/packetfilter.d/20_rsyslog.sh
 Variables: syslog/input/.*
 Mode: 0755
-
-Type: multifile
-Multifile: etc/python2.6/sitecustomize.py
-
-Type: subfile
-Multifile: etc/python2.6/sitecustomize.py
-Subfile: etc/python2.6/sitecustomize.py.d/00header.py
-
-Type: subfile
-Multifile: etc/python2.6/sitecustomize.py
-Subfile: etc/python2.6/sitecustomize.py.d/10apport.py
-
-Type: subfile
-Multifile: etc/python2.6/sitecustomize.py
-Subfile: etc/python2.6/sitecustomize.py.d/20utf8.py
 
 Type: multifile
 Multifile: etc/python2.7/sitecustomize.py

@@ -1,4 +1,11 @@
-rm_conffile /etc/univention/templates/files/etc/init.d/portmap 6.0.0-3~
-rm_conffile /etc/univention/templates/files/etc/init.d/klogd 6.0.0-4~
-rm_conffile /etc/univention/templates/files/etc/init.d/cron 6.0.0-10~
-rm_conffile /etc/univention/templates/files/etc/init.d/openbsd-inetd 6.0.0-10~
+rm_conffile /etc/univention/templates/modules/keymap.py 4~
+rm_conffile /etc/univention/templates/files/boot/boot.msg 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/default/ntpdate 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/default/ssh 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/init.d/cron 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/init.d/klogd 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/init.d/openbsd-inetd 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/init.d/portmap 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/00header.py 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/10apport.py 7.0.0-10~
+rm_conffile /etc/univention/templates/files/etc/python2.6/sitecustomize.py.d/20utf8.py 7.0.0-10~
