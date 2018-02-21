@@ -1,7 +1,7 @@
 @%@UCRWARNING=# @%@
 
 # URIs to check for running guests
-# example: URIS='default qemu:///system vbox+tcp://host/system lxc:///'
+# example: URIS='default xen:/// vbox+tcp://host/system lxc:///'
 #URIS=default
 @!@
 # Set URI to an empty value if the shutdown action is set to ignore
@@ -17,10 +17,12 @@ elif 'uvmm/libvirt/action/uris' in configRegistry:
 # - ignore  libvirt-guests init script won't start any guest on boot, however,
 #           guests marked as autostart will still be automatically started by
 #           libvirtd
-#ON_BOOT=start
-@!@
-if 'uvmm/libvirt/action/boot' in configRegistry: print 'ON_BOOT=%(uvmm/libvirt/action/boot)s' % configRegistry
-@!@
+#ON_BOOT=ignore
+@!@if 'uvmm/libvirt/action/boot' in configRegistry: print 'ON_BOOT=%(uvmm/libvirt/action/boot)s' % configRegistry@!@
+
+# Number of seconds to wait between each guest start. Set to 0 to allow
+# parallel startup.
+#START_DELAY=0
 
 # action taken on host shutdown
 # - suspend   all running guests are suspended using virsh managedsave
@@ -30,13 +32,29 @@ if 'uvmm/libvirt/action/boot' in configRegistry: print 'ON_BOOT=%(uvmm/libvirt/a
 #             which just needs a long time to shutdown. When setting
 #             ON_SHUTDOWN=shutdown, you must also set SHUTDOWN_TIMEOUT to a
 #             value suitable for your guests.
-#ON_SHUTDOWN=suspend
-@!@
-if 'uvmm/libvirt/action/shutdown' in configRegistry: print 'ON_SHUTDOWN=%(uvmm/libvirt/action/shutdown)s' % configRegistry
-@!@
+#ON_SHUTDOWN=shutdown
+@!@if 'uvmm/libvirt/action/shutdown' in configRegistry: print 'ON_SHUTDOWN=%(uvmm/libvirt/action/shutdown)s' % configRegistry@!@
 
-# number of seconds we're willing to wait for a guest to shut down
-#SHUTDOWN_TIMEOUT=30
-@!@
-if 'uvmm/libvirt/action/shutdown_timeout' in configRegistry: print 'SHUTDOWN_TIMEOUT=%(uvmm/libvirt/action/shutdown_timeout)s' % configRegistry
-@!@
+# If set to non-zero, shutdown will suspend guests concurrently. Number of
+# guests on shutdown at any time will not exceed number set in this variable.
+#PARALLEL_SHUTDOWN=0
+
+# Number of seconds we're willing to wait for a guest to shut down. If parallel
+# shutdown is enabled, this timeout applies as a timeout for shutting down all
+# guests on a single URI defined in the variable URIS. If this is 0, then there
+# is no time out (use with caution, as guests might not respond to a shutdown
+# request). The default value is 300 seconds (5 minutes).
+#SHUTDOWN_TIMEOUT=300
+@!@if 'uvmm/libvirt/action/shutdown_timeout' in configRegistry: print 'SHUTDOWN_TIMEOUT=%(uvmm/libvirt/action/shutdown_timeout)s' % configRegistry@!@
+
+# If non-zero, try to bypass the file system cache when saving and
+# restoring guests, even though this may give slower operation for
+# some file systems.
+#BYPASS_CACHE=0
+
+# If non-zero, try to sync guest time on domain resume. Be aware, that
+# this requires guest agent with support for time synchronization
+# running in the guest. For instance, qemu-ga doesn't support guest time
+# synchronization on Windows guests, but Linux ones. By default, this
+# functionality is turned off.
+#SYNC_TIME=1
