@@ -1,10 +1,5 @@
 <?php
 @%@UCRWARNING=# @%@
-/**
- * SAML 2.0 IdP configuration for simpleSAMLphp.
- *
- * See: https://rnd.feide.no/content/idp-hosted-metadata-reference
- */
 
 @!@
 entity_id = configRegistry.get('saml/idp/entityID', 'https://%(hostname)s.%(domainname)s/simplesamlphp/saml2/idp/metadata.php' % configRegistry)
