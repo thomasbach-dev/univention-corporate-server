@@ -1,17 +1,29 @@
 @%@UCRWARNING=#@%@
 
-#IP addresses of client machines to
-#disallow web access to
+# IP addresses of client machines to
+# disallow web access to.
 #
-#Only put IP addresses here,
-#not host names
+# Hostnames are also allowed here, provided you
+# enable the reverseclientlookups option.
 #
-#This is not the IP of web servers
-#you want to filter.
+# This is not the IP of web servers
+# you want to filter.
 
+#192.168.0.1
+#192.168.0.2
+#192.168.42.2
+
+# Ranges and subnets can also be used,
+# e.g.
+# 10.0.0.1-10.0.0.3
+# 10.0.0.0/24
+#
+# Hostnames can also be used, provided
+# you cater for reverse DNS lookups
+# on your LAN and enable the
+# "reverseclientiplookups" option in
+# dansguardian.conf
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	banned = configRegistry.get( 'dansguardian/bannedipaddresses', '' )
-	for entry in banned.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	print configRegistry.get('dansguardian/bannedipaddresses', '').replace(' ', '\n')
 @!@

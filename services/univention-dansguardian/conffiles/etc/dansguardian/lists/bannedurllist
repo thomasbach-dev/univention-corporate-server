@@ -24,19 +24,44 @@
 
 #You can have multiple .Includes.
 
+#listcategory: "Banned URLs"
+
 #List other URLs to block:
 
 #members.home.net/uporn
 
+# The squidGuard advert domain/URL lists are now included by default.
+# To work with advanced ad blocking & the logadblocks option, advert
+# phrase/site/URL lists should have the string "ADs" in their listcategory.
+#.Include</etc/dansguardian/lists/blacklists/ads/urls>
 
 #Remove the # from the following and edit as needed to use a stock
-#squidGuard blacklists collection.
-#.Include</etc/dansguardian/blacklists/ads/urls>
+#squidGuard/urlblacklist blacklists collection.
+#.Include</etc/dansguardian/lists/blacklists/adult/urls>
+#.Include</etc/dansguardian/lists/blacklists/aggressive/urls>
+#.Include</etc/dansguardian/lists/blacklists/audio-video/urls>
+#.Include</etc/dansguardian/lists/blacklists/chat/urls>
+#.Include</etc/dansguardian/lists/blacklists/drugs/urls>
+#.Include</etc/dansguardian/lists/blacklists/entertainment/urls>
+#.Include</etc/dansguardian/lists/blacklists/frencheducation/urls>
+#.Include</etc/dansguardian/lists/blacklists/gambling/urls>
+#.Include</etc/dansguardian/lists/blacklists/government/urls>
+#.Include</etc/dansguardian/lists/blacklists/hacking/urls>
+#.Include</etc/dansguardian/lists/blacklists/jobsearch/urls>
+#.Include</etc/dansguardian/lists/blacklists/kidstimewasting/urls>
+#.Include</etc/dansguardian/lists/blacklists/mail/urls>
+#.Include</etc/dansguardian/lists/blacklists/news/urls>
+#.Include</etc/dansguardian/lists/blacklists/porn/urls>
+#.Include</etc/dansguardian/lists/blacklists/proxy/urls>
+#.Include</etc/dansguardian/lists/blacklists/publicite/urls>
+#.Include</etc/dansguardian/lists/blacklists/redirector/urls>
+#.Include</etc/dansguardian/lists/blacklists/violence/urls>
+#.Include</etc/dansguardian/lists/blacklists/virusinfected/urls>
+#.Include</etc/dansguardian/lists/blacklists/warez/urls>
+# You will need to edit to add and remove categories you want
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	banned = configRegistry.get( 'dansguardian/groups/%s/banned/urls' % group, '' )
-	for entry in banned.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group', '')
+	print configRegistry.get('dansguardian/groups/%s/banned/urls' % group, '').replace(' ', '\n')
 @!@

@@ -11,15 +11,12 @@
 #they should be a domain with a path.
 #
 #For example 'foo.bar' is no good, you need
-#to just have 'foo.bar/porn/'.
+#to just have 'foo.bar/porn'.
 #
 #Another example:
-#generallybadsite.tld/partthatisok/
+#generallybadsite.tld/partthatsok
 
 @!@
-if configRegistry.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
-        if not configRegistry.get('dansguardian/virus/exception/urls', '') == '':
-                for url in configRegistry['dansguardian/virus/exception/urls'].split(" "):
-                        print url
+if configRegistry.is_true('squid/virusscan'):
+	print configRegistry.get('dansguardian/virus/exception/urls', '').replace(' ', '\n')
 @!@
-

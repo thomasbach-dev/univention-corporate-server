@@ -9,13 +9,12 @@
 #
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	exception = configRegistry.get( 'dansguardian/groups/%s/exception/mimetypes' % group, '' )
-	for entry in exception.split( ' ' ):
-		print entry
-
-	if not exception:
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group', '')
+	exception = configRegistry.get('dansguardian/groups/%s/exception/mimetypes' % group, '')
+	if exception:
+		print exception.replace(' ', '\n')
+	else:
 		print '''
 # Default list:
 # Unblock web pages & graphics

@@ -139,7 +139,7 @@ Categories=service-webproxy
 [dansguardian/virusscanner]
 Description[de]=Der zur Malware-Erkennung zu verwendende Scanner (Mögliche Werte: clamav, clamdscan, icapscan, kavdscan, commandlinescan). Ist die Variable nicht gesetzt, wird kein Virenscanner eingebunden.
 Description[en]=The scanner to be used for malware detection (Possible values: clamav, clamdscan, icapscan, kavdscan, commandlinescan). If the variable is unset, no virus scanner is used.
-Type=str
+Type=bool
 Categories=service-webproxy
 
 [dansguardian/auth/ip]

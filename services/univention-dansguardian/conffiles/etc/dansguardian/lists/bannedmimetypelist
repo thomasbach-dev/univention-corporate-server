@@ -3,14 +3,12 @@
 # banned MIME types
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	banned = configRegistry.get( 'dansguardian/groups/%s/banned/mimetypes' % group, '' )
-	for entry in banned.split( ' ' ):
-		print entry
-
-	if not banned:
-		# print default config file entry
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group', '')
+	banned = configRegistry.get('dansguardian/groups/%s/banned/mimetypes' % group, '')
+	if banned:
+		print banned.replace(' ', '\n')
+	else:
 		print '''
 audio/mpeg
 audio/x-mpeg

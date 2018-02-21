@@ -1,0 +1,11 @@
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/bannedregexpheaderlist 11.0.0-3~
+rm conffile /etc/univention/templates/files/etc/dansguardian/lists/contentregexplist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/exceptionfilesitelist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/exceptionfileurllist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/greysitelist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/greyurllist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/headerregexplist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/logregexpurllist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/logsitelist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/logurllist 11.0.0-3~
+rm_conffile /etc/univention/templates/files/etc/dansguardian/lists/urlregexplist 11.0.0-3~

@@ -14,14 +14,39 @@
 #.tld so for example you can match .gov for example
 
 
-# dansguardian.org
-# windowsupdate.microsoft.com
-# windowsupdate.com
+# Time limiting syntax:
+# #time: <start hour> <start minute> <end hour> <end minute> <days>
+# Example:
+##time: 9 0 17 0 01234
+# Remove the first # from the line above to enable this list only from
+# 9am to 5pm, Monday to Friday.
+
+
+# Blanket exception.  To allow all sites except those in the
+# exceptionsitelist and greysitelist files, remove
+# the # from the next line to leave only a '**':
+#**
+
+# Blanket SSL/CONNECT exception.  To allow all SSL 
+# and CONNECT tunnels except to addresses in the
+# exceptionsitelist and greysitelist files, remove
+# the # from the next line to leave only a '**s':
+#**s
+
+# Blanket IP exception.  To allow all sites specified only as an IP,
+# remove the # from the next line to leave only a '*ip':
+#*ip
+
+# Blanket SSL/CONNECT IP exception.  To allow all SSL and CONNECT
+# tunnels to sites specified only as an IP,
+# remove the # from the next line to leave only a '*ips':
+#*ips
+
+
+#windowsupdate.microsoft.com
 
 @!@
-if configRegistry.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
-	group = configRegistry.get( 'dansguardian/current/group' )
-	exception = configRegistry.get( 'dansguardian/groups/%s/exception/sites' % group, '' )
-	for entry in exception.split( ' ' ):
-		print entry
+if configRegistry.is_true('squid/contentscan'):
+	group = configRegistry.get('dansguardian/current/group', '')
+	print configRegistry.get('dansguardian/groups/%s/exception/sites' % group, '').replace(' ', '\n')
 @!@

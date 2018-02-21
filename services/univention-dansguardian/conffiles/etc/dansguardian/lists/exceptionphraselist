@@ -16,5 +16,5 @@
 #
 # See the bannedphraselist for more examples.
 
-# .Include</etc/dansguardian/phraselists/goodphrases/exception>
-#.Include</etc/dansguardian/phraselists/goodphrases/exception_email>
+#.Include</etc/dansguardian/lists/phraselists/goodphrases/exception>
+#.Include</etc/dansguardian/lists/phraselists/goodphrases/exception_email>
