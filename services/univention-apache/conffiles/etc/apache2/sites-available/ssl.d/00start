@@ -10,23 +10,23 @@
 	SSLProxyCheckPeerName off
 @!@
 if configRegistry.get('apache2/ssl/certificate'):
-	print '	SSLCertificateFile %s' % configRegistry.get('apache2/ssl/certificate')
+	print '	SSLCertificateFile %(apache2/ssl/certificate)s' % configRegistry
 else:
-	print '	SSLCertificateFile /etc/univention/ssl/%s.%s/cert.pem' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+	print '	SSLCertificateFile /etc/univention/ssl/%(hostname)s.%(domainname)s/cert.pem' % configRegistry
 if configRegistry.get('apache2/ssl/key'):
-	print '	SSLCertificateKeyFile %s' % configRegistry.get('apache2/ssl/key')
+	print '	SSLCertificateKeyFile %(apache2/ssl/key)s' % configRegistry
 else:
-	print '	SSLCertificateKeyFile /etc/univention/ssl/%s.%s/private.key' % (configRegistry.get('hostname'), configRegistry.get('domainname'))
+	print '	SSLCertificateKeyFile /etc/univention/ssl/%(hostname)s.%(domainname)s/private.key' % configRegistry
 if configRegistry.get('apache2/ssl/ca'):
-	print '	SSLCACertificateFile %s' % configRegistry.get('apache2/ssl/ca')
+	print '	SSLCACertificateFile %(apache2/ssl/ca)s' % configRegistry
 else:
 	print '	SSLCACertificateFile /etc/univention/ssl/ucsCA/CAcert.pem'
 if configRegistry.get('apache2/ssl/certificatechain'):
-	print '	SSLCertificateChainFile %s' % configRegistry.get('apache2/ssl/certificatechain')
+	print '	SSLCertificateChainFile %(apache2/ssl/certificatechain)s' % configRegistry
 @!@
 	#SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
 
 	### To enable special log format for HTTPS-access
 	# LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %p" combinedssl
-	# CustomLog /var/log/apache2/access.log combinedssl	## with port number
+	# CustomLog ${APACHE_LOG_DIR}/access.log combinedssl	## with port number
 

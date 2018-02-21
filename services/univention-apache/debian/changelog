@@ -1,3 +1,9 @@
+univention-apache (10.0.2-2) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Mar 2018 12:52:24 +0100
+
 univention-apache (10.0.2-1) unstable; urgency=medium
 
   * Restart apache2 in postinst only if configtest is successful
