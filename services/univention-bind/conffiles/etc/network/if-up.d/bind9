@@ -1,5 +1,6 @@
 #!/bin/sh -e
 @%@UCRWARNING=# @%@
+# Called when a new interface comes up
 #
 # Copyright 2015-2018 Univention GmbH
 #
@@ -29,10 +30,17 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+# kick named as needed
+
+# If /usr isn't mounted yet, silently bail.
+if [ ! -d /usr/sbin ]; then
+	exit 0
+fi
+
 [ -d /usr/sbin ] || exit 0
 [ -x /etc/init.d/bind9 ] || exit 0
 
-# Always reload, even for loopback
+# if named is running, reconfig it.
 service bind9 reload
 
 exit 0

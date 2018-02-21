@@ -1,5 +1,6 @@
 #!/bin/sh -e
 @%@UCRWARNING=# @%@
+# Called when an interface disconnects
 #
 # Copyright 2015-2018 Univention GmbH
 #
@@ -29,10 +30,16 @@
 # <http://www.gnu.org/licenses/>.
 #
 
+# kick named as needed
+
+# If /usr isn't mounted yet, silently bail.
+if [ ! -d /usr/sbin ]; then
+	exit 0
+fi
 [ -x /usr/sbin/rndc ] || exit 0
 [ -e /etc/init.d/bind9 ] || exit 0
 
-# Always reload, even for loopback
+# if named is running, reconfig it.
 service bind9 reload
 
 exit 0
