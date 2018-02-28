@@ -1,11 +1,11 @@
 [snmpd/autostart]
-Description[de]=Die Variable konfiguriert den Startmodus des SNMP-Dienstes. Ist sie nicht oder auf 'yes' gesetzt, wird der SNMP-Dienst gestartet.
-Description[en]=This variable configures the start mode of the SNMP service. If the variable is unset or set to 'yes', the SNMP service is started.
+Description[de]=Die Variable konfiguriert den Startmodus des SNMP-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the SNMP service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, it can be enabled manually at a later point.
 Type=str
 Categories=system-network
 
 [snmptrapd/autostart]
-Description[de]=Die Variable konfiguriert den Startmodus des SNMP-Trap-Dienstes. Ist sie nicht oder auf 'yes' gesetzt, wird der SNMP-Trap-Dienst gestartet.
-Description[en]=This variable configures the start mode of the SNMP trap service. If the variable is unset or set to 'yes', the SNMP trap service is started.
+Description[de]=Die Variable konfiguriert den Startmodus des SNMP-Trap-Dienstes. Wird sie auf 'no' oder 'disabled' gesetzt, kann der Dienst nicht gestartet werden. Wird die auf 'manually' gesetzt, erfolgt kein automatischer Start zum Systemstart, der Dienst kann aber später gezielt gestartet werden.
+Description[en]=This variable configures the start mode of the SNMP trap service. If set to 'no' or 'disabled', the service cannot be started. If the variable is set to 'manually', the service isn't started during system boot, it can be enabled manually at a later point.
 Type=str
 Categories=system-network
