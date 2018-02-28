@@ -11,26 +11,11 @@ NEED_STATD=
 #   Should rpc.statd listen on a specific port? This is especially useful
 #   when you have a port-based firewall. To use a fixed port, set this
 #   this variable to a statd argument like: "--port 4000 --outgoing-port 4001".
-#   For more information, see rpc.statd(8) or http://wiki.debian.org/?SecuringNFS
-@!@
-if configRegistry.get('nfs/ports') == 'static':
-	print 'STATDOPTS="--port 32765 --outgoing-port 32766"'
-else:
-	print 'STATDOPTS='
-@!@
+#   For more information, see rpc.statd(8) or http://wiki.debian.org/SecuringNFS
+STATDOPTS=@!@if configRegistry.get('nfs/ports') == 'static': print '"--port 32765 --outgoing-port 32766"'@!@
 
 # Do you want to start the idmapd daemon? It is only needed for NFSv4.
-@!@
-if configRegistry.get('nfs/common/idmapd'):
-	print 'NEED_IDMAPD=%s' % configRegistry.get('nfs/common/idmapd')
-else:
-	print 'NEED_IDMAPD='
-@!@
+NEED_IDMAPD=@%@nfs/common/idmapd@%@
 
 # Do you want to start the gssd daemon? It is required for Kerberos mounts.
-@!@
-if configRegistry.get('nfs/common/gssd'):
-	print 'NEED_GSSD=%s' % configRegistry.get('nfs/common/gssd')
-else:
-	print 'NEED_GSSD='
-@!@
+NEED_GSSD=@%@nfs/common/gssd@%@
