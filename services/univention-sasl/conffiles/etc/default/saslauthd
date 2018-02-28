@@ -53,9 +53,12 @@ THREADS=@%@mail/saslauthd/threads@%@
 # See the saslauthd man page and the output of 'saslauthd -h' for general
 # information about these options.
 #
-# Example for postfix users: "-c -m /var/spool/postfix/var/run/saslauthd"
-@!@
-timeout = configRegistry.get('mail/saslauthd/cache/timeout', '1800')
-options = '-c -r -m /var/run/saslauthd -t ' + timeout
-print 'OPTIONS="%s"' % options
-@!@
+# Example for chroot Postfix users: "-c -m /var/spool/postfix/var/run/saslauthd"
+# Example for non-chroot Postfix users: "-c -m /var/run/saslauthd"
+#
+# To know if your Postfix is running chroot, check /etc/postfix/master.cf.
+# If it has the line "smtp inet n - y - - smtpd" or "smtp inet n - - - - smtpd"
+# then your Postfix is running in a chroot.
+# If it has the line "smtp inet n - n - - smtpd" then your Postfix is NOT
+# running in a chroot.
+@!@print 'OPTIONS="-c -r -m /var/run/saslauthd -t %s"' % (configRegistry.get('mail/saslauthd/cache/timeout', 1800),)@!@
