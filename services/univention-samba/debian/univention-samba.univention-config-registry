@@ -185,9 +185,6 @@ Type: file
 File: etc/samba/debian_config
 
 Type: file
-File: etc/pam.d/samba
-
-Type: file
 Mode: 755
 File: etc/init.d/samba
 
