@@ -1,17 +1,29 @@
 @%@UCRWARNING=# @%@
 
+/var/log/samba/log.winbindd-idmap,
+/var/log/samba/log.winbindd-dc-connect,
+/var/log/samba/log.wb-BUILTIN,
+/var/log/samba/log.wb-@%@windows/domain@%@,
+/var/log/samba/log.wb-@!@print configRegistry['hostname'].upper()@!@,
+/var/log/samba/log.winbindd {
+	#UCRV logrotate/[log.winbindd/]rotate: weekly
+	#UCRV logrotate/[log.winbindd/]notifempty: missingok
+	#UCRV logrotate/[log.winbindd/]rotate/count: rotate 7
 @!@
 import univention.lib.ucrLogrotate
-
 daemon = 'winbindd'
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(daemon, configRegistry)
-for name in ('winbindd', 'winbindd-idmap', 'winbindd-dc-connect', 'wb-BUILTIN', 'wb-%s' % configRegistry['windows/domain'], 'wb-%s' % configRegistry['hostname'].upper()):
-    print "/var/log/samba/log.%s" % name,
-print "{"
-for setting in settings.keys():
-    print "\t%s" % settings[setting]
-print "\tpostrotate"
-print "\t\t/usr/bin/killall -HUP /usr/sbin/samba"
-print "\tendscript"
-print "}"
+for value in settings.itervalues():
+	print "\t%s" % value
 @!@
+	postrotate
+		if [ -x /usr/bin/smbcontrol ]; then
+			/usr/bin/smbcontrol winbindd reload-config
+		elif [ -f /var/run/samba/winbindd.pid ]; then
+			kill -HUP `cat /var/run/samba/winbindd.pid`
+		fi
+	endscript
+	#UCRV logrotate/[log.winbindd/]compress: compress
+	delaycompress
+	#UCRV logrotate/[log.winbindd/]notifempty: notifempty
+}
