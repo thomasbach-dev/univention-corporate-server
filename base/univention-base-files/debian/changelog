@@ -1,6 +1,7 @@
 univention-base-files (7.0.0-10) unstable; urgency=low
 
   * Bug #46120: Update UCR templates for Debian Stretch
+  * Bug #32509: Remove etc/kernel-img.conf
 
  -- Philipp Hahn <hahn@univention.de>  Wed, 07 Feb 2018 17:41:12 +0100
 

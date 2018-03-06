@@ -85,18 +85,6 @@ else
 		'ntp/noquery?false'
 fi
 
-# this must be done _before_ dephelper runs
-if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; then
-	newestkernel=$(readlink /vmlinuz)
-	if [ -z "$newestkernel" ]; then newestkernel=boot/vmlinuz-$(uname -r); fi
-	newestinitrd=$(readlink /initrd.img)
-	if [ -z "$newestinitrd" ]; then newestinitrd=boot/initrd.img-$(uname -r); fi
-	if [ -n "$newestkernel" -a -n "$newestinitrd" ]; then
-		ln -snf "$newestkernel" /vmlinuz.install
-		ln -snf "$newestinitrd" /initrd.img.install
-	fi
-fi
-
 getent passwd tss >/dev/null || useradd --system tss
 getent group scanner >/dev/null || addgroup --system scanner
 getent group nvram >/dev/null || addgroup --system nvram
@@ -130,10 +118,6 @@ fi
 if [ -n "$locale" ]; then
 	locale-gen || true
 fi
-
-univention-config-registry set kernel/do_initrd?yes \
-	kernel/do_bootfloppy?no \
-	kernel/silent_loader?yes \
 
 # set UCR value for package python-univention (Bug: #15971)
 univention-config-registry set ldap/binaryattributes?"krb5Key,userCertificate;binary"
