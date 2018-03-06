@@ -34,6 +34,7 @@ NICENESS=5
 [ -x "$DAEMON" ] || exit 0
 [ -r /etc/default/nagios ] && . /etc/default/nagios
 
+
 # this is from madduck on IRC, 2006-07-06
 # There should be a better possibility to give daemon error messages
 # and/or to log things
@@ -53,22 +54,29 @@ check_run () {
         mkdir /var/run/nagios
         chown nagios:nagios /var/run/nagios
         chmod 0750 /var/run/nagios
-    fi
+    fi  
 }
 
 
 check_started () {
-  check_cmd=$(get_config nagios_check_command $CGICFG)
-  if [ ! "$check_cmd" ]; then
-    log 6 "unable to determine nagios_check_command from $CGICFG!" 
-    return 6
-  fi
+	#nagios-core can be installed without -cgi
+	if [ -e $CGICFG ];
+	then
+		check_cmd=$(get_config nagios_check_command $CGICFG)
+		if [ ! "$check_cmd" ]; then
+			log 6 "unable to determine nagios_check_command from $CGICFG!" 
+			return 6
+		fi
+	else 
+		#use hardcoded default version
+		check_cmd="/usr/lib/nagios/plugins/check_nagios /var/cache/nagios/status.dat 5 '/usr/sbin/nagios'"
+	fi
 
   eval $check_cmd >/dev/null
 		
   if [ -f "$THEPIDFILE" ]; then
     pid="$(cat $THEPIDFILE)"
-    if [ "$pid" ] && /bin/kill -0 $pid >/dev/null; then
+    if [ "$pid" ] && kill -0 $pid >/dev/null 2>/dev/null; then
       return 0    # Is started
     fi
   fi
@@ -160,9 +168,8 @@ start () {
 	  exit 0
   fi
 
-  DIRECTORY=$(dirname $THEPIDFILE)
-  [ ! -d $DIRECTORY ] && mkdir -p $DIRECTORY
-  chown nagios:nagios $DIRECTORY
+  DIRECTORY="$(dirname "$THEPIDFILE")"
+  [ -d "$DIRECTORY" ] || install -o nagios -g nagios -d "$DIRECTORY"
 
   if ! check_started; then
     check_univentionConfigComplete
@@ -251,11 +258,6 @@ check_run
 
 case "$1" in
   start)
-    # check ucr autostart setting
-    if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-        . "/usr/share/univention-config-registry/init-autostart.lib"
-        check_autostart nagios-server nagios/server/autostart
-    fi
     log_daemon_msg "Starting $DESC" "$NAME"
     start
     log_end_msg $?
