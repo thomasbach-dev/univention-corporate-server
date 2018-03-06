@@ -12,9 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
  univention-config,
  univention-bootsplash,
- kmod,
  initramfs-tools (>= 0.112~bpo70+1),
- e2fsprogs
 Description: UCS - initrd scripts
  This package contain the scripts for the initial ram-disk.
  .

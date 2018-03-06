@@ -1,7 +1,6 @@
 #!/usr/bin/make -f
 #
 # Univention Initrd
-#  rules file for the debian package
 #
 # Copyright 2004-2018 Univention GmbH
 #
