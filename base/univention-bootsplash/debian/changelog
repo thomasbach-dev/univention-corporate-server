@@ -1,3 +1,9 @@
+univention-bootsplash (9.0.0-6) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Mar 2018 07:26:23 +0100
+
 univention-bootsplash (9.0.0-5) unstable; urgency=medium
 
   * Bug #45939: added
