@@ -1,7 +1,0 @@
-@%@UCRWARNING=#@%@
-
-@!@
-# the fetchmail package init script evaluates fetchmail/autostart
-print "START_DAEMON=yes"
-@!@
-
