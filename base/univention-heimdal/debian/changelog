@@ -1,3 +1,9 @@
+univention-heimdal (11.0.1-8) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Fri, 16 Feb 2018 12:46:49 +0100
+
 univention-heimdal (11.0.1-7) unstable; urgency=medium
 
   * Bug #33214: Gather and mark MIT Kerberos libdefaults in krb5.conf
