@@ -1,13 +1,24 @@
+#%PAM-1.0
 @%@UCRWARNING=# @%@
-
+#------------------------------------------------------------------------
+#
+# /etc/pam.d/smtp
+#
+# Copyright (c) 2000-2003 Richard Nelson.  All Rights Reserved.
+# Version:    2.0.1
+# Time-stamp: <2003/05/06 12:00:00 cowboy>
+#
+# PAM configuration file used by SASL to authenticate a PLAIN password.
+#
+#------------------------------------------------------------------------
 auth    sufficient    pam_unix.so
 @!@
 from univention.lib.misc import getLDAPServersCommaList
 auth  = "auth requisite pam_univentionmailcyrus.so"
 auth += " ldap_host=%s" % getLDAPServersCommaList(configRegistry)
-auth += " ldap_base=%s" % configRegistry.get("ldap/base")
+auth += " ldap_base=%(ldap/base)s" % configRegistry
 auth += " from_attr=mailPrimaryAddress to_attr=uid"
-auth += " binddn=%s " % configRegistry.get("ldap/hostdn")
+auth += " binddn=%(ldap/hostdn)s " % configRegistry
 auth += " pwfile=/etc/machine.secret"
 auth += " ldap_port=%s" % configRegistry.get("ldap/server/port", "7389")
 print auth
@@ -15,6 +26,5 @@ print auth
 auth    sufficient    pam_ldap.so use_first_pass
 auth    required      pam_krb5.so use_first_pass
 
-account  sufficient   pam_unix.so
-account  required     pam_ldap.so
-
+@include common-account
+#@include common-password

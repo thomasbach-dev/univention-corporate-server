@@ -1,3 +1,9 @@
+univention-mail-postfix (12.0.0-18) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Feb 2018 16:28:28 +0100
+
 univention-mail-postfix (12.0.0-17) unstable; urgency=low
 
   * Bug #45984: don't disable connection caching on postfix' amavis port
