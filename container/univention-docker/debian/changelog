@@ -1,3 +1,9 @@
+univention-docker (3.0.0-3) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Tue, 06 Mar 2018 07:31:56 +0100
+
 univention-docker (3.0.0-2) unstable; urgency=medium
 
   * Bug #46013: enable docker.service in postinst
