@@ -1,0 +1,2 @@
+rm_conffile /etc/univention/templates/files/etc/init.d/dovecot 4.0.0-9~
+rm_conffile /etc/univention/templates/files/etc/default/dovecot 4.0.0-9~

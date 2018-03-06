@@ -1,3 +1,9 @@
+univention-mail-dovecot (4.0.0-9) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Feb 2018 16:37:54 +0100
+
 univention-mail-dovecot (4.0.0-8) unstable; urgency=low
 
   * Bug #46102: no need for restart in join script
