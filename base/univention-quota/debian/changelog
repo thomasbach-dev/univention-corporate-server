@@ -1,3 +1,9 @@
+univention-quota (12.0.0-3) unstable; urgency=low
+
+  * Bug #46120: Update UCR templates for Debian Stretch
+
+ -- Philipp Hahn <hahn@univention.de>  Wed, 21 Feb 2018 15:16:23 +0100
+
 univention-quota (12.0.0-2) unstable; urgency=medium
 
   * Bug #43336: remove XS-Python-Version
