@@ -33,8 +33,6 @@
 
 eval "$(/usr/sbin/univention-config-registry shell)"
 
-touch $HOME/.univention-environment
-
 # univentionDesktopProfile might be set via UCR
 univentionDesktopProfile=""
 
@@ -65,6 +63,7 @@ if [ -n "$univentionDesktopProfile" ]; then
 			KDEDIRS="$KDEDIRS:$i/.kde"
 		done
 		echo -n "$univentionDesktopProfile" >$HOME/.kdeprofile
+		chown "$USER" "$HOME/.kdeprofile"
 	fi
 else
 	if [ -e "$HOME/.kdeprofile" ]; then
@@ -97,24 +96,15 @@ if [ -n "$univentionDesktopProfile" ]; then
 	fi
 fi
 
-if [ -n "$XDG_DATA_DIRS" ] && [ -n "$XDG_CONFIG_DIRS" ] && [ -n "$KDEDIRS" ]; then
-	if [ -e $HOME/.univention-environment ]; then
-		sed -i 's|^export XDG_DATA_DIRS.*||g;s|^export XDG_CONFIG_DIRS.*||g;s|^export KDEDIRS.*||g;s|^export LANG.*||g;s|^export univentionAutoStartScript.*||g' $HOME/.univention-environment
-		# remove empty lines
-		sed -i '/^$/d' $HOME/.univention-environment
-	fi
-	echo "export XDG_DATA_DIRS=$XDG_DATA_DIRS" >>$HOME/.univention-environment
-	echo "export XDG_CONFIG_DIRS=$XDG_CONFIG_DIRS" >>$HOME/.univention-environment
-	echo "export KDEDIRS=$KDEDIRS" >>$HOME/.univention-environment
-	if [ -n "$LANG" ]; then
-		echo "export LANG=$LANG" >>$HOME/.univention-environment
-	fi
-	if [ -n "$univentionAutoStartScript" ]; then
-		echo "export univentionAutoStartScript=$univentionAutoStartScript" >>$HOME/.univention-environment
-	fi
-
-fi
-
-chown "$USER" "$HOME/.univention-environment" "$HOME/.kdeprofile"
+touch "$HOME/.univention-environment"
+sed -i -r -e 's/^export\s*//;/^(XDG_DATA_DIRS|XDG_CONFIG_DIRS|KDEDIRS|LANG|univentionAutoStartScript)=|^$/d' "$HOME/.univention-environment"
+{
+	[ -n "$XDG_DATA_DIRS" ] && echo "XDG_DATA_DIRS=$XDG_DATA_DIRS"
+	[ -n "$XDG_CONFIG_DIRS" ] && echo "XDG_CONFIG_DIRS=$XDG_CONFIG_DIRS"
+	[ -n "$KDEDIRS" ] && echo "KDEDIRS=$KDEDIRS"
+	[ -n "$LANG" ] && echo "LANG=$LANG"
+	[ -n "$univentionAutoStartScript" ] && echo "univentionAutoStartScript=$univentionAutoStartScript"
+} >>$HOME/.univention-environment
+chown "$USER" "$HOME/.univention-environment"
 
 exit 0
