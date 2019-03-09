@@ -324,7 +324,8 @@ define([
 					var path = tools.ldapDn2Path(ldapName, this.ldapBase);
 					var objecttype = _('Type: <i>%(type)s</i>', { type: vals.$labelObjectType$ });
 					var position = _('Position: <i>%(path)s</i>', { path: path });
-					var position_text = lang.replace('{0}<br>{1}', [objecttype, position]);
+					var dn = _('DN: <i>%(dn)s</i>', { dn: vals.$dn$ });
+					var position_text = lang.replace('{0}<br>{1}<br>{2}', [objecttype, position, dn]);
 					array.forEach(this._tabs.getChildren(), lang.hitch(this, function(child) {
 						if (child.position_text) {
 							child.position_text.set('content', position_text);
