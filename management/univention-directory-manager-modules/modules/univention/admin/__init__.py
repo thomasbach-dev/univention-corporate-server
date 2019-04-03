@@ -558,76 +558,26 @@ class extended_attribute(object):
 		return " univention.admin.extended_attribute: { name: '%s', oc: '%s', attr: '%s', delOC: '%s', syntax: '%s', hook: '%s' }" % (self.name, self.objClass, self.ldapMapping, self.deleteObjClass, self.syntax, hook)
 
 
-class tab:
+class tab(object):
 	"""
-	|UDM| tab to group related properties together in |UMC|.
+	.. deprecated ::
+		DO NOT USE!!!!
 	"""
-	is_app_tab = False
-
-	def __init__(self, short_description='', long_description='', fields=[], advanced=False):
-		self.short_description = short_description
-		self.long_description = long_description
-		self.fields = fields
-		self.advanced = advanced
-
-	def set_fields(self, fields):
-		self.fields = fields
-
-	def get_fields(self):
-		return self.fields
-
-	def __repr__(self):
-		string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
-		for field in self.fields:
-			string = "%s %s," % (string, field)
-		return string + " ] }"
+	def __new__(self, short_description='', long_description='', fields=[], advanced=False):
+		from univention.admin.layout import Tab
+		return Tab(short_description, long_description, advanced, fields)
 
 
-class field:
-
-	def __init__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
-		self.property = property
-		self.type = type
-		self.first_only = first_only
-		self.short_description = short_description
-		self.long_description = long_description
-		self.hide_in_resultmode = hide_in_resultmode
-		self.hide_in_normalmode = hide_in_normalmode
-		self.colspan = colspan
-		self.width = width
-
-	def __repr__(self):
-		return " univention.admin.field: { short_description: '%s', long_description: '%s', property: '%s', type: '%s', first_only: '%s', hide_in_resultmode: '%s', hide_in_normalmode: '%s', colspan: '%s', width: '%s' }" % (
-			self.short_description, self.long_description, self.property, self.type, self.first_only, self.hide_in_resultmode, self.hide_in_normalmode, self.colspan, self.width)
-
-	def __cmp__(self, other):
-		# at the moment the sort is only needed for layout of the registry module
-		if other.property == 'registry':
-			return 1
-		if self.property == 'registry':
-			return 0
-		return cmp(self.property, other.property)
-
-
-class policiesGroup:
-
-	def __init__(self, id, short_description=None, long_description='', members=[]):
-		self.id = id
-		if short_description is None:
-			self.short_description = id
-		else:
-			self.short_description = short_description
-		self.long_description = long_description
-		self.members = members
+class field(object):
+	"""
+	.. deprecated ::
+		DO NOT USE!!!!
+	"""
+	def __new__(self, property='', type='', first_only=0, short_description='', long_description='', hide_in_resultmode=0, hide_in_normalmode=0, colspan=None, width=None):
+		return property
 
 
 univention.admin = sys.modules[__name__]
 from univention.admin import modules, objects, syntax, hook, mapping  # noqa
 syntax.import_syntax_files()
 hook.import_hook_files()
-
-if __name__ == '__main__':
-	prop = property('_replace')
-	for pattern in ('<firstname>', '<firstname> <lastname>', '<firstname:upper>', '<:trim,upper><firstname> <lastname>     ', '<:lower><firstname> <lastname>', '<:umlauts><firstname> <lastname>'):
-		print "pattern: '%s'" % pattern
-		print " -> '%s'" % prop._replace(pattern, {'firstname': 'Andreas', 'lastname': 'Büsching'})
