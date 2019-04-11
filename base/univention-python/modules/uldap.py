@@ -30,7 +30,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os
 import re
+import subprocess
+
 import ldap
 import ldap.schema
 import ldap.sasl
@@ -38,6 +41,7 @@ import univention.debug
 from univention.config_registry import ConfigRegistry
 from ldapurl import LDAPUrl
 from ldapurl import isLDAPUrl
+from tempfile import NamedTemporaryFile
 try:
 	from typing import Any, Dict, List, Optional, Set, Tuple, Union  # noqa
 except ImportError:
@@ -284,6 +288,19 @@ class access:
 		self.lo.sasl_interactive_bind_s('', saml)
 		self.binddn = re.sub('^dn:', '', self.lo.whoami_s())
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'SAML bind binddn=%s' % self.binddn)
+
+	def bind_sasl_gssapi(self, binddn, bindpw, credentials_cache=None):
+		princ = ldap.dn.str2dn(binddn)[0][0][1] if ldap.dn.is_dn(binddn) else binddn
+		if credentials_cache:
+			os.environ['KRB5CCNAME'] = credentials_cache
+		with NamedTemporaryFile('w') as tmp_file:
+			#tmp_file.flush()
+			#os.chmod(tmp_file.name, 0o600)
+			tmp_file.write(bindpw)
+			tmp_file.flush()
+			subprocess.call(['/usr/bin/kdestroy'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+			subprocess.call(['/usr/bin/kinit', '--no-addresses', '--password-file=%s' % tmp_file.name, princ], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
+			self.lo.sasl_interactive_bind_s("", ldap.sasl.gssapi(""))
 
 	def unbind(self):
 		# type: () -> None

@@ -57,7 +57,6 @@ from samba.credentials import Credentials, DONT_USE_KERBEROS
 from samba import drs_utils
 from samba.dcerpc import drsuapi, lsa, security
 import samba.dcerpc.samr
-from tempfile import NamedTemporaryFile
 
 
 class kerberosAuthenticationFailed(Exception):
@@ -66,6 +65,7 @@ class kerberosAuthenticationFailed(Exception):
 
 class netbiosDomainnameNotFound(Exception):
 	pass
+
 
 # page results
 PAGE_SIZE = 1000
@@ -162,7 +162,7 @@ def set_univentionObjectFlag_to_synced(connector, key, ucs_object):
 	_d = ud.function('set_univentionObjectFlag_to_synced')
 
 	if connector.baseConfig.is_true('ad/member', False):
-		object = connector._object_mapping(key, ucs_object, 'ucs')
+		connector._object_mapping(key, ucs_object, 'ucs')
 
 		ucs_result = connector.lo.search(base=ucs_object['dn'], attr=['univentionObjectFlag'])
 
@@ -756,7 +756,8 @@ def format_escaped(format_string, *args, **kwargs):
 	"""
 	return LDAPEscapeFormatter().format(format_string, *args, **kwargs)
 
-class Simple_AD_Connection():
+
+class Simple_AD_Connection(object):
 
 	''' stripped down univention.connector.ad.ad class
 		difference: accept "bindpwd" directly instead of "bindpw" filename
@@ -765,8 +766,7 @@ class Simple_AD_Connection():
 		difference: don't use TLS
 	'''
 
-	def __init__(self, CONFIGBASENAME, ucr, host, port, base, binddn, bindpw, certificate):
-
+	def __init__(self, CONFIGBASENAME, ucr, host, port, base, binddn, bindpw, certificate, start_tls=0):
 		self.CONFIGBASENAME = CONFIGBASENAME
 
 		self.host = host
@@ -776,38 +776,27 @@ class Simple_AD_Connection():
 		self.bindpw = bindpw
 		self.certificate = certificate
 		self.ucr = ucr
-		self.protocol = 'ldaps' if ucr.is_true('%s/ad/ldap/ldaps' % CONFIGBASENAME, False) else 'ldap'
-		self.uri = "%s://%s:%d" % (self.protocol, self.host, int(self.port))
+		self.ldaps = self.ucr.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)
 
-		if self.certificate:
-			ldap.set_option(ldap.OPT_X_TLS_CACERTFILE, self.certificate)
-
-		#ldap.set_option(ldap.OPT_DEBUG_LEVEL, 4095)
-		#ldap._trace_level = 9
-		#ldap.set_option(ldap.OPT_X_SASL_SSF_MIN, 1)
-		#ldap.set_option(ldap.OPT_X_SASL_SECPROPS, "minssf=1")
-
-		self.lo = ldap.ldapobject.ReconnectLDAPObject(self.uri, retry_max=10, retry_delay=1)
+		access = univention.uldap.access(
+			host=self.host,
+			port=int(self.port),
+			base=self.base,
+			binddn=None,
+			bindpw=None,
+			start_tls=start_tls,
+			use_ldaps=self.ldaps,
+			ca_certfile=self.certificate,
+			follow_referral=True,
+			decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
 
 		if ucr.is_true('%s/ad/ldap/kerberos' % CONFIGBASENAME):
-			princ = self.binddn
-			if ldap.dn.is_dn(self.binddn):
-				princ = ldap.dn.str2dn(self.binddn)[0][0][1]
-			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc.well'
-			with NamedTemporaryFile('w') as tmp_file:
-				tmp_file.write(self.bindpw)
-				tmp_file.flush()
-				p1 = subprocess.Popen(['kdestroy',], close_fds=True)
-				p1.wait()
-				cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % tmp_file.name, princ]
-				p1 = subprocess.Popen(cmd_block, close_fds=True)
-				stdout, stderr = p1.communicate()
-				auth = ldap.sasl.gssapi("")
-				self.lo.sasl_interactive_bind_s("", auth)
+			access.bind_sasl_gssapi(self.binddn, self.bindpw, '/var/cache/univention-ad-connector/krb5.cc')
 		else:
-			self.lo.simple_bind_s(self.binddn, self.bindpw)
+			access.bind(self.binddn, self.bindpw)
 
-		self.lo.set_option(ldap.OPT_REFERRALS, 0)
+		self.lo = access.lo
+		#self.lo.set_option(ldap.OPT_REFERRALS, 0)
 
 		self.ad_sid = None
 		result = self.lo.search_ext_s(self.base, ldap.SCOPE_BASE, 'objectclass=domain', ['objectSid'], timeout=-1, sizelimit=0)
@@ -1006,18 +995,9 @@ class ad(univention.connector.ucs):
 		sid = self.samr.LookupDomain(handle, sam_domain)
 		self.dom_handle = self.samr.OpenDomain(handle, security.SEC_FLAG_MAXIMUM_ALLOWED, sid)
 
-	def get_kerberos_ticket(self):
-		p1 = subprocess.Popen(['kdestroy',], close_fds=True)
-		p1.wait()
-		cmd_block = ['kinit', '--no-addresses', '--password-file=%s' % self.baseConfig['%s/ad/ldap/bindpw' % self.CONFIGBASENAME], self.baseConfig['%s/ad/ldap/binddn' % self.CONFIGBASENAME]]
-		p1 = subprocess.Popen(cmd_block, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
-		stdout, stderr = p1.communicate()
-		if p1.returncode != 0:
-			raise kerberosAuthenticationFailed('The following command failed: "%s" (%s): %s' % (string.join(cmd_block), p1.returncode, stdout))
-
 	def open_ad(self):
 		tls_mode = 2
-		if '%s/ad/ldap/ssl' % self.CONFIGBASENAME in self.baseConfig and self.baseConfig['%s/ad/ldap/ssl' % self.CONFIGBASENAME] == "no":
+		if self.baseConfig.is_false('%s/ad/ldap/ssl' % self.CONFIGBASENAME, False):
 			ud.debug(ud.LDAP, ud.INFO, "__init__: The LDAP connection to AD does not use SSL (switched off by UCR \"%s/ad/ldap/ssl\")." % self.CONFIGBASENAME)
 			tls_mode = 0
 		ldaps = self.baseConfig.is_true('%s/ad/ldap/ldaps' % self.CONFIGBASENAME, False)  # tls or ssl
@@ -1034,16 +1014,13 @@ class ad(univention.connector.ucs):
 			ud.debug(ud.LDAP, ud.ERROR, 'Failed to lookup AD LDAP base, using UCR value: %s' % ex)
 
 		if self.baseConfig.is_true('%s/ad/ldap/kerberos' % self.CONFIGBASENAME):
-			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'
-			self.get_kerberos_ticket()
-			auth = ldap.sasl.gssapi("")
-			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
-			self.get_kerberos_ticket()
-			self.lo_ad.lo.sasl_interactive_bind_s("", auth)
+			binddn = None
 		else:
-			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
-
-		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
+			binddn = self.ad_ldap_binddn
+		try:
+			self.lo_ad = Simple_AD_Connection(self.CONFIGBASENAME, self.baseConfig, self.ad_ldap_host, self.ad_ldap_port, self.ad_ldap_base, binddn, self.ad_ldap_bindpw, self.ad_ldap_certificate, tls_mode).lo
+		except ldap.LOCAL_ERROR as exc:
+			raise kerberosAuthenticationFailed(str(exc))
 
 	# encode string to unicode
 	def encode(self, string):
@@ -1953,7 +1930,7 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ad_members %s" % ad_members)
 
-		ucs_members_from_ad = {'user': [], 'group': [], 'unknown': [], 'windowscomputer': [],}
+		ucs_members_from_ad = {'user': [], 'group': [], 'unknown': [], 'windowscomputer': [], }
 
 		self.group_members_cache_con[ad_object['dn'].lower()] = []
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: Reset con cache")
@@ -2032,7 +2009,7 @@ class ad(univention.connector.ucs):
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: dn_mapping_ucs_member_to_ad=%s" % (dn_mapping_ucs_member_to_ad))
 		add_members = copy.deepcopy(ucs_members_from_ad)
-		del_members = {'user': [], 'group': [], 'windowscomputer': [],}
+		del_members = {'user': [], 'group': [], 'windowscomputer': [], }
 
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_to_ucs: ucs_members_from_ad: %s" % ucs_members_from_ad)
