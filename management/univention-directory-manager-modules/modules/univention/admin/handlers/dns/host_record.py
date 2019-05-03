@@ -142,23 +142,17 @@ class object(univention.admin.handlers.simpleLdap):
 			self.superordinate.open()
 			self.superordinate.modify()
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None, update_zone=True):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
 
-		if dn:  # TODO: document why or remove
-			self.open()
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		self.oldinfo['a'] = []
+	def _post_unmap(self, info, values):
 		self.info['a'] = []
 		if 'aRecord' in self.oldattr:
-			self.oldinfo['a'].extend(self.oldattr['aRecord'])
-			self.info['a'].extend(self.oldattr['aRecord'])
+			info['a'].extend(self.oldattr['aRecord'])
 		if 'aAAARecord' in self.oldattr:
-			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+			info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
+		return info
 
 	def _ldap_addlist(self):
 		return [
