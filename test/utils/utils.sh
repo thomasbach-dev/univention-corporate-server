@@ -570,6 +570,8 @@ run_tests () {
 	fi
 	dpkg-query -W -f '${Status}\t${binary:Package}\t${Version}\n' > "packages-under-test.log"
 	LANG=de_DE.UTF-8 ucs-test -E dangerous -F junit -l "ucs-test.log" -p producttest "$@"
+	cp /usr/share/ucs-test/61_udm-users/100_test_users.py /usr/share/ucs-test/61_udm-users/test_users.py
+	py.test --junit-xml=/root/test-reports/pytest/results.xml  --junit-prefix=pytest /usr/share/ucs-test/
 }
 
 run_tests_with_parameters () {
