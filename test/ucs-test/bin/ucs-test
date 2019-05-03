@@ -15,6 +15,7 @@ from univention.testing.internal import setup_environment, setup_debug, \
 from univention.testing.data import TestEnvironment, TestCase, TestResult
 from univention.testing.errors import TestError
 from univention.testing.coverage import Coverage
+from univention.testing.pytest import PytestRunner
 from functools import reduce
 
 
@@ -88,6 +89,7 @@ def parse_options(sections):
 	parser.add_option_group(output_group)
 
 	parser.add_option_group(Coverage.get_option_group(parser))
+	parser.add_option_group(PytestRunner.get_option_group(parser))
 
 	return parser.parse_args()
 
@@ -183,6 +185,7 @@ def main():
 	coverage.start()
 	test_set = TestSet(tests)
 
+	pytest = PytestRunner(options)
 	if options.dry:
 		test_environment = TestEnvironment(interactive=options.interactive)
 	else:
@@ -200,7 +203,11 @@ def main():
 	test_set.set_prefix(options.count)
 	test_set.set_format(options.format)
 	try:
-		return test_set.run_tests(options.filter, options.dry, options.hold)
+		rc = test_set.run_tests(options.filter, options.dry, options.hold)
+		if options.hold and rc:
+			return rc
+		rc += pytest.run_tests(test_set)
+		return rc
 	finally:
 		coverage.stop()
 
