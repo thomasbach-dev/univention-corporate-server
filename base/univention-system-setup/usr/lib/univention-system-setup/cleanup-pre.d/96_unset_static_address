@@ -1,9 +1,10 @@
 #!/bin/sh
+# -*- coding: utf-8 -*-
 #
-# Univention Setup
-#  postinst script
+# Univention System Setup
+# Remove temporary static IP address from netcfg
 #
-# Copyright 2004-2019 Univention GmbH
+# Copyright 2019 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,33 +31,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-#DEBHELPER#
-
-. /usr/share/univention-lib/all.sh
-create_logfile /var/log/univention/setup.log "root:adm" 640
-
-chmod -R 700 /var/cache/univention-system-setup
-
-# apt needs to access /var/cache/univention-system-setup/packages/ with user _apt
-chmod a+x /var/cache/univention-system-setup
-
-if dpkg --compare-versions "$2" lt-nl 8.1.63-2~
-then
-	ucr search --brief --non-empty '^interfaces/.*/options/' |
-		sed -rne 's,(interfaces/.*/options/.*): (miimon .*)$,\1=bond-\2,p' |
-		xargs -d '\n' --no-run-if-empty ucr set
-fi
-
-if dpkg --compare-versions "$2" lt-nl 8.1.63-2~ && [ -e /var/univention-join/joined ]
-then
-	ucr unset --force update/available
-fi
-
-if [ "$1" = configure ] && dpkg --compare-versions "$2" lt 12.0.2-15~ && [ -e /var/univention-join/joined ]
-then
-	/usr/lib/univention-system-setup/cleanup-pre.d/96_unset_static_address
-fi
-
-a2enconf univention-system-setup
-
-exit 0
+eval "$(ucr shell '^(hosts/static/127.0.1.1|hostname|domainname)$')"
+case "${hosts_static_127_0_1_1:-}" in
+'unassigned-hostname.unassigned-domain unassigned-hostname') ucr unset hosts/static/127.0.1.1 ;;
+"${hostname:-}.${domainname:-} ${hostname:-}") ucr unset hosts/static/127.0.1.1 ;;
+esac
+:
