@@ -1029,9 +1029,12 @@ class AD_Takeover():
 		# Rewrite domain SID in OpenLDAP sambaDomain object
 		self.ad_domainsid = None
 		self.samdb = SamDB(os.path.join(SAMBA_PRIVATE_DIR, "sam.ldb"), session_info=system_session(self.lp), lp=self.lp)
-		msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_BASE,
-			expression="(objectClass=domain)",
-			attrs=["objectSid"])
+		try:
+			msgs = self.samdb.search(base=self.ucr["samba4/ldap/base"], scope=samba.ldb.SCOPE_BASE,
+				expression="(objectClass=domain)",
+				attrs=["objectSid"])
+		except uexceptions.ldapError as exc:
+			raise TakeoverError(_("Failed to get SIDs"))
 		if msgs:
 			obj = msgs[0]
 			self.ad_domainsid = str(ndr_unpack(security.dom_sid, obj["objectSid"][0]))
