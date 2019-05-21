@@ -184,7 +184,7 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 			raise exc
 
 
-class access:
+class access(object):
 	"""
 	The low-level class to access a LDAP server.
 

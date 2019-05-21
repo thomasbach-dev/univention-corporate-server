@@ -43,7 +43,7 @@ def lookup(query, type='a'):
 	['127.0.0.1']
 	"""
 	rr = DNS.DnsRequest(query, qtype=type).req().answers
-	result = map(lambda x: x['data'], rr)
+	result = [x['data'] for x in rr]
 	return result
 
 

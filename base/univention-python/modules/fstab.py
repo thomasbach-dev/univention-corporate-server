@@ -125,7 +125,7 @@ class mntent(object):
 		>>> mntent('/dev/sda', '/', 'ext3', 'default,ro,user_xattr,acl', 0, 0).hasopt('user')
 		['user_xattr']
 		"""
-		return filter(lambda o: o.startswith(opt), self.opts)
+		return [o for o in self.opts if o.startswith(opt)]
 
 
 class fstab(object):

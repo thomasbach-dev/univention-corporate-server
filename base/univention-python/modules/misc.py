@@ -67,9 +67,9 @@ def close_fds():
 	>>> close_fds()
 	"""
 	if platform.system() == 'Linux':
-		fds = map(int, os.listdir('/proc/%d/fd' % os.getpid()))
+		fds = [int(x) for x in os.listdir('/proc/%d/fd' % os.getpid())]
 	else:
-		fds = xrange(0, filemax())
+		fds = range(0, filemax())
 	for i in fds:
 		try:
 			os.close(i)

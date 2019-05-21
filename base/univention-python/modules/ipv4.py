@@ -64,7 +64,7 @@ def networkNumber(dottedIp, dottedNetmask):
 	ip = splitDotted(dottedIp)
 	netmask = splitDotted(dottedNetmask)
 
-	network = map(lambda i_n: i_n[0] & i_n[1], zip(ip, netmask))
+	network = [i_n[0] & i_n[1] for i_n in zip(ip, netmask)]
 
 	return joinDotted(network)
 
@@ -81,7 +81,7 @@ def broadcastNumber(dottedNetwork, dottedNetmask):
 	network = splitDotted(dottedNetwork)
 	netmask = splitDotted(dottedNetmask)
 
-	broadcast = map(lambda n_m: n_m[0] | (255 ^ n_m[1]), zip(network, netmask))
+	broadcast = [n_m[0] | (255 ^ n_m[1]) for n_m in zip(network, netmask)]
 
 	return joinDotted(broadcast)
 

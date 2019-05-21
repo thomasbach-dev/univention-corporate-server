@@ -33,7 +33,7 @@ import os
 import imp
 
 
-class HookManager:
+class HookManager(object):
 
 	"""
 	This class tries to provide a simple interface to load and call hooks within existing code.

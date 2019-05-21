@@ -33,7 +33,7 @@ import univention.uldap
 import univention.config_registry as ucr
 
 
-class Check:
+class Check(object):
 
 	def __init__(self, lo, username=None):
 		self.ConfigRegistry = ucr.ConfigRegistry()
