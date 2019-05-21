@@ -36,6 +36,10 @@ override_dh_auto_test:
 override_dh_auto_install:
 	univention-install-config-registry
 	dh_auto_install
+	rm debian/python3-univention-lib/usr/lib/python3/dist-packages/univention/lib/__init__.py
+	rm debian/python3-univention-lib/usr/lib/python3/dist-packages/univention/lib/umc_connection.py
+	rm debian/python3-univention-lib/usr/lib/python3/dist-packages/univention/lib/getMailFromMailOrUid.py
+	rm debian/python3-univention-lib/usr/lib/python3/dist-packages/univention/lib/urllib2_ssl.py
 
 %:
 	dh $@ --with python2,python3
