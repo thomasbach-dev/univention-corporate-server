@@ -67,14 +67,14 @@ def is_CSP_license(lo=None):
 	attrs = result[0][1]
 
 	now = datetime.date.today()
-	enddate = attrs.get('univentionLicenseEndDate', ['01.01.1970'])[0]
+	enddate = attrs.get('univentionLicenseEndDate', ['01.01.1970'])[0].decode('utf-8', 'replace')
 	if not enddate == 'unlimited':
 		(day, month, year) = enddate.split('.', 2)
 		then = datetime.date(int(year), int(month), int(day))
 		if now > then:
 			raise LicenseExpired('endDate = %s' % (enddate,))
 
-	return 'CSP' in attrs.get('univentionLicenseOEMProduct', [])
+	return b'CSP' in attrs.get('univentionLicenseOEMProduct', [])
 
 
 if __name__ == '__main__':

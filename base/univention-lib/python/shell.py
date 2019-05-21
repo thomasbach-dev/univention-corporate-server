@@ -93,8 +93,10 @@ def create_at_job(script, time=None, date=None):
 
 	p = subprocess.Popen(cmd, shell=False, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
 
-	class AtJob:
+	class AtJob(object):
 		stdout, stderr = p.communicate(script)
+		stdout = stdout.decode('utf-8', 'replace')
+		stderr = stderr.decode('utf-8', 'replace')
 		returncode = p.returncode
 		if returncode == 0:
 			job = int(_RE_AT_JOB.match(stderr.splitlines()[-1]).groups()[0])

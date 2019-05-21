@@ -50,7 +50,7 @@ def createMachinePassword():
 	compl = ucr.get('machine/password/complexity', 'scn')
 	p = subprocess.Popen(["pwgen", "-1", "-" + compl, length], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 	(stdout, stderr) = p.communicate()
-	return stdout.strip()
+	return stdout.decode('utf-8', 'replace').strip()
 
 
 def getLDAPURIs(configRegistryInstance=None):

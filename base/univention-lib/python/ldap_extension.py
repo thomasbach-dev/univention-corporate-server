@@ -116,7 +116,7 @@ class UniventionLDAPExtension(object):
 		if p.returncode:
 			return (p.returncode, object_dn)
 		regex = re.compile('^dn: (.*)$', re.M)
-		m = regex.search(stdout)
+		m = regex.search(stdout.decode('utf-8', 'replace'))
 		if m:
 			object_dn = m.group(1)
 		return (p.returncode, object_dn)
@@ -141,7 +141,7 @@ class UniventionLDAPExtension(object):
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 		(stdout, stderr) = p.communicate()
-		return (p.returncode, stdout)
+		return (p.returncode, stdout.decode('utf-8', 'replace'))
 
 	def udm_find_object_dn(self):
 		object_dn = None
@@ -242,6 +242,8 @@ class UniventionLDAPExtension(object):
 			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
+			stdout = stdout.decode('utf-8', 'replace')
+			stderr = stderr.decode('utf-8', 'replace')
 			print(stdout)
 			if p.returncode == 0:
 				regex = re.compile('^Object created: (.*)$', re.M)
@@ -259,6 +261,8 @@ class UniventionLDAPExtension(object):
 					]
 					p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 					(stdout, stderr) = p.communicate()
+					stdout = stdout.decode('utf-8', 'replace')
+					stderr = stderr.decode('utf-8', 'replace')
 					print(stdout)
 			else:  # check again, might be a race
 				rc, self.object_dn, stdout = self.udm_find_object_dn()
@@ -319,6 +323,8 @@ class UniventionLDAPExtension(object):
 			] + common_udm_options + active_change_udm_options
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
+			stdout = stdout.decode('utf-8', 'replace')
+			stderr = stderr.decode('utf-8', 'replace')
 			print(stdout)
 			if p.returncode != 0:
 				print("ERROR: Modification of %s object failed." % (self.udm_module_name,), file=sys.stderr)
@@ -332,6 +338,8 @@ class UniventionLDAPExtension(object):
 				]
 				p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 				(stdout, stderr) = p.communicate()
+				stdout = stdout.decode('utf-8', 'replace')
+				stderr = stderr.decode('utf-8', 'replace')
 				print(stdout)
 
 		if not self.object_dn:
@@ -357,6 +365,8 @@ class UniventionLDAPExtension(object):
 			cmd = ["univention-ldapsearch", "-LLL", "(&(objectClass=univentionApp)%s)" % (app_filter,), "cn"]
 			p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 			(stdout, stderr) = p.communicate()
+			stdout = stdout.decode('utf-8', 'replace')
+			stderr = stderr.decode('utf-8', 'replace')
 			if p.returncode:
 				print("ERROR: LDAP search failed: %s" % (stdout,), file=sys.stderr)
 				sys.exit(1)
@@ -371,6 +381,8 @@ class UniventionLDAPExtension(object):
 		]
 		p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 		(stdout, stderr) = p.communicate()
+		stdout = stdout.decode('utf-8', 'replace')
+		stderr = stderr.decode('utf-8', 'replace')
 		print(stdout)
 
 	def mark_active(self):
@@ -515,6 +527,8 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 				# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
 				p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 				stdout, stderr = p.communicate()
+				stdout = stdout.decode('utf-8', 'replace')
+				stderr = stderr.decode('utf-8', 'replace')
 				if p.returncode != 0 or stdout:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: validation failed:\n%s\n%s.' % (name, stdout, stderr))
 					# Revert changes
@@ -567,6 +581,8 @@ class UniventionLDAPSchema(UniventionLDAPExtensionWithListenerHandler):
 					# Slapschema doesn't fail on schema errors, errors are printed to stdout (Bug #45571)
 					p = subprocess.Popen(['/usr/sbin/slapschema', ], stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 					stdout, stderr = p.communicate()
+					stdout = stdout.decode('utf-8', 'replace')
+					stderr = stderr.decode('utf-8', 'replace')
 					if p.returncode != 0 or stdout:
 						ud.debug(ud.LISTENER, ud.WARN, '%s: validation fails without %s:\n%s.' % (name, old_filename, stdout))
 						ud.debug(ud.LISTENER, ud.WARN, '%s: Restoring %s.' % (name, old_filename))
@@ -772,6 +788,8 @@ class UniventionLDAPACL(UniventionLDAPExtensionWithListenerHandler):
 				# validate
 				p = subprocess.Popen(['/usr/sbin/slaptest', '-u'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, close_fds=True)
 				stdout, stderr = p.communicate()
+				stdout = stdout.decode('utf-8', 'replace')
+				stderr = stderr.decode('utf-8', 'replace')
 				if p.returncode != 0:
 					ud.debug(ud.LISTENER, ud.ERROR, '%s: slapd.conf validation failed:\n%s.' % (name, stdout))
 					# Revert changes
