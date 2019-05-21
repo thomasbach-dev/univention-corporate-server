@@ -51,6 +51,7 @@ from abc import ABCMeta, abstractproperty, abstractmethod
 import apt
 import listener
 from ldap.filter import filter_format
+from six import with_metaclass
 
 import univention.debug as ud
 from univention.config_registry import configHandlers, ConfigRegistry
@@ -74,9 +75,7 @@ def safe_path_join(basedir, filename):
 	return path
 
 
-class UniventionLDAPExtension(object):
-	__metaclass__ = ABCMeta
-
+class UniventionLDAPExtension(with_metaclass(ABCMeta, object)):
 	@abstractproperty
 	def udm_module_name(self):
 		pass
@@ -410,9 +409,7 @@ class UniventionLDAPExtension(object):
 				ud.debug(ud.LISTENER, ud.ERROR, 'Error accessing UDM: %s' % (e,))
 
 
-class UniventionLDAPExtensionWithListenerHandler(UniventionLDAPExtension):
-	__metaclass__ = ABCMeta
-
+class UniventionLDAPExtensionWithListenerHandler(with_metaclass(ABCMeta, UniventionLDAPExtension)):
 	def __init__(self, ucr):
 		super(UniventionLDAPExtensionWithListenerHandler, self).__init__(ucr)
 		self._do_reload = False
@@ -889,9 +886,7 @@ class UniventionDataExtension(UniventionLDAPExtension):
 		return True
 
 
-class UniventionUDMExtension(UniventionLDAPExtension):
-	__metaclass__ = ABCMeta
-
+class UniventionUDMExtension(with_metaclass(ABCMeta, UniventionLDAPExtension)):
 	def wait_for_activation(self, timeout=180):
 		if not UniventionLDAPExtension.wait_for_activation(self, timeout):
 			return False

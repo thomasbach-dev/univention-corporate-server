@@ -713,7 +713,7 @@ class PackageManager(object):
 		:param pkg_names: A list of binary package names.
 		:returns: A list of |APT| cache entries.
 		"""
-		return filter(None, map(self.get_package, pkg_names))
+		return [_f for _f in map(self.get_package, pkg_names) if _f]
 
 	def get_package(self, pkg_name, raise_key_error=False):
 		# type: (str, bool) -> Any
@@ -987,7 +987,7 @@ class PackageManager(object):
 				self.cache = apt.Cache()
 			else:
 				self.cache.open()
-		for i in xrange(10):
+		for i in range(10):
 			try:
 				_open()
 			except SystemError:

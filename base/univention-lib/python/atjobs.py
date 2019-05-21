@@ -95,7 +95,7 @@ def add(cmd, execTime=None, comments={}):
 
 	# add comments
 	if comments:
-		cmd = '\n'.join(map(lambda c: '%s%s:%s' % (COMMENT_PREFIX, _encode_comment(c[0]).replace(':', ''), _encode_comment(c[1])), comments.items())) + '\n' + SCRIPT_PREFIX + '\n' + cmd
+		cmd = '\n'.join(['%s%s:%s' % (COMMENT_PREFIX, _encode_comment(c[0]).replace(':', ''), _encode_comment(c[1])) for c in list(comments.items())]) + '\n' + SCRIPT_PREFIX + '\n' + cmd
 
 	# add job
 	p = subprocess.Popen(atCmd, stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.PIPE)

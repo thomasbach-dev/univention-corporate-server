@@ -45,6 +45,7 @@ from Cookie import SimpleCookie
 from httplib import HTTPSConnection, HTTPException
 
 from univention.config_registry import ConfigRegistry
+from six import with_metaclass
 ucr = ConfigRegistry()
 ucr.load()
 
@@ -76,7 +77,7 @@ class ConnectionError(Exception):
 		self.reason = reason
 
 
-class HTTPError(Exception):
+class HTTPError(with_metaclass(_HTTPType, Exception)):
 	"""
 	Base class for |HTTP| errors.
 	A specialized sub-class if automatically instantiated based on the |HTTP| return code.
@@ -85,7 +86,6 @@ class HTTPError(Exception):
 	:param httplib.HTTPResponse response: The |HTTP| response.
 	:param str hostname: The host name of the failed server.
 	"""
-	__metaclass__ = _HTTPType
 	codes = {}  # type: Dict[int, Type[HTTPError]]
 	"""Specialized sub-classes for individual |HTTP| error codes."""
 
@@ -530,7 +530,7 @@ class Client(object):
 		:raises ConnectionError: if the request cannot be send.
 		:raises HTTPError: if an |UMC| error occurs.
 		"""
-		cookie = '; '.join(['='.join(x) for x in self.cookies.iteritems()])
+		cookie = '; '.join(['='.join(x) for x in self.cookies.items()])
 		request.headers = dict(self._headers, Cookie=cookie, **request.headers)
 		if 'UMCSessionId' in self.cookies:
 			request.headers['X-XSRF-Protection'] = self.cookies['UMCSessionId']

@@ -53,7 +53,7 @@ def escape_value(value):
 		'\\': '\\\\',
 		'`': '\\`',
 	}
-	return '"%s"' % ''.join(map(lambda c: escapes.get(c, c), value))
+	return '"%s"' % ''.join([escapes.get(c, c) for c in value])
 
 
 _RE_AT_JOB = re.compile('^job ([1-9][0-9]*) at .*')
