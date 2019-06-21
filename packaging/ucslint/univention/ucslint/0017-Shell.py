@@ -36,18 +36,14 @@ from io import open
 RE_HASHBANG = re.compile(r'#!\s*/bin/(?:ba|da|z|c)?sh')
 
 
-def containsHashBang(path):
+def containsHashBang(path):  # type: (str) -> bool
 	try:
-		fp = open(path, 'r', encoding='utf-8', errors='replace')
+		with open(path, 'r', encoding='utf-8', errors='replace') as fp:
+			for line in fp:
+				return bool(RE_HASHBANG.search(line))
 	except IOError:
-		return False
-	try:
-		for line in fp:
-			if RE_HASHBANG.search(line):
-				return True
-		return False
-	finally:
-		fp.close()
+		pass
+	return False
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

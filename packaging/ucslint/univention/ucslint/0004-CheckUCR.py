@@ -795,23 +795,20 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for var in all_variables - all_descriptions:
 			self.addmsg('0004-57', 'No description found for UCR variable "%s"' % (var,))
 
-	def test_marker(self, fn):
+	def test_marker(self, fn):  # type: (str) -> None
 		"""Bug #24728: count of markers must be even."""
 		count_python = 0
 		count_var = 0
 		try:
-			f = open(fn, 'r', encoding='utf-8', errors='replace')
+			with open(fn, 'r', encoding='utf-8', errors='replace') as f:
+				for l in f:
+					for _ in UniventionPackageCheck.RE_PYTHON.finditer(l):
+						count_python += 1
+					for _ in UniventionPackageCheck.RE_VAR.finditer(l):
+						count_var += 1
 		except EnvironmentError:
 			# self.addmsg('0004-27', 'cannot open/read file', fn)
 			return
-		try:
-			for l in f:
-				for _ in UniventionPackageCheck.RE_PYTHON.finditer(l):
-					count_python += 1
-				for _ in UniventionPackageCheck.RE_VAR.finditer(l):
-					count_var += 1
-		finally:
-			f.close()
 
 		if count_python % 2:
 			self.addmsg('0004-31', 'odd number of @!@ markers', fn)
