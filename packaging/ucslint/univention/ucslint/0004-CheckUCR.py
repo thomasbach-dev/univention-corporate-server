@@ -34,7 +34,7 @@ import univention.ucslint.base as uub
 import re
 import os
 import sys
-from codecs import open
+from io import open
 try:
 	from configparser import RawConfigParser, ParsingError, MissingSectionHeaderError, DuplicateSectionError, DuplicateOptionError
 	PY3CFG = True
@@ -199,7 +199,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				checks['pythonic'] = True
 
 			try:
-				content = open(fn, 'r', 'utf-8', 'replace').read()
+				content = open(fn, 'r', encoding='utf-8', errors='replace').read()
 			except EnvironmentError:
 				self.addmsg('0004-27', 'cannot open/read file', fn)
 				continue
@@ -278,7 +278,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.debug('Reading %s' % fn)
 		try:
 			entry = {}  # type: Dict[str, List[str]]
-			with open(fn, 'r', 'utf-8', 'replace') as stream:
+			with open(fn, 'r', encoding='utf-8', errors='replace') as stream:
 				for lnr, line in enumerate(stream, start=1):
 					line = line.strip()
 					if not line and entry:
@@ -337,7 +337,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			return cfg
 
 		try:
-			with open(fn, 'r', 'utf-8', 'replace') as stream:
+			with open(fn, 'r', encoding='utf-8', errors='replace') as stream:
 				sections = set()  # type: Set[str]
 				for lnr, line in enumerate(stream, start=1):
 					m = cfg.SECTCRE.match(line)  # type: ignore
@@ -376,7 +376,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			# read debian/rules
 			fn_rules = os.path.join(path, 'debian', 'rules')
 			try:
-				rules_content = open(fn_rules, 'r', 'utf-8', 'replace').read()
+				rules_content = open(fn_rules, 'r', encoding='utf-8', errors='replace').read()
 			except EnvironmentError:
 				self.addmsg('0004-2', 'file is missing', fn_rules)
 				rules_content = ''
@@ -800,7 +800,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		count_python = 0
 		count_var = 0
 		try:
-			f = open(fn, 'r', 'utf-8', 'replace')
+			f = open(fn, 'r', encoding='utf-8', errors='replace')
 		except EnvironmentError:
 			# self.addmsg('0004-27', 'cannot open/read file', fn)
 			return

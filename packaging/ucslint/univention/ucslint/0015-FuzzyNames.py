@@ -30,7 +30,7 @@
 from __future__ import absolute_import
 import univention.ucslint.base as uub
 from itertools import chain
-from codecs import open
+from io import open
 import re
 try:
 	from typing import Any, Dict, Iterator, List  # noqa F401
@@ -219,7 +219,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		super(UniventionPackageCheck, self).check(path)
 
 		for fn in uub.FilteredDirWalkGenerator(path, ignore_suffixes=self.BINARY_SUFFIXES):
-			with open(fn, 'r', 'utf-8', 'replace') as fd:
+			with open(fn, 'r', encoding='utf-8', errors='replace') as fd:
 				for lnr, line in enumerate(fd, start=1):
 					origline = line
 					if UniventionPackageCheck.RE_WHITELINE.match(line):

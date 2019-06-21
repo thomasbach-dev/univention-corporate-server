@@ -35,7 +35,7 @@ import re
 import os
 import sys
 import subprocess
-from codecs import open
+from io import open
 from argparse import ArgumentParser
 
 RE_PY2 = re.compile(r'\s*dh .*--with.*python2')
@@ -72,7 +72,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		self.show_statistics = kwargs.pop('show_statistics', False)
 		self.python_versions = ['python2', 'python3']
 		try:
-			with open('debian/rules', 'r', 'utf-8', 'replace') as fd:
+			with open('debian/rules', 'r', encoding='utf-8', errors='replace') as fd:
 				content = fd.read()
 			if not RE_PY2.search(content):
 				self.python_versions.remove('python2')

@@ -32,7 +32,7 @@ import re
 import os
 from email.utils import mktime_tz, parsedate_tz
 from debian.changelog import Changelog, ChangelogParseError
-from codecs import open
+from io import open
 
 REticket = re.compile(r'''
 	(Bug:?[ ]\#[0-9]{1,6} # Bugzilla
@@ -64,7 +64,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		fn = os.path.join(path, 'debian', 'changelog')
 		try:
-			with open(fn, 'r', 'utf-8', 'replace') as stream:
+			with open(fn, 'r', encoding='utf-8', errors='replace') as stream:
 				changelog = Changelog(stream, strict=True)
 		except (IOError, ChangelogParseError):
 			self.addmsg('0007-1', 'failed to open and read file', fn)

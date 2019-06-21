@@ -30,7 +30,7 @@
 from __future__ import absolute_import
 import univention.ucslint.base as uub
 import os
-from codecs import open
+from io import open
 
 # 1) check if strings like "dc=univention,dc=qa" appear in debian/* and conffiles/*
 # 2) check if strings like "univention.qa" appear in debian/* and conffiles/*
@@ -67,7 +67,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 
 		for fn in files:
 			try:
-				content = open(fn, 'r', 'utf-8', 'replace').read()
+				content = open(fn, 'r', encoding='utf-8', errors='replace').read()
 			except EnvironmentError:
 				self.addmsg('0002-1', 'failed to open and read file', fn)
 				continue

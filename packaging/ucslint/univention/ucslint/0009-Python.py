@@ -30,7 +30,7 @@
 from __future__ import absolute_import
 import univention.ucslint.base as uub
 import re
-from codecs import open
+from io import open
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
@@ -66,7 +66,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				continue
 
 			try:
-				content = open(fn, 'r', 'utf-8', 'replace').read(100)  # add all files that contain a hashbang in first line
+				content = open(fn, 'r', encoding='utf-8', errors='replace').read(100)  # add all files that contain a hashbang in first line
 			except EnvironmentError:
 				self.debug('Failed to read 100 bytes from %r' % (fn,))
 			else:
@@ -85,7 +85,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0009-8', 'use ucr.is_true() or .is_false()', cntmax=0)
 		for fn in py_files:
 			try:
-				content = open(fn, 'r', 'utf-8', 'replace').read(100)
+				content = open(fn, 'r', encoding='utf-8', errors='replace').read(100)
 			except EnvironmentError:
 				self.addmsg('0009-1', 'failed to open and read file', filename=fn)
 				continue

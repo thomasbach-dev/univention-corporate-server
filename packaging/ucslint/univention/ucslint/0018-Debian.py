@@ -32,7 +32,7 @@ from __future__ import absolute_import
 import univention.ucslint.base as uub
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
-from codecs import open
+from io import open
 from glob import glob
 try:
 	from typing import Dict, Iterator, List, Set, Tuple  # noqa F401
@@ -60,7 +60,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		for script_path in uub.FilteredDirWalkGenerator(debianpath, suffixes=SCRIPTS):
 			package, suffix = self.split_pkg(script_path)
 
-			with open(script_path, 'r', 'utf-8') as script_file:
+			with open(script_path, 'r', encoding='utf-8') as script_file:
 				for nr, line in enumerate(script_file, start=1):
 					if not line.startswith('#'):
 						break
@@ -126,7 +126,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 	@staticmethod
 	def lines(name):
 		# type: (str) -> Iterator[Tuple[int, str]]
-		with open(name, 'r', 'utf-8') as stream:
+		with open(name, 'r', encoding='utf-8') as stream:
 			for lnr, line in enumerate(stream, start=1):
 				line = line.strip()
 				if not line:

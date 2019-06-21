@@ -31,7 +31,7 @@ from __future__ import absolute_import
 import univention.ucslint.base as uub
 import re
 import subprocess
-from codecs import open
+from io import open
 
 RE_BASHISM = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
 RE_LOCAL = re.compile(
@@ -101,7 +101,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 					self.addmsg('0013-2', 'possible bashism (%s):\n%s' % (msg, code), filename=fn, line=line)
 
 	def check_unquoted_local(self, fn):
-		with open(fn, 'r', 'utf-8', 'replace') as fd:
+		with open(fn, 'r', encoding='utf-8', errors='replace') as fd:
 			for nr, line in enumerate(fd, start=1):
 				line = line.strip()
 				match = RE_LOCAL.search(line)

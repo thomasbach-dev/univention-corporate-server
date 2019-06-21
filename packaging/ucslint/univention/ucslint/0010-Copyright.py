@@ -31,7 +31,7 @@ import univention.ucslint.base as uub
 import re
 import os
 import time
-from codecs import open
+from io import open
 
 
 RE_SKIP = re.compile(
@@ -73,7 +73,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# check if copyright file is missing
 		fn = os.path.join(path, 'debian', 'copyright')
 		try:
-			with open(fn, 'r', 'utf-8') as stream:
+			with open(fn, 'r', encoding='utf-8') as stream:
 				line = stream.readline().rstrip()
 				if line != DEP5:
 					self.addmsg('0010-6', 'not machine-readable DEP-5', filename=fn)
@@ -94,7 +94,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# check files for copyright
 		for fn in check_files:
 			try:
-				content = open(fn, 'r', 'utf-8', 'replace').read()
+				content = open(fn, 'r', encoding='utf-8', errors='replace').read()
 			except IOError:
 				self.addmsg('0010-1', 'failed to open and read file', filename=fn)
 				continue

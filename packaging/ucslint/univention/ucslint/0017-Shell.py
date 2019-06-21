@@ -31,14 +31,14 @@
 from __future__ import absolute_import
 import univention.ucslint.base as uub
 import re
-from codecs import open
+from io import open
 
 RE_HASHBANG = re.compile(r'#!\s*/bin/(?:ba|da|z|c)?sh')
 
 
 def containsHashBang(path):
 	try:
-		fp = open(path, 'r', 'utf-8', 'replace')
+		fp = open(path, 'r', encoding='utf-8', errors='replace')
 	except IOError:
 		return False
 	try:
