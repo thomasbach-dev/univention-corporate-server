@@ -35,17 +35,17 @@ from codecs import open
 
 RE_BASHISM = re.compile(r'^.*?\s+line\s+(\d+)\s+[(](.*?)[)][:]\n([^\n]+)$')
 RE_LOCAL = re.compile(
-    r'''
-    \blocal\b
-    \s+
-    \w+
-    =
-    (?:\$(?![?$!#\s'"]
-           |\{[?$!#]\}
-           |$)
-      |`
-    )
-    ''',  # noqa: E101
+	r'''
+	\blocal\b
+	\s+
+	\w+
+	=
+	(?:\$(?![?$!#\s'"]
+		|\{[?$!#]\}
+		|$)
+	|`
+	)
+	''',
 	re.VERBOSE
 )
 RE_HASH_BANG = re.compile(r'^#![ \t]*/bin/(?:d?a)?sh')
