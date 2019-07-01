@@ -55,7 +55,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 
 		try {
 			$attributes = $this->ldapConfig->login($username, $password, $sasl_args);
-		} catch (SimpleSAML_Error_Error $e) {
+		} catch (SimpleSAML\Error\Error $e) {
 			if ($e->getMessage() == 'WRONGUSERPASS') {
 				$user_dn = $this->ldap->searchfordn($this->config['search.base'], $this->config['search.attributes'], $username, TRUE);
 				$attributes = $this->ldap->getAttributes($user_dn);
@@ -83,11 +83,11 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		if (isset($attributes['shadowExpire']) && is_string($attributes["shadowExpire"][0])) {
 			if ((int)$attributes['shadowExpire'][0] == 1) {
 				SimpleSAML_Logger::debug('LDAP Account disabled');
-				throw new SimpleSAML_Error_Error('LDAP_ACCDISABLED');
+				throw new SimpleSAML\Error\Error('LDAP_ACCDISABLED');
 			}
 			else if ((int)$attributes['shadowExpire'][0] < (floor($the_time / 86400))) {
 				SimpleSAML_Logger::debug('LDAP Account expired');
-				throw new SimpleSAML_Error_Error('LDAP_ACCEXPIRED');
+				throw new SimpleSAML\Error\Error('LDAP_ACCEXPIRED');
 			}
 		}
 		// Kerberos expired
@@ -96,14 +96,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			$date = DateTime::createFromFormat('Ymd+', $attributes['krb5ValidEnd'][0]);
 			if ($date->getTimestamp() < ($the_time + 1)) {
 				SimpleSAML_Logger::debug('Kerberos Account expired');
-				throw new SimpleSAML_Error_Error('KRB_ACCEXPIRED');
+				throw new SimpleSAML\Error\Error('KRB_ACCEXPIRED');
 			}
 		}
 		// Samba expired
 		if (isset($attributes['sambaKickoffTime']) && is_string($attributes['sambaKickoffTime'][0])) {
 			if ((int)$attributes['sambaKickoffTime'][0] < $the_time) {
 				SimpleSAML_Logger::debug('Samba Account expired');
-				throw new SimpleSAML_Error_Error('SAMBA_ACCEXPIRED');
+				throw new SimpleSAML\Error\Error('SAMBA_ACCEXPIRED');
 			}
 		}
 
@@ -112,7 +112,7 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		if (isset($attributes['shadowMax']) && is_array($attributes['shadowLastChange'])) {
 			if (((int)$attributes['shadowMax'][0] + (int)$attributes['shadowLastChange'][0]) < (floor($the_time / 86400))) {
 				SimpleSAML_Logger::debug('LDAP password change required');
-				throw new SimpleSAML_Error_Error('LDAP_PWCHANGE');
+				throw new SimpleSAML\Error\Error('LDAP_PWCHANGE');
 			}
 		}
 		// krb5PasswordEnd < today (ldap attribute format: 20161020000000Z)
@@ -121,14 +121,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 			$date = DateTime::createFromFormat('Ymd+', $attributes['krb5PasswordEnd'][0]);
 			if ($date->getTimestamp() < ($the_time + 1)) {
 				SimpleSAML_Logger::debug('Kerberos password change required');
-				throw new SimpleSAML_Error_Error('KRB_PWCHANGE');
+				throw new SimpleSAML\Error\Error('KRB_PWCHANGE');
 			}
 		}
 		// samba:
 		if (isset($attributes['sambaKickoffTime']) && is_string($attributes['sambaKickoffTime'][0])) {
 			if ((int)$attributes['sambaKickoffTime'][0] < $the_time) {
 				SimpleSAML_Logger::debug('Samba password change required');
-				throw new SimpleSAML_Error_Error('SAMBA_PWCHANGE');
+				throw new SimpleSAML\Error\Error('SAMBA_PWCHANGE');
 			}
 		}
 
@@ -137,14 +137,14 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		if (isset($attributes['sambaAcctFlags']) && is_string($attributes['sambaAcctFlags'][0])) {
 			if (strpos($attributes['sambaAcctFlags'][0],'L') !== false) {
 				SimpleSAML_Logger::debug('Samba account locked');
-				throw new SimpleSAML_Error_Error('SAMBA_ACCLOCKED');
+				throw new SimpleSAML\Error\Error('SAMBA_ACCLOCKED');
 			}
 		}
 		// krb: krb5KDCFlags=254
 		if (isset($attributes['krb5KDCFlags']) && is_string($attributes['krb5KDCFlags'][0])) {
 			if ((int)$attributes['krb5KDCFlags'][0] === 254) {
 				SimpleSAML_Logger::debug('Kerberos account locked');
-				throw new SimpleSAML_Error_Error('KRB_ACCLOCKED');
+				throw new SimpleSAML\Error\Error('KRB_ACCLOCKED');
 			}
 		}
 		// ldap: locking ldap is done by modifying password > but then ldap bind has failed anyway
