@@ -26,6 +26,8 @@ Conflicts:
  ucs-tools (<< 1.2.5),
 Provides:
  ucslint-univention,
+Recommends:
+ python3-junit.xml,
 Description: Check packaging for UCS
  This package contains the Univention tool ucslint that
  is able to check debian source packages against common
