@@ -465,10 +465,18 @@ def update_extended_attributes(lo, module, position):
 		)
 
 		# add LDAP mapping
-		if attrs['univentionUDMPropertyLdapMapping'][0].lower() != 'objectClass'.lower():
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], unmap_method, map_method)
+		attribute_name = attrs['univentionUDMPropertyLdapMapping'][0]
+		if attribute_name.lower() != 'objectClass'.lower():
+			already_existing_map_name = module.mapping.mapName(pname)
+			already_existing_unmap_name = module.mapping.unmapName(attribute_name)
+			if already_existing_map_name and already_existing_map_name != attribute_name:
+				pass
+			elif already_existing_unmap_name and already_existing_unmap_name != pname:
+				pass
+			else:
+				module.mapping.register(pname, attribute_name, unmap_method, map_method)
 		else:
-			module.mapping.register(pname, attrs['univentionUDMPropertyLdapMapping'][0], univention.admin.mapping.nothing, univention.admin.mapping.nothing)
+			module.mapping.register(pname, attribute_name, univention.admin.mapping.nothing, univention.admin.mapping.nothing)
 
 		if hasattr(module, 'layout'):
 			tabname = attrs.get('univentionUDMPropertyTranslationTabName;entry-%s' % lang, attrs.get('univentionUDMPropertyLayoutTabName', [_('Custom')]))[0]

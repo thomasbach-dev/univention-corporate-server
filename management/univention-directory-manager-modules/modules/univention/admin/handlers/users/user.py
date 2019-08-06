@@ -326,7 +326,6 @@ property_descriptions = {
 		short_description=_('Room number'),
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
-		multivalue=True,
 		copyable=True,
 	),
 	'secretary': univention.admin.property(
@@ -340,7 +339,6 @@ property_descriptions = {
 		short_description=_('Department number'),
 		long_description='',
 		syntax=univention.admin.syntax.OneThirdString,
-		multivalue=True,
 		copyable=True,
 	),
 	'employeeType': univention.admin.property(
