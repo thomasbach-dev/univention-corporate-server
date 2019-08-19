@@ -51,12 +51,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 	IGNORED_FILES = [
 		re.compile(r'conffiles/[^/]+/'),  # UCR templates with markers contain syntax errors
 		re.compile(r'python-notifier/'),  # external code
-		re.compile(r'univention-novnc/'),  # external code
-		re.compile(r'univention-ldb-modules/'),  # external code
-		re.compile(r'univention/pyDes.py'),  # external code
+		re.compile(r'univention-ldb-modules/buildtools/'),  # external code
 		re.compile(r'ucslint/testframework/'),  # don't care about tests for ucslint
-		re.compile(r'services/univention-printserver/modules/univention/management/console/handlers/cups'),  # UCS 2.4 code
-		re.compile(r'univention-directory-manager-modules/test/'),  # unrelevant, should be removed imho
 	]
 
 	IGNORE = {
@@ -378,7 +374,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		return False
 
 	def find_python_files(self, base):
-		pathes = set(list(uub.FilteredDirWalkGenerator(base, suffixes=['.py'])) + list(uub.FilteredDirWalkGenerator(base, ignore_suffixes=['.py'], reHashBang=self.PYTHON_HASH_BANG)))
+		pathes = set(uub.FilteredDirWalkGenerator(base, suffixes=['.py'])) | set(uub.FilteredDirWalkGenerator(base, ignore_suffixes=['.py'], reHashBang=self.PYTHON_HASH_BANG))
 		for path in pathes:
 			if not self.ignore_path(path):
 				yield path
