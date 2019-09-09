@@ -30,8 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import string
-
 from univention.admin.layout import Tab, Group
 import univention.admin.filter
 import univention.admin.handlers
@@ -109,14 +107,14 @@ def mapName(old):
 def unmapLocation(old):
 	new = []
 	for i in old:
-		new.append(i.split(' '))
+		new.append(i.split(' ', 3))
 	return new
 
 
 def mapLocation(old):
 	new = []
 	for i in old:
-		new.append(string.join(i, ' '))
+		new.append(' '.join(i))
 	return new
 
 
