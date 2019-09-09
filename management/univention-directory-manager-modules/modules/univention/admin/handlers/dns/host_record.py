@@ -129,11 +129,21 @@ def mapMX(old):
 	return new
 
 
+def unmapIPAddresses(oldattr):
+	records = []
+	if 'aRecord' in oldattr:
+		records.extend(self.oldattr['aRecord'])
+	if 'aAAARecord' in self.oldattr:
+		records.extend(ipaddr.IPv6Address(x).exploded for x in self.oldattr['aAAARecord'])
+	return records
+
+
 mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'relativeDomainName', None, univention.admin.mapping.ListToString)
 mapping.register('mx', 'mXRecord', mapMX, unmapMX)
 mapping.register('txt', 'tXTRecord')
 mapping.register('zonettl', 'dNSTTL', univention.admin.mapping.mapUNIX_TimeInterval, univention.admin.mapping.unmapUNIX_TimeInterval)
+mapping.registerUnmapping('a', unmapIPAddresses)
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -147,20 +157,6 @@ class object(univention.admin.handlers.simpleLdap):
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[], update_zone=True):
 		self.update_zone = update_zone
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate, attributes=attributes)
-
-		if dn:  # TODO: document why or remove
-			self.open()
-
-	def open(self):
-		univention.admin.handlers.simpleLdap.open(self)
-		self.oldinfo['a'] = []
-		self.info['a'] = []
-		if 'aRecord' in self.oldattr:
-			self.oldinfo['a'].extend(self.oldattr['aRecord'])
-			self.info['a'].extend(self.oldattr['aRecord'])
-		if 'aAAARecord' in self.oldattr:
-			self.oldinfo['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
-			self.info['a'].extend(map(lambda x: ipaddr.IPv6Address(x).exploded, self.oldattr['aAAARecord']))
 
 	def _ldap_addlist(self):
 		return [
