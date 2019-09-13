@@ -39,6 +39,7 @@ import univention.uldap
 import sys
 import subprocess
 import shlex
+from io import StringIO
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
@@ -113,7 +114,6 @@ def main():
 		f_old = open('/etc/fstab', 'r')
 		if args.simulate:
 			# f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
-			from StringIO import StringIO
 			f_new = StringIO()
 		else:
 			f_new = open(fstabNew, 'w')
@@ -223,7 +223,7 @@ def main():
 			os.makedirs(mp)
 		debug('Mounting %s...\n' % mp)
 		if not args.simulate:
-			p = subargs.process.Popen(['mount', mp])
+			subprocess.Popen(['mount', mp])
 
 
 if __name__ == '__main__':
