@@ -171,15 +171,15 @@ def main():
 			debug('not found, skipping\n')
 			continue
 
-		# skip share if from self
-		if share_host == fqdn:
-			debug('is self, skipping\n')
-			continue
-
 		mp = fields[-1] or share_path
 		# skip share if target already in fstab
 		if mp in mount_points:
 			debug('already mounted on %s, skipping\n' % mp)
+			continue
+
+		# skip share if from self
+		if share_host == fqdn and share_path == mp:
+			debug('is self, skipping\n')
 			continue
 
 		nfs_path_fqdn = "%s:%s" % (share_host, share_path)
