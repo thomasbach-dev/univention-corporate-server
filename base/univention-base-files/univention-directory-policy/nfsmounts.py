@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from argparse import ArgumentParser
 import os
 import univention.config_registry
 import ldap
@@ -38,12 +39,10 @@ import univention.uldap
 import sys
 import subprocess
 import shlex
-import getopt
 
 configRegistry = univention.config_registry.ConfigRegistry()
 configRegistry.load()
 verbose = False
-simulate = False
 
 ldap_hostdn = configRegistry.get('ldap/hostdn')
 
@@ -84,32 +83,14 @@ def query_policy(dn):
 	return nfsmount
 
 
-def usage(out=sys.stdout):
-	"""Output usage message."""
-	print >>out, 'syntax: nfsmounts [-h] [-v]'
-	print >>out, '     -h, --help       print this help'
-	print >>out, '     -s, --simulate   simulate update and just show actions'
-	print >>out, '     -v, --verbose    print verbose information'
-	print >>out, ''
-
-
 def main():
 	# parse command line
-	try:
-		opts, pargs = getopt.getopt(sys.argv[1:], 'hsv', ['help', 'simulate', 'verbose'])
-	except:
-		usage(sys.stderr)
-		sys.exit(2)
+	parser = ArgumentParser()
+	parser.add_argument('--simulate', '-s', action='store_true', help='simulate update and just show actions')
+	parser.add_argument('--verbose', '-v', action='store_true', help='print verbose information')
+	args = parser.parse_args()
 
-	# get command line data
-	for option, value in opts:
-		if option == '-h' or option == '--help':
-			usage()
-			sys.exit(0)
-		elif option == '-s' or option == '--simulate':
-			global simulate
-			simulate = True
-		elif option == '-v' or option == '--verbose':
+	if args.verbose:
 			global verbose
 			verbose = True
 
@@ -130,7 +111,7 @@ def main():
 	mount_points = set()
 	try:
 		f_old = open('/etc/fstab', 'r')
-		if simulate:
+		if args.simulate:
 			# f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
 			from StringIO import StringIO
 			f_new = StringIO()
@@ -227,7 +208,7 @@ def main():
 
 	f_new.close()
 	debug('Switching /etc/fstab...\n')
-	if not simulate:
+	if not args.simulate:
 		if os.path.isfile(fstabNew) and os.path.getsize(fstabNew) > 0:
 			os.rename(fstabNew, '/etc/fstab')
 
@@ -241,8 +222,8 @@ def main():
 		if not os.path.exists(mp):
 			os.makedirs(mp)
 		debug('Mounting %s...\n' % mp)
-		if not simulate:
-			p = subprocess.Popen(['mount', mp])
+		if not args.simulate:
+			p = subargs.process.Popen(['mount', mp])
 
 
 if __name__ == '__main__':
