@@ -70,7 +70,7 @@ def query_policy(dn):
 	nfsmount = set()
 	debug('Retrieving policy for %s...\n' % dn)
 	try:
-		p = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', dn], shell=False, stdout=subprocess.PIPE)
+		p = subprocess.Popen(['univention_policy_result', '-D', ldap_hostdn, '-y', '/etc/machine.secret', '-s', dn], stdout=subprocess.PIPE)
 		stdout, stderr = p.communicate()
 	except OSError:
 		exit(1, "FAIL: failed to execute `univention_policy_result %s'" % dn)
