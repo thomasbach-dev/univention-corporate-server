@@ -31,6 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+from __future__ import print_function
 from argparse import ArgumentParser
 import os
 import univention.config_registry
@@ -53,14 +54,14 @@ MAGIC_LDAP = '#LDAP Entry DN:'
 def debug(msg, out=sys.stderr):
 	"""Print verbose information 'msg' to 'out'."""
 	if verbose:
-		print >>out, msg,
+		print(msg, end=' ', file=out)
 
 
 def exit(result, message=None):
 	"""Exit with optional error message."""
 	script = os.path.basename(sys.argv[0])
 	if message:
-		print >>sys.stderr, '%s: %s' % (script, message)
+		print('%s: %s' % (script, message), file=sys.stderr)
 	sys.exit(result)
 
 
@@ -97,7 +98,7 @@ def main():
 
 	hostdn = configRegistry.get('ldap/hostdn')
 	if not hostdn:
-		print >>sys.stderr, "Error: ldap/hostdn is not set."
+		print("Error: ldap/hostdn is not set.", file=sys.stderr)
 		exit(1)
 	debug("Hostdn is %s\n" % hostdn)
 
