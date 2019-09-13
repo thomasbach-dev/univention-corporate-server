@@ -111,35 +111,35 @@ def main():
 	sources = set()
 	mount_points = set()
 	try:
-		f_old = open('/etc/fstab', 'r')
-		if args.simulate:
-			# f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
-			f_new = StringIO()
-		else:
-			f_new = open(fstabNew, 'w')
-		for line in f_old:
-			if MAGIC_LDAP not in line:
-				f_new.write(line)
-				debug("= %s" % line)
+		with open('/etc/fstab', 'r') as f_old:
+			if args.simulate:
+				# f_new = os.fdopen(os.dup(sys.stderr.fileno()), "w")
+				f_new = StringIO()
 			else:
-				debug("- %s" % line)
-			if line.startswith('#'):
-				continue
+				f_new = open(fstabNew, 'w')
 
-			line = line.rstrip('\n')
-			fields = line.split(' ')  # source_spec mount_point fs options freq passno
+			for line in f_old:
+				if MAGIC_LDAP not in line:
+					f_new.write(line)
+					debug("= %s" % line)
+				else:
+					debug("- %s" % line)
 
-			sp = fields[0]
-			sources.add(sp)
+				if line.startswith('#'):
+					continue
 
-			try:
-				mp = fields[1]
-				if not mp.startswith('#'):
-					mount_points.add(mp)
-			except IndexError:
-				pass
+				line = line.rstrip('\n')
+				fields = line.split(' ')  # source_spec mount_point fs options freq passno
 
-		f_old.close()
+				sp = fields[0]
+				sources.add(sp)
+
+				try:
+					mp = fields[1]
+					if not mp.startswith('#'):
+						mount_points.add(mp)
+				except IndexError:
+					pass
 	except IOError as e:
 		exit(1, e)
 
@@ -212,11 +212,11 @@ def main():
 		if os.path.isfile(fstabNew) and os.path.getsize(fstabNew) > 0:
 			os.rename(fstabNew, '/etc/fstab')
 
-	fp = open('/etc/mtab', 'r')
-	for line in fp:
-		line = line.rstrip('\n')
-		fields = line.split(' ')  # source_spec mount_point fs options freq passno
-		to_mount.discard(fields[1])
+	with open('/etc/mtab', 'r') as fp:
+		for line in fp:
+			line = line.rstrip('\n')
+			fields = line.split(' ')  # source_spec mount_point fs options freq passno
+			to_mount.discard(fields[1])
 
 	for mp in sorted(to_mount):
 		if not os.path.exists(mp):
