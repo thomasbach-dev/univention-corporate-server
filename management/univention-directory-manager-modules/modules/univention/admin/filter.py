@@ -176,6 +176,8 @@ def parse(filter_s, begin=0, end=-1):
 	if not isinstance(filter_s, basestring):
 		return filter_s
 
+	univention.admin.syntax.ldapFilter.parse(filter_s)
+
 	def split(str):
 		expressions = []
 		depth = 0
