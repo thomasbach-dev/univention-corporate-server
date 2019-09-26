@@ -1398,23 +1398,30 @@ class ucs:
 		except ldap.NOT_ALLOWED_ON_NONLEAF:
 			ud.debug(ud.LDAP, ud.INFO, "remove object from UCS failed, need to delete subtree")
 			for subdn, subattr in self.search_ucs(base=object['dn'], attr=['*', '+']):
-				if unicode(subdn).lower() == unicode(object['dn']).lower():  # TODO: search with scope=children and remove this check
+				if subdn.lower() == object['dn'].lower():  # TODO: search with scope=children and remove this check
 					continue
 
 				ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
 
-				key = self.identify_udm_object(subdn, subattr)
-				subobject_ucs = {'dn': result[0], 'modtype': 'delete', 'attributes': result[1]}
-				back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
-				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
+				subobject_property_key = self.identify_udm_object(subdn, subattr)
 
-				if not self._ignore_object(key, back_mapped_subobject):
-					# FIXME: this call is wrong!: sync_to_ucs() must be called with a samba_object not with a ucs_object!
-					if not self.sync_to_ucs(key, subobject_ucs, back_mapped_subobject['dn'], object):
+				subobject_ucs = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
+				# FIXME: we need to get the samba object attributes here. This is currently not possible because the samba object most likely doesn't exists anymore.
+				#samba_object_dn = self._object_mapping(subobject_property_key, subobject_ucs, 'ucs')['dn']
+				#samba_object = self._s4__object_from_element((samba_object_dn, self.lo_s4.get(samba_object_dn)))
+				#property_key = self._s4__identify_s4_type(samba_object)
+				samba_object = subobject_ucs  # FIXME: calling _object_mapping with a wrong definition...
+				property_key = subobject_property_key
+				subobject_mapped = self._object_mapping(property_key, samba_object, 'con')
+
+				ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (subobject_mapped['dn'],))
+				if not self._ignore_object(property_key, subobject_mapped):  # and not self._ignore_object(property_key, samba_object):
+					# FIXME: due to the code above sync_to_ucs() will most likely crash with TypeError: 'NoneType' object has no attribute '__getitem__', See Bug #49324
+					if not self.sync_to_ucs(property_key, subobject_mapped, samba_object['dn'], samba_object):
 						ud.debug(ud.LDAP, ud.WARN, "delete of subobject failed: %r" % (subdn,))
 						return False
 
-			# FIXME: endless recursion if there is one subtree-object which is ignored, not identifyable or can't be removed.
+			# FIXME: this is a recursion which will never end if there is one subtree-object which is ignored or can't be removed.
 			return self.delete_in_ucs(property_type, object, module, position)
 
 	def sync_to_ucs(self, property_type, object, pre_mapped_s4_dn, original_object):
