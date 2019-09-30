@@ -781,7 +781,7 @@ class ucs:
 		ignore_subtree_match = False
 
 		_attr = new or old
-		key = self.identify_udm_object(dn, _attr)
+		_mod, key = self.identify_udm_object(dn, _attr)
 
 		if not new:
 			change_type = "delete"
@@ -953,15 +953,11 @@ class ucs:
 				ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object not found: %s" % searchdn)
 				return None
 
-			module = self.modules[property_type]  # default, determined by mapping filter
-			if not module.identify(searchdn, attr):
-				for m in self.modules_others.get(property_type, []):
-					if m and m.identify(searchdn, attr):
-						module = m
-						break
-				else:
-					ud.debug(ud.LDAP, ud.ERROR, "get_ucs_object: could not identify UDM object type: %s" % searchdn)
-					ud.debug(ud.LDAP, ud.PROCESS, "get_ucs_object: using default: %s" % module.module)
+			module, key = self.identify_udm_object(searchdn, attr)
+			if not module:
+				module = self.modules[property_type]  # default, determined by mapping filter
+				ud.debug(ud.LDAP, ud.ERROR, "get_ucs_object: could not identify UDM object type: %s" % (searchdn,))
+				ud.debug(ud.LDAP, ud.PROCESS, "get_ucs_object: using default: %s" % (module.module,))
 
 			ucs_object = univention.admin.objects.get(module, co=None, lo=self.lo, position='', dn=searchdn)
 			ud.debug(ud.LDAP, ud.INFO, "get_ucs_object: object found: %s" % searchdn)
@@ -1409,7 +1405,7 @@ class ucs:
 
 			ud.debug(ud.LDAP, ud.INFO, "delete: %r" % (subdn,))
 
-			key = self.identify_udm_object(subdn, subattr)
+			_mod, key = self.identify_udm_object(subdn, subattr)
 			subobject_ucs = {'dn': subdn, 'modtype': 'delete', 'attributes': subattr}
 			back_mapped_subobject = self._object_mapping(key, subobject_ucs, 'ucs')
 			ud.debug(ud.LDAP, ud.WARN, "delete subobject: %r" % (back_mapped_subobject['dn'],))
@@ -1958,7 +1954,8 @@ class ucs:
 		dn = unicode(dn, 'utf-8')
 		for k in self.property.keys():
 			if self.modules[k].identify(dn, attrs):
-				return k
+				return m, k
 			for m in self.modules_others.get(k, []):
 				if m and m.identify(dn, attrs):
-					return k
+					return m, k
+		return None, None
