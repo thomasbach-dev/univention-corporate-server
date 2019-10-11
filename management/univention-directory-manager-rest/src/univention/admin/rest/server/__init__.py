@@ -41,6 +41,7 @@ import sys
 import json
 import signal
 import argparse
+import traceback
 
 import tornado.httpserver
 import tornado.ioloop
@@ -49,6 +50,8 @@ import tornado.web
 import tornado.httpclient
 import tornado.httputil
 import tornado.process
+import logging
+import tornado.log
 
 import pycurl
 
@@ -143,26 +146,50 @@ class Server(tornado.web.RequestHandler):
 	def main(cls):
 		parser = argparse.ArgumentParser(prog='python -m univention.admin.rest.server')
 		parser.add_argument('-d', '--debug', type=int, default=2)
+		parser.add_argument('-p', '--port', help='Bind to a TCP port', default=int(ucr.get('directory/manager/rest/server/port', 9979)))
+		parser.add_argument('-i', '--interface', help='Bind to specified interface/address', default=ucr.get('directory/manager/rest/server/address', '127.0.0.1'))
+		parser.add_argument('-c', '--cpus', type=int, default=int(ucr.get('directory/manager/rest/cpus', 1)), help='How many processes should be forked')
 		args = parser.parse_args()
+
 		ud.init('stdout', ud.FLUSH, ud.NO_FUNCTION)
 		ud.set_level(ud.MAIN, args.debug)
+
 		tornado.httpclient.AsyncHTTPClient.configure('tornado.curl_httpclient.CurlAsyncHTTPClient')
 		tornado.locale.load_gettext_translations('/usr/share/locale', 'univention-management-console-module-udm')
-		cls.start_processes()
-		cls.register_signal_handlers()
-		app = tornado.web.Application([
-			(r'.*', cls),
-		], serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
-		)
-		app.listen(int(ucr.get('directory/manager/rest/server/port', 9979)), ucr.get('directory/manager/rest/server/address', '127.0.0.1'))
-		ioloop = tornado.ioloop.IOLoop.instance()
-		ioloop.start()
+
+		channel = logging.StreamHandler()
+		channel.setFormatter(tornado.log.LogFormatter(fmt='%(color)s%(asctime)s  %(levelname)10s      (%(process)9d) :%(end_color)s %(message)s', datefmt='%d.%m.%y %H:%M:%S'))
+		logger = logging.getLogger()
+		logger.setLevel(logging.INFO)
+		logger.addHandler(channel)
+
+		try:
+			app = tornado.web.Application([
+				(r'.*', cls),
+			], serve_traceback=ucr.is_true('directory/manager/rest/show-tracebacks', True),
+			)
+			server = tornado.httpserver.HTTPServer(app)
+			server.bind(args.port, args.interface)
+			cls.start_processes()
+			cls.register_signal_handlers()
+			org = os.getpid()
+			print(os.getpid())
+			print('START', server.start(args.cpus))
+			print(os.getpid())
+			ioloop = tornado.ioloop.IOLoop.instance()
+			ioloop.start()
+		except Exception:
+			ud.debug(ud.MAIN, ud.ERROR, traceback.format_exc())
+			cls.signal_handler_stop(signal.SIGTERM, None)
+			raise
 
 	@classmethod
 	def start_processes(cls):
 		for language in ('de_DE', 'en_US'):
 			socket = cls.LANGUAGE_SERVICE_MAPPING[language]
-			cls.PROCESSES[language] = tornado.process.Subprocess(['/usr/bin/python2.7', '-m', 'univention.admin.rest', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
+			import subprocess
+			cls.PROCESSES[language] = subprocess.Popen(['/usr/bin/python2.7', '-m', 'univention.admin.rest', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
+			#cls.PROCESSES[language] = tornado.process.Subprocess(['/usr/bin/python2.7', '-m', 'univention.admin.rest', '-s', socket, '-l', language, 'run'], stdout=sys.stdout, stderr=sys.stderr)
 
 	@classmethod
 	def register_signal_handlers(cls):
