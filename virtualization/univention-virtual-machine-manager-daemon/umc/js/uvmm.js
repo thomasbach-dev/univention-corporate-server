@@ -452,11 +452,8 @@ define([
 
 		vncLink: function( ids, items ) {
 			array.forEach(items, function(item) {
-				var id = item.id;
-				var uuid = encodeURIComponent(id.slice(id.indexOf('#') + 1));
-				var port = window.location.port ? ':' + window.location.port : '';
 				var title = encodeURIComponent(item.label + '@' + item.nodeName);
-				var url = window.location.protocol + '//' + window.location.host + port + '/univention-novnc/vnc_auto.html?port=6080&path=?token=' + uuid + '&title=' + title;
+				var url = '/novnc/vnc_auto.html?port=' + encodeURIComponent(item.websocket_port) + '&host=' + encodeURIComponent(item.websocket_host) + '&title=' + title;
 				window.open(url, '_blank');
 			});
 		},
