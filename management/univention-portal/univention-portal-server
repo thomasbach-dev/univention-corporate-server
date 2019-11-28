@@ -111,7 +111,6 @@ class ReloadExtendedAttributes(Exception):
 class LDAPCache(object):
 	PORTAL_CACHE = '/var/cache/univention-portal/portal.json'
 	FALLBACK_PORTAL_CACHE = '/usr/share/univention-portal/portal-unjoined.json'
-	GROUP_CACHE = '/var/cache/univention-portal/groups.json'
 	REFRESH_PORTAL_FILE = '/var/cache/univention-portal/refresh_portal'
 	REFRESH_GROUP_FILE = '/var/cache/univention-portal/refresh_groups'
 
@@ -125,19 +124,6 @@ class LDAPCache(object):
 		if self._udm is None:
 			self._udm = UDM.machine().version(2)
 		return self._udm
-
-	def _get_groups(self):
-		if self._groups is None or os.path.exists(self.REFRESH_GROUP_FILE):
-			get_logger('cache').info('loading group cache file')
-			try:
-				with open(self.GROUP_CACHE) as fd:
-					self._groups = json.load(fd)
-			except EnvironmentError:
-				get_logger('cache').warn('unable to read group cache file')
-				self._groups = None
-			if os.path.exists(self.REFRESH_GROUP_FILE):
-				os.unlink(self.REFRESH_GROUP_FILE)
-		return self._groups
 
 	def load(self, fallback=False):
 		get_logger('cache').info('loading cache file')
@@ -155,10 +141,7 @@ class LDAPCache(object):
 				raise
 
 	def get(self, name):
-		if name == 'groups':
-			return self._get_groups() or {}
-		else:
-			return self._get_portal(name)
+		return self._get_portal(name)
 
 	def _get_portal(self, name):
 		if os.path.exists(self.REFRESH_PORTAL_FILE):
@@ -348,24 +331,21 @@ class LDAPCache(object):
 
 
 class JsonHandler(tornado.web.RequestHandler):
-	def _recursive_search_in_groups(self, username, group, groups, checked_groups):
-		if username in group['usernames']:
-			return True
-		for group_dn in group['groups']:
-			if group_dn in checked_groups:
+
+	def _get_groups_of_user(self, user):
+		groups_to_search = user.props.groups.objs
+		groups = []
+		while groups_to_search:
+			group = groups_to_search.pop()
+			if group.dn in [_g.dn for _g in groups]:
 				continue
-			group = groups.get(group_dn)
-			if group is None:
-				continue
-			checked_groups.append(group_dn)
-			if self._recursive_search_in_groups(username, group, groups, checked_groups):
-				return True
-		return False
+			groups.append(group)
+			groups_to_search.extend(group.props.memberOf.objs)
+		return groups
 
 	def _get_portal(self, username, admin_mode):
 		portal = cache.get('portal')
 		entries = cache.get('entries')
-		groups = cache.get('groups')
 		actual_content = portal.pop('content') or []
 		filtered_content = []
 		for category_dn, entry_dns in actual_content:
@@ -378,14 +358,9 @@ class JsonHandler(tornado.web.RequestHandler):
 					if not entry['activated']:
 						continue
 					if entry['allowedGroups']:
-						checked_groups = []
-						for group_dn in entry['allowedGroups']:
-							group = groups.get(group_dn)
-							if group is None:
-								continue
-							if self._recursive_search_in_groups(username, group, groups, checked_groups):
-								break
-						else:
+						user_mod = cache.get('users/user')
+						user = user_mod.get_by_id(username)
+						if not any(group.dn in entry['allowedGroups'] for group in self._get_groups_of_user(user)):
 							continue
 				filter_entry_dns.append(entry_dn)
 			if filter_entry_dns or admin_mode:

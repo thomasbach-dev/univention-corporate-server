@@ -1,3 +1,9 @@
+univention-portal (3.0.3-1) unstable; urgency=medium
+
+  * Bug #49862: use ldap calls instead of listener in portal server
+
+ -- Florian Best <best@univention.de>  Thu, 28 Nov 2019 17:46:03 +0100
+
 univention-portal (3.0.2-3) unstable; urgency=medium
 
   * Bug #49162: remove python-support
