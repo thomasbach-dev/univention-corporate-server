@@ -1685,20 +1685,10 @@ class s4(univention.s4connector.ucs):
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to add: %s" % add_members)
 		ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members to del: %s" % del_members)
 
-		if add_members or del_members:
-			s4_members |= add_members  # Note: add_members are only lowercase
-			s4_members -= del_members  # Note: del_members are case sensitive
-			ud.debug(ud.LDAP, ud.INFO, "group_members_sync_from_ucs: members result: %s" % s4_members)
-
-			modlist_members = [compatible_modstring(member) for member in s4_members]
-			ud.debug(ud.LDAP, ud.ALL, "group_members_sync_from_ucs: modlist: %s" % modlist_members)
-			try:
-				self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'member', modlist_members)])
-			except ldap.SERVER_DOWN:
-				raise
-			except Exception:  # FIXME: which exception is to be caught?
-				ud.debug(ud.LDAP, ud.WARN, "group_members_sync_from_ucs: failed to sync members: (%s,%s)" % (object['dn'], [(ldap.MOD_REPLACE, 'member', modlist_members)]))
-				raise
+		if add_members:
+			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_ADD, 'member', list(map(compatible_modstring, add_members)))])
+		if del_members:
+			self.lo_s4.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_DEL, 'member', list(map(compatible_modstring, del_members)))])
 
 		return True
 
