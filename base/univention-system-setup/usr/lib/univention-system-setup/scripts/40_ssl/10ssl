@@ -101,9 +101,9 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 		old="ssl_$var"
 		new="new_ssl_$var"
 		if [ -n "${!new}" ]; then
-			univention-config-registry set "${old/_//}=${!new}"
+			echo "ssl/$var=${!new}"
 		fi
-	done
+	done | xargs -r -d'\n' univention-config-registry set
 
 	_certificate_creation_failed() {
 		progress_next_step 10
