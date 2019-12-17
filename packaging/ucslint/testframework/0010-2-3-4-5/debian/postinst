@@ -77,12 +77,12 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 		# Bug #13549
 		rdate time.fu-berlin.de || rdate 130.133.1.10 || true
 
-		. /usr/share/univention-ssl/make-certificates.sh;
-		init;
+		. /usr/share/univention-ssl/make-certificates.sh
+		init
 		univention-certificate new -name $hostname.$domainname
 		ln -snf "$hostname.$domainname" "/etc/univention/ssl/$hostname"
 	else
-		echo "skipped. SSL Certificate found in $CERTPATH ";
+		echo "skipped. SSL Certificate found in $CERTPATH "
 	fi
 fi
 

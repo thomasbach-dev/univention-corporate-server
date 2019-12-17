@@ -30,12 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-force_recreate=0
+recreate=false
 
 while [ "$#" -gt 0 ]; do
-	case $1 in
+	case "$1" in
 		--force-recreate)
-			force_recreate=1
+			recreate=true
 			shift 1
 			;;
 		*)
@@ -69,12 +69,13 @@ for var in "common" "locality" "organization" "country" "state" "organizationalu
 	new="new_ssl_$var"
 
 	if [ -n "${!new}" -a "${!old}" != "${!new}" ]; then
-		recreate="yes"
+		recreate=true
 		break
 	fi
 done
 
-if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
+if "$recreate"
+then
 	progress_steps 10
 	progress_next_step 2
 	progress_msg "$(gettext "Backing up old SSL certificate")"
@@ -98,7 +99,6 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 
 	# set UCR variables
 	for var in "common" "locality" "organization" "country" "state" "organizationalunit" "email"; do
-		old="ssl_$var"
 		new="new_ssl_$var"
 		if [ -n "${!new}" ]; then
 			echo "ssl/$var=${!new}"
