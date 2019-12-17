@@ -124,29 +124,23 @@ if [ "$recreate" = "yes" -o "$force_recreate" = "1" ]; then
 
 	progress_next_step 7
 	[ -d /etc/univention/ssl.orig ] && (
-		cd /etc/univention/ssl.orig
-		for fqdn in *; do
+		cd /etc/univention/ssl.orig || exit 1
+		for fqdn in *.*
+		do
 			# just check directories for certificates
-			if [ ! -d "$fqdn" ]; then
-				continue
-			fi
-			# ignore ucsCA and directory not containing a dot
-			if [ "$fqdn" = "ucsCA" ] || ! echo "$fqdn" | grep '\.' &>/dev/null; then
-				continue
-			fi
+			[ -d "$fqdn" ] || continue
 			# if there is no certificate, ignore it
-			if [ ! -e "$fqdn/cert.pem" ]; then
-				continue
-			fi
+			[ -e "$fqdn/cert.pem" ] || continue
 			# Do not regenerate the certificate for default directory
-			if [ "$fqdn" = "unassigned-hostname.unassigned-domain" ]; then
-				continue
-			fi
+			case "$fqdn" in
+			unassigned-hostname.*) continue ;;
+			*.unassigned-domain) continue ;;
+			esac
 			# get the hostname
 			progress_msg "$(printf "$(gettext 'Recreate SSL certificate for %s')" "$fqdn")"
-			host=$(echo "$fqdn" | sed 's/\([^.]*\)\..*/\1/')
 			univention-certificate new -name "$fqdn" || progress_error "$(printf "$(gettext 'Could not recreate SSL certificate for %s.')" "$fqdn")"
-			ln -snf "$host.$domainname" "/etc/univention/ssl/$host"
+			[ "$fqdn" = "${fqdn%.$domainname}" ] ||
+				ln -snf "$fqdn" "/etc/univention/ssl/${fqdn%%.*}"
 		done
 	)
 	progress_next_step 9
