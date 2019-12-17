@@ -244,9 +244,9 @@ if [ "$server_role" != "basesystem" ]; then
 	if [ -d "/etc/univention/ssl/$new_hostname.$domainname" ]; then
 		if [ -d /etc/cups/ssl ]; then
 			rm -f /etc/cups/ssl/server.crt
-			ln -s /etc/univention/ssl/$new_hostname.$domainname/cert.pem /etc/cups/ssl/server.crt
+			ln -snf "/etc/univention/ssl/$new_hostname.$domainname/cert.pem" /etc/cups/ssl/server.crt
 			rm -f /etc/cups/ssl/server.key
-			ln -s /etc/univention/ssl/$new_hostname.$domainname/private.key /etc/cups/ssl/server.key
+			ln -snf "/etc/univention/ssl/$new_hostname.$domainname/private.key" /etc/cups/ssl/server.key
 		fi
 	fi
 
