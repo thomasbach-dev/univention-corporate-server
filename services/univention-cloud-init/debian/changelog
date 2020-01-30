@@ -1,3 +1,9 @@
+univention-cloud-init (6.0.0-3) unstable; urgency=medium
+
+  * Bug #50759: Adapt to Python 3 cloud-init and systemd.
+
+ -- Philipp Hahn <hahn@univention.de>  Thu, 30 Jan 2020 14:19:56 +0100
+
 univention-cloud-init (6.0.0-2) unstable; urgency=medium
 
   * Bug #49171: migrate univention-cloud-init to dh_python

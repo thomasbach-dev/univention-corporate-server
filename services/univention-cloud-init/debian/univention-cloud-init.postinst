@@ -32,8 +32,6 @@
 
 #DEBHELPER#
 
-. /usr/share/univention-lib/all.sh
-
 ucr set system/setup/cloud-init/datasources?"ConfigDrive, Ec2, CloudStack, AltCloud, MAAS, OVF, NoCloud, None" \
 	server/cloud-init?true \
 	system/setup/boot/start=false

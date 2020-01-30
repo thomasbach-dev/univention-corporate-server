@@ -38,10 +38,11 @@ override_dh_auto_install:
 	univention-install-config-registry
 
 override_dh_installinit:
-	dh_installinit -punivention-cloud-init --no-start -u"defaults 95"
+	dh_installinit --no-start -u"defaults 95"
+	dh_installinit --no-start --name univention-cloud-init-prepare-boot
 
 override_dh_auto_test:
 	ucslint
 
 %:
-	dh $@ --with python2,python3
+	dh $@ --with python3
