@@ -1,8 +1,8 @@
 univention-radius (6.0.2-17) unstable; urgency=medium
 
-  * Bug #49175: fix python 3 dependencies
+  * Bug #50545: added logrotate functionality for radius_ntlm_auth.log
 
- -- Florian Best <best@univention.de>  Tue, 10 Dec 2019 12:01:49 +0100
+ -- Max Christian Pohle <pohle@univention>  Wed, 12 Feb 2020 12:27:22 +0100
 
 univention-radius (6.0.2-16) unstable; urgency=medium
 
