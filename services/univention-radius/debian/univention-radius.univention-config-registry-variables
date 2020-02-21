@@ -51,3 +51,100 @@ Description[de]=Debuglevel für die RADIUS-NTLM-Authentifizierung. Mögliche Wer
 Description[en]=Debuglevel for the RADIUS NTLM authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
 Type=int
 Categories=service-radius
+
+[freeradius/conf/auth-type/mschap/mppe]
+Description[de]=Aktiviert die NPPE Verschlüsselung. Siehe auch: strongencryption und requireencryption 
+Description[en]=Activates NPPE encryption. See also: strongencryption and requireencryption
+Type=bool
+Categories=service-radius
+
+[freeradius/conf/auth-type/mschap/requireencryption]
+Description[de]=Erzwingt eine Verschlüsselung, wenn auch mppe aktiviert ist.
+Description[en]=Enforces an encrypted connection, if mppe is enabled.
+Type=bool
+Categories=service-radius
+
+[freeradius/conf/auth-type/mschap/strongencryption]
+Description[de]=erzwingt 128 bit Verschlüsselung, wenn mppe aktiviert ist.
+Description[en]=enforces 128 bit key encryption, if mppe is enabled.
+Type=bool
+Categories=service-radius
+
+[freeradius/conf/auth-type/mschap/ntdomainhack]
+Description[de]=Ist diese Option gesetzt wird dem Benutzernamen der Domainname während der MS-CHAP challenge/response Authentifizierung vorangestellt, z.B. `DOMAIN/User` anstatt nur `User`
+Description[en]=If this option is set the username is prepended by its domain name during the MS-CHAP challenge/response authentication is added, e.g. `DOMAIN/User` instead of `User`
+Type=bool
+Categories=service-radius
+
+[freeradius/conf/log/auth]
+Description[de]=Durch Setzen dieser Option werden Authentifizierungsanfragen in die Logdatei protokolliert. Mögliche Werte: no, yes
+Description[en]=By setting this option authentication requests are recorded into the log file. Possible values: no, yes
+Type=str
+Categories=service-radius
+
+[freeradius/conf/log/auth/badpass]
+Description[de]=Durch Setzen dieser Option werden falsch eingegebene Passwörter in die Logdatei protokolliert. Mögliche Werte: no, yes
+Description[en]=By setting this option wrong passwords are recorded into the log file. Possible values: no, yes
+Type=str
+Categories=service-radius
+
+[freeradius/conf/log/auth/goodpass]
+Description[de]=Durch Setzen dieser Option werden korrekte Passwörter in die Logdatei protokolliert (nicht empfohlen). Mögliche Werte: no, yes
+Description[en]=By setting this option correct password are recorded into the log file (not recommend). Possible values: no, yes
+Type=str
+Categories=service-radius
+
+[freeradius/conf/log/strippednames]
+Description[de]=Loggt den gesamten Benutzernamen (genau wie in der Anfrage) in die Logdatei. Mögliche Werte: no, yes
+Description[en]=Logs the full User-Name (exactly as in the request) into the log file. Possible values: no, yes
+Type=str
+Categories=service-radius
+
+[freeradius/conf/private/key/file]
+Description[de]=Pfad zu einem privaten TLS Schlüssel
+Description[en]=Path to a private TLS key
+Type=str
+Categories=service-radius
+
+[freeradius/conf/realm]
+Description[de]=Spezifiziert einen Realm, der an den Benutzernamen angehängt wird.
+Description[en]=Specifies a realm, that is to append the user name.
+Type=str
+Categories=service-radius
+
+[freeradius/conf/servers/maxrequests]
+Description[de]=Die Maximale Anzahl an Anfragen die der Server gleichzeitig unterhalten kann.
+Description[en]=The maximum number of requests of which the server can simultaneously keep track of.
+Type=int
+Categories=service-radius
+
+[freeradius/conf/servers/spare/min]
+Description[de]=Die minimale Anzahl an Verbindungen, die gleichzeitig offen sein können.
+Description[en]=The minimum number of connections which will be open at the same time.
+Type=int
+Categories=service-radius
+
+[freeradius/conf/servers/spare/max]
+Description[de]=Die maximale Anzahl an Verbindungen, die gleichzeitig offen sein können.
+Description[en]=The maximum number of connections which can be open at the same time.
+Type=int
+Categories=service-radius
+
+[freeradius/conf/servers/start]
+Description[de]=Wenn der Server startet, erstellt er so viele Verbindungen.
+Description[en]=When the server starts, it creates this many connections
+Type=int
+Categories=service-radius
+
+[freeradius/conf/starttls]
+Description[de]=
+Description[en]=
+Type=str
+Categories=service-radius
+
+[freeradius/conf/users]
+Description[de]=
+Description[en]=
+Type=str
+Categories=service-radius
+
