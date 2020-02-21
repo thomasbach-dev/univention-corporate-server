@@ -1,0 +1,283 @@
+< apache2/force_https/exclude/http_host/localhost
+< apache2/force_https/exclude/request_uri/mod-status
+< appcenter/apps/mailserver/status
+< appcenter/apps/mailserver/ucs
+< appcenter/apps/mailserver/version
+< appcenter/apps/radius/status
+< appcenter/apps/radius/ucs
+< appcenter/apps/radius/version
+< appcenter/installed
+< appcenter/prudence/docker/mailserver
+< appcenter/prudence/docker/radius
+< auth/ftp/group/Administrators
+< auth/ftp/group/Domain Admins
+< auth/ftp/restrict
+< auth/ftp/user/root
+< auth/gdm/group/Administrators
+< auth/gdm/group/Domain Admins
+< auth/gdm/restrict
+< auth/gdm/user/root
+< auth/kdm/group/Administrators
+< auth/kdm/group/Domain Admins
+< auth/kdm/restrict
+< auth/kdm/user/root
+< auth/login/group/Administrators
+< auth/login/group/Domain Admins
+< auth/login/restrict
+< auth/login/user/root
+< auth/other/group/Administrators
+< auth/other/group/Domain Admins
+< auth/other/restrict
+< auth/other/user/root
+< auth/ppp/group/Administrators
+< auth/ppp/group/Domain Admins
+< auth/ppp/restrict
+< auth/ppp/user/root
+< auth/rlogin/group/Administrators
+< auth/rlogin/group/Domain Admins
+< auth/rlogin/restrict
+< auth/rlogin/user/root
+< auth/screen/group/Administrators
+< auth/screen/group/Domain Admins
+< auth/screen/restrict
+< auth/screen/user/root
+< auth/sshd/group/Administrators
+< auth/sshd/group/Computers
+< auth/sshd/group/DC Backup Hosts
+< auth/sshd/group/DC Slave Hosts
+< auth/sshd/group/Domain Admins
+< auth/sshd/restrict
+< auth/sshd/user/root
+< clamav/archive/maxfiles
+< clamav/archive/maxfilesize
+< clamav/archive/maxrecursion
+< clamav/checks
+< directory/manager/cmd/debug/level
+< directory/manager/rest/authorized-groups/dc-backup
+< directory/manager/rest/authorized-groups/dc-slaves
+< directory/manager/rest/authorized-groups/domain-admins
+< directory/manager/web/modules/computers/computer/add/default
+< directory/manager/web/modules/users/user/properties/homePostalAddress/syntax
+< directory/manager/web/modules/wizards/disabled
+< directory/reports/templates/csv/computer1
+< directory/reports/templates/csv/group1
+< directory/reports/templates/csv/user1
+< directory/reports/templates/pdf/computer1
+< directory/reports/templates/pdf/group1
+< directory/reports/templates/pdf/user1
+< dns/allow/query/cache localhost; 10.0.0.0/8; 169.254.0.0/16; 172.16.0.0/12; 192.168.0.0/16; fc00/7; fe80
+< docker/daemon/default/opts/bip
+< docker/daemon/default/opts/log-driver
+< docker/daemon/default/opts/max-file
+< docker/daemon/default/opts/max-size
+< docker/daemon/default/parameter/live-restore
+< freeradius/conf/auth-type/mschap/ntdomainhack
+< freeradius/conf/ca/file
+< freeradius/conf/certificate/file
+< freeradius/conf/log/auth
+< freeradius/conf/log/auth/badpass
+< freeradius/conf/log/auth/goodpass
+< freeradius/conf/log/strippednames
+< freeradius/conf/private/key/file
+< freeradius/conf/realm
+< freeradius/conf/starttls
+< freeradius/conf/users
+< groups/default/printoperators
+< hosts/static/127.0.1.1
+< interfaces/ens3/address
+< interfaces/ens3/broadcast
+< interfaces/ens3/netmask
+< interfaces/ens3/network
+< interfaces/ens3/type
+< kernel/do_bootfloppy
+< kernel/do_initrd
+< kernel/silent_loader
+< ldap/acl/slavepdc
+< ldap/binaryattributes
+< ldap/database/bdb/set_flags
+< ldap/overlay/memberof/modifiersname
+< ldap/overlay/memberof/refint
+< license/base
+> listener/module/<name>/deactivate
+> listener/module/<name>/debug/level
+< listener/shares/whitelist/defaults /home/*/opt/*/run/*/media/*/mnt/*
+< listener/shares/whitelist/italc-windows
+< listener/shares/whitelist/opsi4ucs
+< listener/shares/whitelist/ucs-school-import
+< listener/shares/whitelist/univention-printserver-pdf
+< locale/default en_US.UTF-8
+< locale en_US.UTF-8UTF-8 de_DE.UTF-8
+< logrotate/syslog/rotate
+< logrotate/syslog/rotate/count
+< mail/alias/postmaster
+< mail/alias/root
+< mail/alias/webmaster
+< mail/antispam/rules/autoupdate
+< mail/antivir/banned/basic_ext
+< mail/antivir/banned/double_ext
+< mail/antivir/banned/file_type
+< mail/antivir/banned/long_ext
+< mail/antivir/banned/mime_type
+< mail/antivir/banned/rfc2046
+< mail/antivir/scanner
+< mail/antivir/spam
+< mail/dovecot/mailboxes/special/Drafts
+< mail/dovecot/mailboxes/special/Junk
+< mail/dovecot/mailboxes/special/Sent
+< mail/dovecot/mailboxes/special/Sent Messages
+< mail/dovecot/mailboxes/special/Spam
+< mail/dovecot/mailboxes/special/Trash
+< mail/dovecot/quota/warning/text/80
+< mail/dovecot/quota/warning/text/95 Attention
+< mail/postfix/mastercf/options/smtps/smtpd_sasl_auth_enable
+< mail/postfix/mastercf/options/smtps/smtpd_tls_wrappermode
+< mail/postfix/mastercf/options/submission/smtpd_enforce_tls
+< mail/postfix/mastercf/options/submission/smtpd_sasl_auth_enable
+< mail/postfix/smtpd/restrictions/recipient/10
+< mail/postfix/smtpd/restrictions/recipient/30
+< mail/postfix/smtpd/restrictions/recipient/50
+< mail/postfix/smtpd/restrictions/recipient/70
+< mail/postfix/smtpd/restrictions/recipient/80 check_policy_service inet127.0.0.1
+< mail/postfix/tls/client/policy/amavis [127.0.0.1]
+< mail/postfix/virtual/transport lmtpunix
+< nagios/client/autostart
+< nscd/group/negative_time_to_live
+< nscd/group/positive_time_to_live
+< nscd/hosts/negative_time_to_live
+< nscd/hosts/positive_time_to_live
+< nscd/passwd/negative_time_to_live
+< nscd/passwd/positive_time_to_live
+< repository/app_center/installed
+< repository/app_center/server
+< repository/credentials/Univention Software Repository/uris
+< repository/online/component/4.4-3-errata
+< repository/online/component/4.4-3-errata/description
+< repository/online/component/4.4-3-errata/version
+< repository/online/server https
+< rpcbind/autostart
+< saml/idp/entityID https
+< saml/idp/lookandfeel/theme univentiontheme
+< security/limits/default/user/hard/nofile
+< security/limits/default/user/soft/nofile
+< security/limits/group/Domain Users/hard/nproc
+< security/packetfilter/package/univention-apache/tcp/443/all
+< security/packetfilter/package/univention-apache/tcp/443/all/en
+< security/packetfilter/package/univention-apache/tcp/80/all
+< security/packetfilter/package/univention-apache/tcp/80/all/en
+< security/packetfilter/package/univention-base-files/tcp/22/all
+< security/packetfilter/package/univention-base-files/tcp/22/all/en
+< security/packetfilter/package/univention-base-files/udp/123/all
+< security/packetfilter/package/univention-base-files/udp/123/all/en
+< security/packetfilter/package/univention-bind/tcp/53/all
+< security/packetfilter/package/univention-bind/tcp/53/all/en
+< security/packetfilter/package/univention-bind/tcp/7777/all
+< security/packetfilter/package/univention-bind/tcp/7777/all/en
+< security/packetfilter/package/univention-bind/udp/53/all
+< security/packetfilter/package/univention-bind/udp/53/all/en
+< security/packetfilter/package/univention-bind/udp/7777/all
+< security/packetfilter/package/univention-bind/udp/7777/all/en
+< security/packetfilter/package/univention-directory-notifier/tcp/6669/all
+< security/packetfilter/package/univention-directory-notifier/tcp/6669/all/en
+< security/packetfilter/package/univention-heimdal-common/tcp/544/all
+< security/packetfilter/package/univention-heimdal-common/tcp/544/all/en
+< security/packetfilter/package/univention-heimdal-kdc/tcp/464/all
+< security/packetfilter/package/univention-heimdal-kdc/tcp/464/all/en
+< security/packetfilter/package/univention-heimdal-kdc/tcp/749/all
+< security/packetfilter/package/univention-heimdal-kdc/tcp/749/all/en
+< security/packetfilter/package/univention-heimdal-kdc/tcp/88/all
+< security/packetfilter/package/univention-heimdal-kdc/tcp/88/all/en
+< security/packetfilter/package/univention-heimdal-kdc/udp/464/all
+< security/packetfilter/package/univention-heimdal-kdc/udp/464/all/en
+< security/packetfilter/package/univention-heimdal-kdc/udp/88/all
+< security/packetfilter/package/univention-heimdal-kdc/udp/88/all/en
+< security/packetfilter/package/univention-ldap-server/tcp/389/all
+< security/packetfilter/package/univention-ldap-server/tcp/389/all/en
+< security/packetfilter/package/univention-ldap-server/tcp/636/all
+< security/packetfilter/package/univention-ldap-server/tcp/636/all/en
+< security/packetfilter/package/univention-ldap-server/tcp/7389/all
+< security/packetfilter/package/univention-ldap-server/tcp/7389/all/en
+< security/packetfilter/package/univention-ldap-server/tcp/7636/all
+< security/packetfilter/package/univention-ldap-server/tcp/7636/all/en
+< security/packetfilter/package/univention-mail-dovecot/tcp/110/all
+< security/packetfilter/package/univention-mail-dovecot/tcp/110/all/en
+< security/packetfilter/package/univention-mail-dovecot/tcp/143/all
+< security/packetfilter/package/univention-mail-dovecot/tcp/143/all/en
+< security/packetfilter/package/univention-mail-dovecot/tcp/4190/all
+< security/packetfilter/package/univention-mail-dovecot/tcp/4190/all/en
+< security/packetfilter/package/univention-mail-dovecot/tcp/993/all
+< security/packetfilter/package/univention-mail-dovecot/tcp/993/all/en
+< security/packetfilter/package/univention-mail-dovecot/tcp/995/all
+< security/packetfilter/package/univention-mail-dovecot/tcp/995/all/en
+< security/packetfilter/package/univention-mail-postfix/tcp/25/all
+< security/packetfilter/package/univention-mail-postfix/tcp/25/all/en
+< security/packetfilter/package/univention-mail-postfix/tcp/465/all
+< security/packetfilter/package/univention-mail-postfix/tcp/465/all/en
+< security/packetfilter/package/univention-mail-postfix/tcp/587/all
+< security/packetfilter/package/univention-mail-postfix/tcp/587/all/en
+< security/packetfilter/package/univention-management-console-server/tcp/6670/all
+< security/packetfilter/package/univention-management-console-server/tcp/6670/all/en
+< security/packetfilter/package/univention-nagios-client/tcp/5666/all
+< security/packetfilter/package/univention-nagios-client/tcp/5666/all/en
+< security/packetfilter/package/univention-nfs/tcp/111/all
+< security/packetfilter/package/univention-nfs/tcp/111/all/en
+< security/packetfilter/package/univention-nfs/tcp/2049/all
+< security/packetfilter/package/univention-nfs/tcp/2049/all/en
+< security/packetfilter/package/univention-nfs/tcp/3276532769/all
+< security/packetfilter/package/univention-nfs/tcp/3276532769/all/en
+< security/packetfilter/package/univention-nfs/udp/111/all
+< security/packetfilter/package/univention-nfs/udp/111/all/en
+< security/packetfilter/package/univention-nfs/udp/2049/all
+< security/packetfilter/package/univention-nfs/udp/2049/all/en
+< security/packetfilter/package/univention-nfs/udp/3276532769/all
+< security/packetfilter/package/univention-nfs/udp/3276532769/all/en
+< security/packetfilter/package/univention-radius/udp/1812/all
+< security/packetfilter/package/univention-radius/udp/1812/all/en
+< security/packetfilter/package/univention-radius/udp/1813/all
+< security/packetfilter/package/univention-radius/udp/1813/all/en
+< security/packetfilter/package/univention-radius/udp/1814/all
+< security/packetfilter/package/univention-radius/udp/1814/all/en
+< security/packetfilter/package/univention-saml/tcp/11212/all
+< security/packetfilter/package/univention-saml/tcp/11212/all/en
+< system/setup/boot/nssldaptimeout
+< ucs/server/languages/de_AT
+< ucs/server/languages/de_CH
+< ucs/server/languages/de_DE
+< ucs/server/languages/en_GB
+< ucs/server/languages/en_US
+< ucs/server/saml-idp-server/ucs-7856.ucs-4-4-3-iso-local-install.intranet
+< ucs/web/overview/entries/admin/ucs-local-to-domain/description
+< ucs/web/overview/entries/admin/ucs-local-to-domain/description/de
+< ucs/web/overview/entries/admin/ucs-local-to-domain/description/fr
+< ucs/web/overview/entries/admin/ucs-local-to-domain/icon
+< ucs/web/overview/entries/admin/ucs-local-to-domain/label
+< ucs/web/overview/entries/admin/ucs-local-to-domain/label/de
+< ucs/web/overview/entries/admin/ucs-local-to-domain/label/fr
+< ucs/web/overview/entries/admin/ucs-local-to-domain/link
+< umc/http/content-security-policy/connect-src
+< umc/http/content-security-policy/default-src
+< umc/http/content-security-policy/font-src
+< umc/http/content-security-policy/form-action
+< umc/http/content-security-policy/frame-ancestors
+< umc/http/content-security-policy/frame-src
+< umc/http/content-security-policy/img-src
+< umc/http/content-security-policy/media-src
+< umc/http/content-security-policy/object-src
+< umc/http/content-security-policy/script-src 'self' 'unsafe-inline' 'unsafe-eval' https//www.youtube.com/ https
+< umc/http/content-security-policy/style-src
+< umc/http/response-timeout
+< umc/module/udm/users/self/disabled
+< umc/saml/idp-server https
+< umc/saml/trusted/sp/ucs-7856.ucs-4-4-3-iso-local-install.intranet
+< umc/saml/trusted/sp/ucs-slave02.ucs-4-4-3-iso-local-install.intranet
+< umc/web/cache_bust
+< umc/web/favorites/default udmusers/user,udmgroups/group,udmcomputers/computer,appcenter
+< umc/web/hooks/univention-management-console-module-passwordchange
+< umc/web/hooks/univention-web-js
+< update/commands/distupgrade apt-get -o DPkgOptions=--force-confold -o DPkgOptions=--force-overwrite -o DPkgOptions
+< update/commands/distupgrade/simulate apt-get -o DPkgOptions=--force-confold -o DPkgOptions=--force-overwrite -o DPkgOptions
+< update/commands/install apt-get -o DPkgOptions=--force-confold -o DPkgOptions=--force-overwrite -o DPkgOptions
+< update/commands/install/interactive apt-get -o DPkgOptions=--force-confold -o DPkgOptions=--force-overwrite -o DPkgOptions
+< update/commands/remove/interactive
+< update/commands/upgrade apt-get -o DPkgOptions=--force-confold -o DPkgOptions=--force-overwrite -o DPkgOptions
+< update/commands/upgrade/simulate apt-get -o DPkgOptions=--force-confold -o DPkgOptions=--force-overwrite -o DPkgOptions
+< update/umc/nextversion
