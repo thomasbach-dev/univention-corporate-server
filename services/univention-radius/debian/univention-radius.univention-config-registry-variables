@@ -47,33 +47,33 @@ Type=str
 Categories=service-radius
 
 [freeradius/auth/helper/ntlm/debug]
-Description[de]=Debuglevel für die RADIUS-NTLM-Authentifizierung. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). Standard: 2 (INFO).
-Description[en]=Debuglevel for the RADIUS NTLM authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements). Default: 2 (INFO).
+Description[de]=Debuglevel für die RADIUS-NTLM-Authentifizierung. Mögliche Werte: 0-4 (0: nur Fehlermeldungen bis 4: alle Debugausgaben). (Standard: 2 [INFO]).
+Description[en]=Debuglevel for the RADIUS NTLM authentication. Possible values: 0-4 (0: only error messages to 4: all debug statements). (Default: 2 [INFO]).
 Type=int
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap/mppe]
-Description[de]=Aktiviert die NPPE Verschlüsselung. Siehe auch: strongencryption und requireencryption 
-Description[en]=Activates NPPE encryption. See also: strongencryption and requireencryption
+Description[de]=Aktiviert die NPPE Verschlüsselung. Siehe auch: `strongencryption` und `requireencryption`.
+Description[en]=Activates NPPE encryption. See also: `strongencryption` and `requireencryption`.
 Type=bool
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap/requireencryption]
-Description[de]=Erzwingt eine Verschlüsselung, wenn auch mppe aktiviert ist.
-Description[en]=Enforces an encrypted connection, if mppe is enabled.
+Description[de]=Erzwingt eine Verschlüsselung, aber nur wenn `mppe` ebenfalls aktiviert ist.
+Description[en]=Enforces an encrypted connection, but only if `mppe` is also enabled.
 Type=bool
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap/strongencryption]
-Description[de]=erzwingt 128 bit Verschlüsselung, wenn mppe aktiviert ist.
-Description[en]=enforces 128 bit key encryption, if mppe is enabled.
+Description[de]=erzwingt 128 bit Verschlüsselung, aber nur wenn `mppe` ebenfalls aktiviert ist.
+Description[en]=enforces 128 bit key encryption, but only if `mppe` is also enabled.
 Type=bool
 Categories=service-radius
 
 [freeradius/conf/auth-type/mschap/ntdomainhack]
-Description[de]=Ist diese Option gesetzt wird dem Benutzernamen der Domainname während der MS-CHAP challenge/response Authentifizierung vorangestellt, z.B. `DOMAIN/User` anstatt nur `User`
-Description[en]=If this option is set the username is prepended by its domain name during the MS-CHAP challenge/response authentication is added, e.g. `DOMAIN/User` instead of `User`
-Type=bool
+Description[de]=Ist diese Option gesetzt, wird dem Benutzernamen der Domainname während der MS-CHAP challenge/response Authentifizierung vorangestellt, z.B. `DOMAIN/User` anstatt nur `User`. Mögliche Werte: no, yes
+Description[en]=If this option is set the username is prepended by its domain name during the MS-CHAP challenge/response authentication is added, e.g. `DOMAIN/User` instead of `User`. Possible values: no, yes
+Type=str
 Categories=service-radius
 
 [freeradius/conf/log/auth]
@@ -101,38 +101,38 @@ Type=str
 Categories=service-radius
 
 [freeradius/conf/private/key/file]
-Description[de]=Pfad zu einem privaten TLS Schlüssel
-Description[en]=Path to a private TLS key
+Description[de]=Pfad zu einem privaten TLS Schlüssel.
+Description[en]=Path to a private TLS key.
 Type=str
 Categories=service-radius
 
 [freeradius/conf/realm]
-Description[de]=Spezifiziert einen Realm, der an den Benutzernamen angehängt wird
-Description[en]=Specifies a realm, that is to append the user name
+Description[de]=Spezifiziert einen Realm, der dem Nutzername angehängt wird.
+Description[en]=Specifies a realm to append the user name.
 Type=str
 Categories=service-radius
 
 [freeradius/conf/servers/maxrequests]
-Description[de]=Die Maximale Anzahl an Anfragen die der Server gleichzeitig unterhalten kann
-Description[en]=The maximum number of requests of which the server can simultaneously keep track of
+Description[de]=Die maximale Anzahl an Anfragen, die der Server gleichzeitig unterhalten kann.
+Description[en]=The maximum number of requests of which the server can simultaneously keep track of.
 Type=int
 Categories=service-radius
 
 [freeradius/conf/servers/spare/min]
-Description[de]=Die minimale Anzahl an Verbindungen, die gleichzeitig offen sein können
-Description[en]=The minimum number of connections which will be open at the same time
+Description[de]=Die minimale Anzahl an vorgehaltenen Verbindungen im Verbindungspool.
+Description[en]=The minimum number of reserved connections in the connection pool.
 Type=int
 Categories=service-radius
 
 [freeradius/conf/servers/spare/max]
-Description[de]=Die maximale Anzahl an Verbindungen, die gleichzeitig offen sein können
-Description[en]=The maximum number of connections which can be open at the same time
+Description[de]=Die maximale Anzahl an vorgehaltenen Verbindungen im Verbindungspool.
+Description[en]=The maximum number of reserved connections in the connection pool.
 Type=int
 Categories=service-radius
 
 [freeradius/conf/servers/start]
-Description[de]=Wenn der Server startet, erstellt er so viele Verbindungen
-Description[en]=When the server starts, it creates this many connections
+Description[de]=Die minimale Anzahl an Verbindungen beim Starten des Serves. Ist dieser Wert 0 startet der Server auch ohne jede Datenbankanbindung.
+Description[en]=The minimum amount of connections during the server start. If this value is set to zero the server will even start without a database connection.
 Type=int
 Categories=service-radius
 
@@ -143,8 +143,8 @@ Type=str
 Categories=service-radius
 
 [freeradius/conf/users]
-Description[de]=Aktiviert weitere Authentifizierungsmodule für Benutzer. Wenn diese Veriable undefiniert belassen wird, dann wird durch das `files` Modul eine abwärtskompatible Benutzerdatei erlaubt- siehe `man 5 users`
-Description[en]=Activates further authentication modules for users. If left undefined, this varible defaults to `files` and activates backward compatible user files- see `man 5 users`
+Description[de]=Aktiviert weitere Authentifizierungsmodule für Benutzer. Bleibt diese Variable undefiniert, wird durch das `files` Modul eine abwärtskompatible Benutzerdatei erlaubt. Siehe auch: `man 5 users`
+Description[en]=Activates further authentication modules for users. If left undefined, this variable defaults to `files` and activates backward compatible user files. See also: `man 5 users`
 Type=str
 Categories=service-radius
 
