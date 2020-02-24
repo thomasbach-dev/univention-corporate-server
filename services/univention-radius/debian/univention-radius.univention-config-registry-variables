@@ -107,44 +107,44 @@ Type=str
 Categories=service-radius
 
 [freeradius/conf/realm]
-Description[de]=Spezifiziert einen Realm, der an den Benutzernamen angehängt wird.
-Description[en]=Specifies a realm, that is to append the user name.
+Description[de]=Spezifiziert einen Realm, der an den Benutzernamen angehängt wird
+Description[en]=Specifies a realm, that is to append the user name
 Type=str
 Categories=service-radius
 
 [freeradius/conf/servers/maxrequests]
-Description[de]=Die Maximale Anzahl an Anfragen die der Server gleichzeitig unterhalten kann.
-Description[en]=The maximum number of requests of which the server can simultaneously keep track of.
+Description[de]=Die Maximale Anzahl an Anfragen die der Server gleichzeitig unterhalten kann
+Description[en]=The maximum number of requests of which the server can simultaneously keep track of
 Type=int
 Categories=service-radius
 
 [freeradius/conf/servers/spare/min]
-Description[de]=Die minimale Anzahl an Verbindungen, die gleichzeitig offen sein können.
-Description[en]=The minimum number of connections which will be open at the same time.
+Description[de]=Die minimale Anzahl an Verbindungen, die gleichzeitig offen sein können
+Description[en]=The minimum number of connections which will be open at the same time
 Type=int
 Categories=service-radius
 
 [freeradius/conf/servers/spare/max]
-Description[de]=Die maximale Anzahl an Verbindungen, die gleichzeitig offen sein können.
-Description[en]=The maximum number of connections which can be open at the same time.
+Description[de]=Die maximale Anzahl an Verbindungen, die gleichzeitig offen sein können
+Description[en]=The maximum number of connections which can be open at the same time
 Type=int
 Categories=service-radius
 
 [freeradius/conf/servers/start]
-Description[de]=Wenn der Server startet, erstellt er so viele Verbindungen.
+Description[de]=Wenn der Server startet, erstellt er so viele Verbindungen
 Description[en]=When the server starts, it creates this many connections
 Type=int
 Categories=service-radius
 
 [freeradius/conf/starttls]
-Description[de]=
-Description[en]=
+Description[de]=Verwende TLS verschlüsselte Verbindungen zum LDAP Verzeichnis. Mögliche Werte: no, yes
+Description[en]=Make use of TLS encrypted connections to the LDAP database. Possible values: no, yes
 Type=str
 Categories=service-radius
 
 [freeradius/conf/users]
-Description[de]=
-Description[en]=
+Description[de]=Aktiviert weitere Authentifizierungsmodule für Benutzer. Wenn diese Veriable undefiniert belassen wird, dann wird durch das `files` Modul eine abwärtskompatible Benutzerdatei erlaubt- siehe `man 5 users`
+Description[en]=Activates further authentication modules for users. If left undefined, this varible defaults to `files` and activates backward compatible user files- see `man 5 users`
 Type=str
 Categories=service-radius
 
