@@ -1,3 +1,175 @@
+ucs-test (9.0.3-167) unstable; urgency=medium
+
+  * Bug #50897: fixed test 03_ucr/37check-ucr-templates-py3-migration-status
+
+ -- Max Christian Pohle <pohle@univention.de>  Wed, 04 Mar 2020 19:12:32 +0100
+
+ucs-test (9.0.3-166) unstable; urgency=medium
+
+  * Bug #49700: do not revert ucr ldap/overlay/lastbind
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 04 Mar 2020 18:24:13 +0100
+
+ucs-test (9.0.3-165) unstable; urgency=medium
+
+  * Bug #50889: set roles for 60_umc/35_umc_diagnostics_old_schema_registration
+
+ -- Jannik Ahlers <ahlers@univention.de>  Wed, 04 Mar 2020 12:00:38 +0100
+
+ucs-test (9.0.3-164) unstable; urgency=medium
+
+  * Bug #50492: Test kerberos hash sync
+
+ -- Julia Bremer <bremer@univention.de>  Wed, 04 Mar 2020 10:12:19 +0100
+
+ucs-test (9.0.3-162) unstable; urgency=medium
+
+  * Bug #50889: added test 60_umc/35_umc_diagnostics_old_schema_registration
+
+ -- Jannik Ahlers <ahlers@univention.de>  Tue, 03 Mar 2020 16:18:45 +0100
+
+ucs-test (9.0.3-161) unstable; urgency=medium
+
+  * Bug #49700: adjust 10_ldap/110_univention_lastbind.py
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 28 Feb 2020 12:07:00 +0100
+
+ucs-test (9.0.3-160) unstable; urgency=medium
+
+  * Bug #50589: App tests: Add current_url and allow skipping certificate
+    checks
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 26 Feb 2020 12:04:47 +0100
+
+ucs-test (9.0.3-159) unstable; urgency=medium
+
+  * Bug #49700: skip 10_ldap/110_univention_lastbind.py
+
+ -- Felix Botner <botner@univention.de>  Tue, 25 Feb 2020 10:08:04 +0100
+
+ucs-test (9.0.3-158) unstable; urgency=medium
+
+  * Bug #49700: added 10_ldap/110_univention_lastbind.py
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 24 Feb 2020 15:15:17 +0100
+
+ucs-test (9.0.3-157) unstable; urgency=low
+
+  * Bug #50748: simplify test logic
+
+ -- Daniel Troeder <troeder@univention.de>  Mon, 24 Feb 2020 12:21:16 +0100
+
+ucs-test (9.0.3-156) unstable; urgency=medium
+
+  * Bug #50531: adapt 87_admindiary/01_query_limit file
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 18 Feb 2020 15:51:56 +0100
+
+ucs-test (9.0.3-155) unstable; urgency=medium
+
+  * Bug #50531: 87_admindiary/01_query_limit file
+    permissions
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 12:12:14 +0100
+
+ucs-test (9.0.3-154) unstable; urgency=medium
+
+  * Bug #50531: add ucs-test-admindiary package
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 11:57:25 +0100
+
+ucs-test (9.0.3-153) unstable; urgency=medium
+
+  * Bug #50531: added 87_admindiary/01_query_limit
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 17 Feb 2020 11:37:07 +0100
+
+ucs-test (9.0.3-152) unstable; urgency=medium
+
+  * Bug #50814: fix selenium.appcenter.install_app
+
+ -- Johannes Keiser <keiser@univention.de>  Fri, 14 Feb 2020 15:16:33 +0100
+
+ucs-test (9.0.3-151) unstable; urgency=medium
+
+  * Bug #50748: Added test for checking if invalid email domain gets rejected by udm
+
+ -- Toni Uwe Roehmeyer <roehmeyer@univention.de>  Wed, 12 Feb 2020 14:47:08 +0100
+
+ucs-test (9.0.3-150) unstable; urgency=medium
+
+  * Bug #50775: Traceback during appcenter/query: &quot;ValueError: No
+    JSON object could be decoded&quot;
+
+ -- Toni Uwe Roehmeyer <troehmey@lack.knut.univention.de>  Wed, 12 Feb 2020 11:17:39 +0100
+
+ucs-test (9.0.3-149) unstable; urgency=medium
+
+  * Bug #50771: prevent possible endless loop
+
+ -- Johannes Keiser <keiser@univention.de>  Tue, 11 Feb 2020 08:39:27 +0100
+
+ucs-test (9.0.3-148) unstable; urgency=medium
+
+  * Bug #50771: adapt selenium 'install_app' to new frontend changes
+
+ -- Johannes Keiser <keiser@univention.de>  Mon, 10 Feb 2020 11:55:53 +0100
+
+ucs-test (9.0.3-147) unstable; urgency=medium
+
+  * Bug #50732: Add testcase for rest
+
+ -- Julia Bremer <bremer@univention.de>  Tue, 04 Feb 2020 11:56:22 +0100
+
+ucs-test (9.0.3-146) unstable; urgency=medium
+
+  * Bug #50774: Add Saml test auth
+  * Bug #43333: fix hardcoded domain name in GuaranteedIdP
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 04 Feb 2020 13:57:20 +0100
+
+ucs-test (9.0.3-145) unstable; urgency=medium
+
+  * Adding import sys
+
+ -- Tobias Wenzel <wenzel@univention.de>  Mon, 03 Feb 2020 09:15:32 +0100
+
+ucs-test (9.0.3-144) unstable; urgency=medium
+
+  * Bug #50540: fixing add stdout to MailSink
+
+ -- Tobias Wenzel <wenzel@.univention.de>  Fri, 31 Jan 2020 09:34:55 +0100
+
+ucs-test (9.0.3-143) unstable; urgency=medium
+
+  * Bug #50540: Add stdout to MailSink 
+
+ -- Tobias Wenzel <wenzel@.univention.de>  Thu, 30 Jan 2020 16:04:41 +0100
+
+ucs-test (9.0.3-142) unstable; urgency=medium
+
+  * Bug #50670: Test against SAML session downgrade
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Wed, 29 Jan 2020 09:51:45 +0100
+
+ucs-test (9.0.3-141) unstable; urgency=medium
+
+  * Bug #50191: Test random ldap server connection
+
+ -- Jürn Brodersen <brodersen@univention.de>  Tue, 28 Jan 2020 10:46:37 +0100
+
+ucs-test (9.0.3-140) unstable; urgency=medium
+
+  * Bug #50428: fixed test for passwordreset permissions  
+
+ -- Christian Castens <castens@univention.de>  Mon, 27 Jan 2020 14:03:26 +0100
+
+ucs-test (9.0.3-139) unstable; urgency=medium
+
+  * Bug #50718: Test for App Settings
+
+ -- Dirk Wiesenthal <wiesenthal@univention.de>  Mon, 20 Jan 2020 14:30:23 +0100
+
 ucs-test (9.0.3-138) unstable; urgency=medium
 
   * Bug #41088: fix timeout calculation in lib/samba.sh
