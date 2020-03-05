@@ -3,22 +3,23 @@
 ## tags:
 ##  - basic
 ##  - apptest
-## exposure: careful
+##  - python3
+## exposure: dangerous
+
+# hard coded lowest number of successful tests below which this test fails
+export SUCCESS_MIN=125
 
 # Install dependencies: We decided to do this within this script, because we
-# can than simply delete it after the python3 migration has finished.  Note:
-# The debian python-coverage and python3-coverage binary packages install files
-# with that name under /usr/bin/ - whereas pip simply calls these binaries
-# coverage2 and coverage3
-if test -x /usr/bin/python2-coverage && test -x /usr/bin/python3-coverage; then
-    export PY2_COV=python2-coverage
-    export PY3_COV=python3-coverage
-else
-    pip install coverage
-    pip3 install coverage
+# can than simply delete it after the python3 migration has finished.
+which pip2 && pip2 -q install coverage
+which pip3 && pip3 -q install coverage
 
+if test -x /usr/bin/coverage2 && test -x /usr/bin/coverage3; then
     export PY2_COV=coverage2
     export PY3_COV=coverage3
+else
+    export PY2_COV=python2-coverage
+    export PY3_COV=python3-coverage
 fi
 
 # safe the following awk script to disk:
@@ -43,6 +44,7 @@ END { exit exit_code }
 start && /@!@/ {
     section++
     # filename
+    print "|" package
     print "|" section
     print "|" ARGV[1]
     # number of lines contained
@@ -91,15 +93,18 @@ AWK
 # table column definitions to span multiple lines
 (
   echo "|==="
-  echo "|section|filename|code lines|python2|coverage|python3|coverage|output identical"
+  echo "|package|section|filename|code lines|python2|coverage|python3|coverage|output identical"
   let total=0
   let success=0
   for F in $(find /etc/univention/templates/ -type f); do
      let total=$(expr $total + 1)
-     awk -f /tmp/check-between.awk "$F" && let success=$(expr $success + 1)
+	 PACKAGE=$(dpkg -S /etc/univention/templates/scripts/etc/postfix | cut -d: -f1)
+     awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"  && let success=$(expr $success + 1)
   done
   echo "|==="
-  echo $success/$total successful
-) |& tee $0.md
+  echo $success/$total successful. limit: $SUCCESS_MIN.
+
+  exit $(test $success -ge $SUCCESS_MIN)
+) |& tee /var/log/univention/$0.md || exit $?
 
 # vim:set ft=sh:awk:
