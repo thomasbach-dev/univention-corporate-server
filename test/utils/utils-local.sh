@@ -89,6 +89,7 @@ fetch-results () { # <IP-ADDRESS> [TARGET-DIR]
 		'/var/log/univention/updater.log'
 		'/var/log/univention/server_password_change.log'
 		'/var/log/univention/37check-ucr-templates-py3-migration-status.md'
+		'/var/log/univention/37check-ucr-templates-py3-migration-status.html'
 		'/var/lib/univention-directory-replication/failed.ldif'
 	)
 	local FILE rc=0

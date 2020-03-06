@@ -11,9 +11,16 @@
 # hard coded lowest number of successful tests below which this test fails
 export SUCCESS_MIN=125
 
+
+# Start markdown generation
+cat <<"HEADER"
+= Template migration status =
+date $(date)
+HEADER
+
 # Install dependencies: We decided to do this within this script, because we
 # can than simply delete it after the python3 migration has finished.
-echo "= $0: Dependencies"
+echo "== $0: Dependencies =="
 which pip2 && pip2 -q install coverage
 which pip3 && pip3 -q install coverage
 
@@ -22,7 +29,7 @@ if ! which asciidoctor; then
     apt-get -qq -y install asciidoctor
 fi
 echo ""
-echo "= Overview"
+echo "== Overview =="
 echo "The following table lists the current status of the python3 template migration"
 
 if test -x /usr/bin/coverage2 && test -x /usr/bin/coverage3; then
@@ -62,14 +69,14 @@ start && /@!@/ {
     cmd = "bash -c \"rm -f .coverage ;" \
           "$PY2_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
           "  &>/tmp/py2.out && echo -n \|✅ || echo -n \|❎ ; echo -n \|" \
-          "&& $PY3_COV report | egrep -o [0-9]+%\$ | tr -d '\n' || echo -n ❓ \""
+		  "&& printf '%s' $($PY2_COV report | egrep -o [0-9]+%\$ || echo 0%) \""
     print code | cmd ; close(cmd)
     # same thing (coverage) for python3. NOTE: egrep finds within the
     # coverage report the only line ending with a percent value
     cmd = "bash -c \"rm -f .coverage ;" \
           "$PY3_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
           "  &>/tmp/py3.out && echo -n \|✅ || echo -n \|❎ ; echo -n \| " \
-          "&& $PY3_COV report | egrep -o [0-9]+%\$ | tr -d '\n' || echo -n ❓ \""
+		  "&& printf '%s' $($PY3_COV report | egrep -o [0-9]+%\$ || echo 0%) \""
     print code | cmd ; close(cmd)
     # compare what output both runs produced and if diff returns with an exit
     # code unequal to zero it means that there were differences in both files
@@ -107,8 +114,9 @@ AWK
 # table header. NOTE: the markdown dialect is asciidoctor, because that allows
 # table column definitions to span multiple lines
 (
+  echo ".Migration status"
   echo "|==="
-  echo "python2|python2 coverage|python3|python3 coverage|output identical?|code lines|package|filename|section"
+  echo "python2|$PY2_COV|python3|$PY3_COV|diff py2 py3|# code lines|package|path|section"
   let total=0
   let success=0
   for F in $(find /etc/univention/templates/ -type f); do
@@ -118,8 +126,9 @@ AWK
        let success=$(expr $success + 1)
      fi
   done
-  echo ""
   echo "|==="
+  echo ""
+  echo "== Summary =="
   echo $success/$total successful. limit: $SUCCESS_MIN.
   exit $(test $success -ge $SUCCESS_MIN)
 ) | tee /var/log/univention/$0.md
