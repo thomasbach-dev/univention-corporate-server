@@ -32,7 +32,7 @@ echo ""
 echo "== Overview =="
 echo "The following table lists the current status of the python3 template migration"
 
-if test -x /usr/bin/coverage2 && test -x /usr/bin/coverage3; then
+if which coverage2 && which coverage3; then
     export PY2_COV=coverage2
     export PY3_COV=coverage3
 else
