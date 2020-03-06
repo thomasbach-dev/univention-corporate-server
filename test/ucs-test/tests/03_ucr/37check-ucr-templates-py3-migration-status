@@ -3,9 +3,9 @@
 ## tags:
 ##  - basic
 ##  - apptest
+##  - python3
 ##  - performance
 ##  - nightly
-##  - python3
 ## exposure: dangerous
 
 # hard coded lowest number of successful tests below which this test fails
@@ -13,8 +13,17 @@ export SUCCESS_MIN=125
 
 # Install dependencies: We decided to do this within this script, because we
 # can than simply delete it after the python3 migration has finished.
+echo "= $0: Dependencies"
 which pip2 && pip2 -q install coverage
 which pip3 && pip3 -q install coverage
+
+if ! which asciidoctor; then
+    apt-get -qq -y update
+    apt-get -qq -y install asciidoctor
+fi
+echo ""
+echo "= Overview"
+echo "The following table lists the current status of the python3 template migration"
 
 if test -x /usr/bin/coverage2 && test -x /usr/bin/coverage3; then
     export PY2_COV=coverage2
@@ -45,12 +54,6 @@ END { exit exit_code }
 # if start is set (and we still are within a code section) and there comes a @!@
 start && /@!@/ {
     section++
-    # filename
-    print "|" package
-    print "|" section
-    print "|" ARGV[1]
-    # number of lines contained
-    print "|" lines
     # write header and code into a file
     system("rm -f /tmp/cover.py")
     print preamble "\n" code > "/tmp/cover.py" ; close("/tmp/cover.py")
@@ -58,26 +61,36 @@ start && /@!@/ {
     # awk uses sh to call any script, but we want bash
     cmd = "bash -c \"rm -f .coverage ;" \
           "$PY2_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
-	  "  &>/tmp/py2.out && echo \|✅ || echo \|❎" \
-          "; echo -n \| ; $PY2_COV report | egrep -o [0-9]+%\$ || echo ❓ \""
+          "  &>/tmp/py2.out && echo -n \|✅ || echo -n \|❎ ; echo -n \|" \
+          "&& $PY3_COV report | egrep -o [0-9]+%\$ | tr -d '\n' || echo -n ❓ \""
     print code | cmd ; close(cmd)
     # same thing (coverage) for python3. NOTE: egrep finds within the
     # coverage report the only line ending with a percent value
     cmd = "bash -c \"rm -f .coverage ;" \
           "$PY3_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
-	  "  &>/tmp/py3.out && echo \|✅ || echo \|❎" \
-          "; echo -n \| ; $PY3_COV report | egrep -o [0-9]+%\$ || echo ❓ \""
+          "  &>/tmp/py3.out && echo -n \|✅ || echo -n \|❎ ; echo -n \| " \
+          "&& $PY3_COV report | egrep -o [0-9]+%\$ | tr -d '\n' || echo -n ❓ \""
     print code | cmd ; close(cmd)
     # compare what output both runs produced and if diff returns with an exit
     # code unequal to zero it means that there were differences in both files
     if (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") == 0) {
-        print "|✅"
+        printf "|✅"
     } else {
-        print "|❎"
+        printf "|❎"
         exit_code=127
     }
-    # separate table columns by a blank line
+ 
+    # number of lines contained
+    printf "|% 4d", lines
+    # the package that installed the file
+    printf "|%s", package
+    # filename
+    printf "|%s", ARGV[1]
+    # the code section
+    printf "|% 2d", section
+    # separate table rows with a blank line
     print ""
+
     # reinit for next run...
     code = ""
     lines = 0
@@ -95,18 +108,23 @@ AWK
 # table column definitions to span multiple lines
 (
   echo "|==="
-  echo "|package|section|filename|code lines|python2|coverage|python3|coverage|output identical"
+  echo "python2|python2 coverage|python3|python3 coverage|output identical?|code lines|package|filename|section"
   let total=0
   let success=0
   for F in $(find /etc/univention/templates/ -type f); do
      let total=$(expr $total + 1)
-	 PACKAGE=$(dpkg -S /etc/univention/templates/scripts/etc/postfix | cut -d: -f1)
-     awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"  && let success=$(expr $success + 1)
+     PACKAGE=$(dpkg -S /etc/univention/templates/scripts/etc/postfix | cut -d: -f1)
+     if awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"; then
+       let success=$(expr $success + 1)
+     fi
   done
+  echo ""
   echo "|==="
   echo $success/$total successful. limit: $SUCCESS_MIN.
-
   exit $(test $success -ge $SUCCESS_MIN)
-) |& tee /var/log/univention/$0.md || exit $?
+) | tee /var/log/univention/$0.md
+RETVAL=${PIPESTATUS[0]}
+which asciidoctor && asciidoctor /var/log/univention/$0.md
+exit $RETVAL
 
 # vim:set ft=sh:awk:
