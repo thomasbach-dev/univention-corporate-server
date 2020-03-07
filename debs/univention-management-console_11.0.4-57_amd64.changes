@@ -1,0 +1,63 @@
+Format: 1.8
+Date: Mon, 17 Feb 2020 13:15:43 +0100
+Source: univention-management-console
+Binary: univention-management-console univention-management-console-server python-univention-management-console python3-univention-management-console univention-management-console-dev univention-management-console-doc univention-management-console-frontend univention-management-console-web-server univention-management-console-login
+Architecture: source all
+Version: 11.0.4-57
+Distribution: unstable
+Urgency: medium
+Maintainer: Univention GmbH <packages@univention.de>
+Changed-By: Johannes Keiser <keiser@univention.de>
+Description:
+ python-univention-management-console - UCS Management Console - Python 2 Modules
+ python3-univention-management-console - UCS Management Console - Python 3 Modules
+ univention-management-console - UCS Management Console - Web based computer administration tool
+ univention-management-console-dev - UCS Management Console - development files
+ univention-management-console-doc - UCS Management Console - documentation
+ univention-management-console-frontend - UCS Management Console - Web based computer administration tool
+ univention-management-console-login - UCS Management Console - Login page
+ univention-management-console-server - UCS Management Console - server
+ univention-management-console-web-server - UCS Management Console - Web server
+Changes:
+ univention-management-console (11.0.4-57) unstable; urgency=medium
+ .
+   * Bug #50332: remove option from shebang
+Checksums-Sha1:
+ e8589c6ad5b79f7b18ec0f46ae4a6d1717a5d46e 1656 univention-management-console_11.0.4-57.dsc
+ 842680d1cfdece90b7cff7b0d0207ec3548ef95a 375385 univention-management-console_11.0.4-57.tar.gz
+ f32b0b7bf5d9ce2f056ba91485de9d646ce67f37 104050 python-univention-management-console_11.0.4-57_all.deb
+ 878d93dc2b2585260b2c0c9c2f235e84af3ccdca 103934 python3-univention-management-console_11.0.4-57_all.deb
+ 6149982de185197a4980375d133d6829186350ad 62398 univention-management-console-dev_11.0.4-57_all.deb
+ 951153a3cf28ab442c42631268959362faa58e35 147172 univention-management-console-doc_11.0.4-57_all.deb
+ 9fadccb3bf9c950d57b6bbb96711c13bfc83bb35 113502 univention-management-console-frontend_11.0.4-57_all.deb
+ 0e114087fa71418bf93a922b14334f63797a1f47 63936 univention-management-console-login_11.0.4-57_all.deb
+ 8369bf861a22d9fb8d8671915bfd02a1880b51bc 73672 univention-management-console-server_11.0.4-57_all.deb
+ f5e59473d45df1d84cee5a87112a25fb8a44a4cd 73816 univention-management-console-web-server_11.0.4-57_all.deb
+ b733f982884838f4693a16976cb5e23f97712045 49738 univention-management-console_11.0.4-57_all.deb
+ c524b4a1a8946b5902b07a7a538a68f78f6b8b1b 12524 univention-management-console_11.0.4-57_amd64.buildinfo
+Checksums-Sha256:
+ b5cd0505c041c445fc765d82aed442bcda31c56a474be474c67c0b34d1cc7067 1656 univention-management-console_11.0.4-57.dsc
+ 8333436ee6f098e8550834b04cb73ac52a933288b9ed1cae2adab9a8ae271597 375385 univention-management-console_11.0.4-57.tar.gz
+ 10a2855739a980d6d5c74bdac19251848fd85a90844bd080b5da29b81f5bd8a9 104050 python-univention-management-console_11.0.4-57_all.deb
+ b19073abe006bf18e5b22ecbb171b16c45902ad42e755d819247222e57cf0de5 103934 python3-univention-management-console_11.0.4-57_all.deb
+ 9d5af390c0dcb5e60a0dc7bb274d7e0080c998c959aae96131473bd72c7dec7a 62398 univention-management-console-dev_11.0.4-57_all.deb
+ d204ea5db9baf5ffe33d630ad05d371e47b7b4ebd3254d51cd275065895df3da 147172 univention-management-console-doc_11.0.4-57_all.deb
+ 3ef13d5bca7e6bb244f79ee7492d6793000bc8a5fd29b527f75600a0b49969bb 113502 univention-management-console-frontend_11.0.4-57_all.deb
+ 509f3dc6ff704cb0c29d636e792792e80904b934ecde013b920661e9d823376c 63936 univention-management-console-login_11.0.4-57_all.deb
+ e3dc6fd8319a27b3eeda488966e9735819f8cd4878142a1bd3e2792d90a4fdaf 73672 univention-management-console-server_11.0.4-57_all.deb
+ 64c423e0ffb61c10f1080efc8d4f0f3fd4a4cb076754787ab226e356b8ae32da 73816 univention-management-console-web-server_11.0.4-57_all.deb
+ 8d32244d8a76e5d9b63477cb3c2ec136993eec8d4f49b533dae42a194ca0e6db 49738 univention-management-console_11.0.4-57_all.deb
+ ceafd1c05012b8bee5a62bbd457c1c25a765712d188970cea1935fd11d3d12f7 12524 univention-management-console_11.0.4-57_amd64.buildinfo
+Files:
+ 6a1f96a7536b2be1ab545e707c0a2407 1656 univention optional univention-management-console_11.0.4-57.dsc
+ cc3d5afacd3c852fd8b179d0597fc57c 375385 univention optional univention-management-console_11.0.4-57.tar.gz
+ 6aa6c5e17bb3307cac120fef02c5cd1d 104050 univention optional python-univention-management-console_11.0.4-57_all.deb
+ de886bf8c6059cc906791d21ebb90292 103934 univention optional python3-univention-management-console_11.0.4-57_all.deb
+ 7b038b1ad4d8103b46637a17a8b77fd8 62398 univention optional univention-management-console-dev_11.0.4-57_all.deb
+ d37cd0256f9b0777f3217002f15cf2e5 147172 univention optional univention-management-console-doc_11.0.4-57_all.deb
+ 40ee374396809369ce10bf48e5c6e475 113502 univention optional univention-management-console-frontend_11.0.4-57_all.deb
+ c589c6bdcb1b7f8b0eccbd378186c171 63936 univention optional univention-management-console-login_11.0.4-57_all.deb
+ ddc0e614d73ad398be5e0c195a054510 73672 univention optional univention-management-console-server_11.0.4-57_all.deb
+ 0bb613461230e3b0ec7b59750c4e053f 73816 univention optional univention-management-console-web-server_11.0.4-57_all.deb
+ 03ca2bd6ee454463aba23c179acfd66f 49738 univention optional univention-management-console_11.0.4-57_all.deb
+ aac48f9dadc564e1a143cd1409b2d5e7 12524 univention optional univention-management-console_11.0.4-57_amd64.buildinfo

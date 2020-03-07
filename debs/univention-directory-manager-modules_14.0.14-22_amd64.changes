@@ -1,0 +1,48 @@
+Format: 1.8
+Date: Wed, 18 Dec 2019 09:04:16 +0100
+Source: univention-directory-manager-modules
+Binary: python-univention-directory-manager python-univention-directory-manager-cli python3-univention-directory-manager python3-univention-directory-manager-cli univention-directory-manager-tools
+Architecture: source all
+Version: 14.0.14-22
+Distribution: unstable
+Urgency: medium
+Maintainer: Univention GmbH <packages@univention.de>
+Changed-By: Florian Best <best@univention.de>
+Description:
+ python-univention-directory-manager - UCS - Modules for administration tools
+ python-univention-directory-manager-cli - UCS - Modules for administration tools
+ python3-univention-directory-manager - UCS - Modules for administration tools
+ python3-univention-directory-manager-cli - UCS - Modules for administration tools
+ univention-directory-manager-tools - UCS - Command-line based administration tools
+Changes:
+ univention-directory-manager-modules (14.0.14-22) unstable; urgency=medium
+ .
+   * Bug #44135: prevent adding DHCP (sub)nets which break the dhcpd
+   	configuration
+Checksums-Sha1:
+ 2c02df0c3d6667eefa32617b94806ceea611cda0 1235 univention-directory-manager-modules_14.0.14-22.dsc
+ 024f0de38dfd16ae18ad93218d3236e6b83531d3 699092 univention-directory-manager-modules_14.0.14-22.tar.gz
+ 648b844ee13144998c04a93965ce1e5373694776 94258 python-univention-directory-manager-cli_14.0.14-22_all.deb
+ 8f046dc0473938772b770a382ac08d7ceee6602f 330024 python-univention-directory-manager_14.0.14-22_all.deb
+ e8d048f3b748e6bf859611d3995524213940d39e 92926 python3-univention-directory-manager-cli_14.0.14-22_all.deb
+ d380300566992f799849687fa583a4457c6dd817 282152 python3-univention-directory-manager_14.0.14-22_all.deb
+ 10d6224c8c631e65ec681155aafe0cc80d39c87c 9840 univention-directory-manager-modules_14.0.14-22_amd64.buildinfo
+ cd62472f6fa1f91b1c1019266430b63950a35733 106952 univention-directory-manager-tools_14.0.14-22_all.deb
+Checksums-Sha256:
+ d902a82166d28283293c54862c7e6c934ab14cd2b0a92020249762d8dd088b8b 1235 univention-directory-manager-modules_14.0.14-22.dsc
+ 44f2f43d0bfbb57928fd787a62213d3c4d9a7b6a66fe7484420e256a916f151b 699092 univention-directory-manager-modules_14.0.14-22.tar.gz
+ 033d0cc966487fb297a75e88b710d9fe827e11f579addcb1a8486ee3813e6f16 94258 python-univention-directory-manager-cli_14.0.14-22_all.deb
+ a8da001b59673a3d3dad07e7b956dc0e62cbbf23821479142688706f55c67493 330024 python-univention-directory-manager_14.0.14-22_all.deb
+ 2727641829c22b55d7d846407ca6ee9caaa70a8896418f0f486b56be02e00e15 92926 python3-univention-directory-manager-cli_14.0.14-22_all.deb
+ 7e96e5ceb3a47c5b95d21987f4e868a47803c726ca1cf12fc3c025a0e7e2cadd 282152 python3-univention-directory-manager_14.0.14-22_all.deb
+ b73de55278e50c35007ea2e0dec7beab6eb76a21192f76c6842c72435d1ab2b8 9840 univention-directory-manager-modules_14.0.14-22_amd64.buildinfo
+ 09d788f83f4675f199b4950c11e865c624e18db00419aa1e22c4a9e7d4203922 106952 univention-directory-manager-tools_14.0.14-22_all.deb
+Files:
+ 16223642438da642a6bef6b2e4f90518 1235 univention optional univention-directory-manager-modules_14.0.14-22.dsc
+ 10598c3c8a42fa7aeb8a730efd6babb4 699092 univention optional univention-directory-manager-modules_14.0.14-22.tar.gz
+ 141459f01ae03dea81e46f3dfacc1dd7 94258 univention optional python-univention-directory-manager-cli_14.0.14-22_all.deb
+ ccc3485d69646f7188c2d0aa6213876f 330024 univention optional python-univention-directory-manager_14.0.14-22_all.deb
+ 998666b71bf293a6bce6555450a08dc9 92926 univention optional python3-univention-directory-manager-cli_14.0.14-22_all.deb
+ 4ae0d9aa28174d67d95d73fc02a56723 282152 univention optional python3-univention-directory-manager_14.0.14-22_all.deb
+ 8fad4f21d212a96b03e207d89a0347f0 9840 univention optional univention-directory-manager-modules_14.0.14-22_amd64.buildinfo
+ bd2766dd87f8a8e2ae80bc37209616b0 106952 univention optional univention-directory-manager-tools_14.0.14-22_all.deb

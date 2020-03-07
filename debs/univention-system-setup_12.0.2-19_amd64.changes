@@ -1,0 +1,43 @@
+Format: 1.8
+Date: Thu, 12 Sep 2019 09:29:32 +0200
+Source: univention-system-setup
+Binary: univention-system-setup univention-system-setup-boot di-univention-system-setup univention-management-console-module-setup
+Architecture: source amd64 all
+Version: 12.0.2-19
+Distribution: unstable
+Urgency: low
+Maintainer: Univention GmbH <packages@univention.de>
+Changed-By: Philipp Hahn <hahn@univention.de>
+Description:
+ di-univention-system-setup - Start Univention System Setup (udeb)
+ univention-management-console-module-setup - UMC module for Univention System Setup
+ univention-system-setup - UCS System Setup tools
+ univention-system-setup-boot - Starting univention-system-setup on next boot
+Changes:
+ univention-system-setup (12.0.2-19) unstable; urgency=low
+ .
+   * Bug #49036: Fix file permission when creating new host certificates
+Checksums-Sha1:
+ 7748d7318abd521a0078f2975b555e7f0240cf27 1324 univention-system-setup_12.0.2-19.dsc
+ 8072105da9db9fee324549a31d65a8dd6c9b0cdb 3055251 univention-system-setup_12.0.2-19.tar.gz
+ 4dc9a61e2f54eabf4bba7f0ee80b8e52af3363d5 6112 di-univention-system-setup_12.0.2-19_amd64.udeb
+ 2fe9fa858fa3285a50bf46e485c78c076e85ca06 740864 univention-management-console-module-setup_12.0.2-19_all.deb
+ 75a647616d93a4515ceb3804d09f13758c5ea68e 65446 univention-system-setup-boot_12.0.2-19_all.deb
+ 0d3985c49bd054f22bc9f3efa67ce87cd5ece8ba 149960 univention-system-setup_12.0.2-19_all.deb
+ 46b2f150937301f28e5a56ad9cf7272d5ccf3178 16195 univention-system-setup_12.0.2-19_amd64.buildinfo
+Checksums-Sha256:
+ 533a1862edfa965d241e8b36d02831270050cae1021f2b015fd4638b699959cd 1324 univention-system-setup_12.0.2-19.dsc
+ 089e3975f411bf4fa37ae4d179fc006fea64311a8c9dfbfd7a30a7bbac41fefd 3055251 univention-system-setup_12.0.2-19.tar.gz
+ 6ed63deb576b912916bf1c5c3e99c1111b1514567613c7f835c2b89a9a183bf8 6112 di-univention-system-setup_12.0.2-19_amd64.udeb
+ 4ffd73740e7cf0d61da4a4c049b62f16267bc3bcae934a8af63eb8235145bc39 740864 univention-management-console-module-setup_12.0.2-19_all.deb
+ 07f0e76745d6c504db814534857b7eccf556780d0fd2301c3cad966372e0d051 65446 univention-system-setup-boot_12.0.2-19_all.deb
+ 22419380022dd5025271f1efb54fb535c5ab53c3b7121cb6e56f3a26acc20759 149960 univention-system-setup_12.0.2-19_all.deb
+ 7e631ef1c19968a49bd391f76c37e22cf2512b687b365b066e62bce341fe5570 16195 univention-system-setup_12.0.2-19_amd64.buildinfo
+Files:
+ 02abbd7fb546f26f4bf9373ad71abc29 1324 univention optional univention-system-setup_12.0.2-19.dsc
+ 7b2873e7352a3e1b0c02e9305d65645c 3055251 univention optional univention-system-setup_12.0.2-19.tar.gz
+ 07da48ffb55ba18ef7ae75139d162d01 6112 debian-installer standard di-univention-system-setup_12.0.2-19_amd64.udeb
+ 550709ba59e9503123a6af2650004c34 740864 univention optional univention-management-console-module-setup_12.0.2-19_all.deb
+ bd7d98522fdadffb8df1862fb144a812 65446 univention optional univention-system-setup-boot_12.0.2-19_all.deb
+ bd72cfdd3dcfd8600e601e2cceb5e604 149960 univention optional univention-system-setup_12.0.2-19_all.deb
+ a8d4ae44162b755221f0890c60603d69 16195 univention optional univention-system-setup_12.0.2-19_amd64.buildinfo

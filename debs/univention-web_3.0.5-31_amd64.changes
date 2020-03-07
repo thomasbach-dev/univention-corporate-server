@@ -1,0 +1,39 @@
+Format: 1.8
+Date: Tue, 14 Jan 2020 14:07:30 +0100
+Source: univention-web
+Binary: univention-web-js univention-web-style univention-web-src
+Architecture: source all
+Version: 3.0.5-31
+Distribution: unstable
+Urgency: medium
+Maintainer: Univention GmbH <packages@univention.de>
+Changed-By: Christian Castens <castens@univention.de>
+Description:
+ univention-web-js - Univention Javascript Library
+ univention-web-src - Univention Javascript Library - Source
+ univention-web-style - Univention Style Library
+Changes:
+ univention-web (3.0.5-31) unstable; urgency=medium
+ .
+   * Bug #47845: Fixed typo
+Checksums-Sha1:
+ fe61c30087aade2b5e8925b065f75253189b8ebb 900 univention-web_3.0.5-31.dsc
+ 5909a43d968b86e6d7a44b80fe6874cab4450803 5644116 univention-web_3.0.5-31.tar.gz
+ 2c67eecaf4517fafba23b56000da8268d7951f3c 10346632 univention-web-js_3.0.5-31_all.deb
+ b31bdd12b9d3a8452405b9a4ca321a9b0d679bd0 134308 univention-web-src_3.0.5-31_all.deb
+ f5a1c2a6f297066072db07eb99fd3430812a076c 4915584 univention-web-style_3.0.5-31_all.deb
+ e9e9a3116910da580179218a6bd15ccc236b55b5 13108 univention-web_3.0.5-31_amd64.buildinfo
+Checksums-Sha256:
+ f1aa5a360f107c7c3b80be235d6f0126a62bb5a4ed80be92b4007e41fab04a3a 900 univention-web_3.0.5-31.dsc
+ 08cd7a90ac53e4b58d5a8387a5b25fc9accfea272a1ac47897b52369949a5f19 5644116 univention-web_3.0.5-31.tar.gz
+ 89178b54898384e0e0c107b54133bd9d4c3fa29e15566e0c02da420ab6d1c5c2 10346632 univention-web-js_3.0.5-31_all.deb
+ c0478efea37a208f6ff04338d0e93f99bdeda969bdfb54836d854b2fd71c28f5 134308 univention-web-src_3.0.5-31_all.deb
+ 09003a691cd6ac2f6fddca9bb17f05c1e5f312e32a2a265eec55c0b2b30ec3e8 4915584 univention-web-style_3.0.5-31_all.deb
+ f6b75ccbd0aaa0b10bbcc8d36d20e98ea8e41e4606e4482c53f9bcd7b4e255bf 13108 univention-web_3.0.5-31_amd64.buildinfo
+Files:
+ 8640086fcba999cd509f66df67fd8a33 900 univention optional univention-web_3.0.5-31.dsc
+ 09e9480d5e91267dd4634d2a72c13738 5644116 univention optional univention-web_3.0.5-31.tar.gz
+ 2af71cbebcb82803a63110978c09631d 10346632 univention optional univention-web-js_3.0.5-31_all.deb
+ 4a008b7ddfd951de8429afaba53945a9 134308 univention optional univention-web-src_3.0.5-31_all.deb
+ 3aaf7dda27f2b48411e46e3d25bd0f00 4915584 univention optional univention-web-style_3.0.5-31_all.deb
+ b8ac0f3c279d5ba3e0165bccd8e8b48d 13108 univention optional univention-web_3.0.5-31_amd64.buildinfo

@@ -1,0 +1,44 @@
+Format: 1.8
+Date: Thu, 06 Feb 2020 14:19:16 +0100
+Source: univention-self-service
+Binary: univention-self-service univention-self-service-master univention-self-service-passwordreset-umc univention-self-service-invitation
+Architecture: source all
+Version: 4.0.3-15
+Distribution: unstable
+Urgency: medium
+Maintainer: Univention GmbH <packages@univention.de>
+Changed-By: Johannes Keiser <keiser@univention.de>
+Description:
+ univention-self-service - Univention Self Service
+ univention-self-service-invitation - Invitation module for Univention Self Service.
+ univention-self-service-master - Univention Self Service
+ univention-self-service-passwordreset-umc - Password reset module for Univention Self Service.
+Changes:
+ univention-self-service (4.0.3-15) unstable; urgency=medium
+ .
+   * Bug #50608: made "Forgot your password?" link in the login
+     configurable via umc/login/links/forgot_your_password/.*
+Checksums-Sha1:
+ 85a73505118b58c56a25c8a6824216d7044227c7 1160 univention-self-service_4.0.3-15.dsc
+ ff8c6d4afd8bd2c69456e76a3750c60a9ea47c15 231775 univention-self-service_4.0.3-15.tar.gz
+ 74728b4611166f164c473d7721d62180fc9b877e 14426 univention-self-service-invitation_4.0.3-15_all.deb
+ 806a943ecad1c12920268c37d4581931016cb5af 13334 univention-self-service-master_4.0.3-15_all.deb
+ 49f8e924abce36d5e0dddc6fd505bfd5ccaad8a0 31114 univention-self-service-passwordreset-umc_4.0.3-15_all.deb
+ a37a9c445262e04504c0f4dce1af42b2bcb67ba3 86554 univention-self-service_4.0.3-15_all.deb
+ 9b18be48790018ed08cc9e981975d65cf855b117 10858 univention-self-service_4.0.3-15_amd64.buildinfo
+Checksums-Sha256:
+ aa798b24b687a60c4ea9b586545f7f35233c224545c358b93512f253edf834cf 1160 univention-self-service_4.0.3-15.dsc
+ c9bc593dc2326c7b40b2ea2622daafc5a3b8b27304433aa7b4862bd4c1c88114 231775 univention-self-service_4.0.3-15.tar.gz
+ 7bb8026c54b6fd0429584ec9ca3a99f1d273bf6a106a200c2ca54d5bb1e8af69 14426 univention-self-service-invitation_4.0.3-15_all.deb
+ 662c230a01d6222f79149d6e75313109b2cc1c54a2a5af1f6f5c286bbb781e41 13334 univention-self-service-master_4.0.3-15_all.deb
+ 5521d718118ae2bb5e5b3bbad236a59b016442c3adb5f5da94d5c6ede122aa52 31114 univention-self-service-passwordreset-umc_4.0.3-15_all.deb
+ c23071e81f0aa0fdf1af857a0917d393d35044c1fd4c698876a0efd2bb7434ca 86554 univention-self-service_4.0.3-15_all.deb
+ 2e209d1a09722d0d980d404add3d2c293054f94387436b418a863683acff94f0 10858 univention-self-service_4.0.3-15_amd64.buildinfo
+Files:
+ 2ccecdd5b5b2abc40fb76d363584a588 1160 univention optional univention-self-service_4.0.3-15.dsc
+ 0c8e07aad1d715845e9933bf2fb2cf1a 231775 univention optional univention-self-service_4.0.3-15.tar.gz
+ e48a8ccf2b154f5af7c426fdbb4536e1 14426 univention optional univention-self-service-invitation_4.0.3-15_all.deb
+ 8089244ad7123d185f7eab5a1aaca4a6 13334 univention optional univention-self-service-master_4.0.3-15_all.deb
+ 55719372cb8243d73bf61f119171da10 31114 univention optional univention-self-service-passwordreset-umc_4.0.3-15_all.deb
+ 34d4030de545f377ecbfe7a2718a6671 86554 univention optional univention-self-service_4.0.3-15_all.deb
+ b6369f3e88f929a7464f4aa3a0e304b6 10858 univention optional univention-self-service_4.0.3-15_amd64.buildinfo

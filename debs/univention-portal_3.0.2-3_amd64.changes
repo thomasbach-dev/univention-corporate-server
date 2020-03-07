@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Tue, 15 Oct 2019 17:43:02 +0200
+Source: univention-portal
+Binary: univention-portal univention-portal-test
+Architecture: source all
+Version: 3.0.2-3
+Distribution: unstable
+Urgency: medium
+Maintainer: Univention GmbH <packages@univention.de>
+Changed-By: Florian Best <best@univention.de>
+Description:
+ univention-portal - Univention Portal - Central portal web page for a UCS domain
+ univention-portal-test - Univention Portal - JavaScript unit tests
+Changes:
+ univention-portal (3.0.2-3) unstable; urgency=medium
+ .
+   * Bug #49162: remove python-support
+Checksums-Sha1:
+ 8575e66f138f85b49210b54ca7263f1b84574b70 750 univention-portal_3.0.2-3.dsc
+ 3b530a114881b9e96a8f724c4ecf91b9331bc665 80803 univention-portal_3.0.2-3.tar.gz
+ 6222fe2f706e7bf0fe6743215afe4f3def416c31 9772 univention-portal-test_3.0.2-3_all.deb
+ e89a3835df5e0eb78a5e875dbb4cbcb2a616414d 70598 univention-portal_3.0.2-3_all.deb
+ 1f70bed8d2c4bc38a51b82e80027c15d82e7810e 14670 univention-portal_3.0.2-3_amd64.buildinfo
+Checksums-Sha256:
+ 23706ca4d0c625d17e1ee03e0ac0fc820444aef850bd77dafac95eb5226a19db 750 univention-portal_3.0.2-3.dsc
+ 9c895521b91e2e3fb359b6bd325a412d38aecb8bc2b8b44627ac396ee8c77dd7 80803 univention-portal_3.0.2-3.tar.gz
+ 0f8caad14aab1ee67b7d49f3f11ea64a128f7f90e127e5e3548573ec32496a43 9772 univention-portal-test_3.0.2-3_all.deb
+ a6443c84a2fd6c84434e322d45a72a5a1b0b22282ec37b1c03c1fa970f2a5d5b 70598 univention-portal_3.0.2-3_all.deb
+ d0f8171aa237d48f27e9c071c7fe88627f779a41249df1016db4d0198e117de7 14670 univention-portal_3.0.2-3_amd64.buildinfo
+Files:
+ 40c9400e84492922fdf905fd18aed76a 750 univention optional univention-portal_3.0.2-3.dsc
+ f816c05eb8e3d2a71a1a1b685cc3290a 80803 univention optional univention-portal_3.0.2-3.tar.gz
+ 830bbe97ffb58ef679c3047861cbbaca 9772 univention optional univention-portal-test_3.0.2-3_all.deb
+ 1a4645690f5120c993388353f45602c7 70598 univention optional univention-portal_3.0.2-3_all.deb
+ 2fb50c94e77871c31f919d85ff689f90 14670 univention optional univention-portal_3.0.2-3_amd64.buildinfo

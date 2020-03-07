@@ -1,0 +1,35 @@
+Format: 1.8
+Date: Tue, 11 Feb 2020 09:45:40 +0100
+Source: univention-saml
+Binary: univention-saml univention-saml-schema
+Architecture: source all
+Version: 6.0.2-24
+Distribution: unstable
+Urgency: medium
+Maintainer: Univention GmbH <packages@univention.de>
+Changed-By: Julia Bremer <bremer@univention.de>
+Description:
+ univention-saml - Integrates simpleSAMLphp Identity Provider into UCS
+ univention-saml-schema - UCS simpleSAMLphp ldap integration
+Changes:
+ univention-saml (6.0.2-24) unstable; urgency=medium
+ .
+   * Bug #49305: Support for DNs with spaces
+Checksums-Sha1:
+ ed459360f0e6dc203d71f08cb9fc46da6023449d 777 univention-saml_6.0.2-24.dsc
+ 799451fac3bec15ee5130e6440afe5708815ce3f 71631 univention-saml_6.0.2-24.tar.gz
+ 976a5beab2ef184a337c6a6ce23e072052ccad9a 22390 univention-saml-schema_6.0.2-24_all.deb
+ 5555b244ee1c58fab9d7da6a2aff97a1337d85b0 44080 univention-saml_6.0.2-24_all.deb
+ bac3606cf4c053803c063e389446a92e95483b10 9704 univention-saml_6.0.2-24_amd64.buildinfo
+Checksums-Sha256:
+ f13aa72fde7e18c68148bb2a82f415ef25fa68e8cca95effc2718ac61034c2a0 777 univention-saml_6.0.2-24.dsc
+ c98bb767eb85af8bfcd02338a3ba2156c0b4402010edc10384287319eecfc486 71631 univention-saml_6.0.2-24.tar.gz
+ 6799f25767222b884fd7a51d379c12e5a8caa23c0bebd861df8788838a6cf42e 22390 univention-saml-schema_6.0.2-24_all.deb
+ 9c75ae167e0b87e480b6da0c423f247ae7f5862de2142ad05d66fe706e346a65 44080 univention-saml_6.0.2-24_all.deb
+ ed4094c24526464bf060e7810cf12c1e5c139edab6e5cc3e173d9f5c4f634e9a 9704 univention-saml_6.0.2-24_amd64.buildinfo
+Files:
+ e221f4fab63944a0a467cbe9221b7842 777 univention optional univention-saml_6.0.2-24.dsc
+ 31c4d65cdbc5e620b4217256a3ff2d51 71631 univention optional univention-saml_6.0.2-24.tar.gz
+ 748a47747919875595a2889d9c813764 22390 univention optional univention-saml-schema_6.0.2-24_all.deb
+ 128f85d3cc4d8d731a6b719920e6346d 44080 univention optional univention-saml_6.0.2-24_all.deb
+ 27e2851f264eacc3f4b3550ff3340e97 9704 univention optional univention-saml_6.0.2-24_amd64.buildinfo
