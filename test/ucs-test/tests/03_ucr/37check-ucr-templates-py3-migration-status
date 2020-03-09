@@ -13,10 +13,9 @@ export SUCCESS_MIN=125
 
 
 # Start markdown generation
-cat <<"HEADER"
-= Template migration status =
-date $(date)
-HEADER
+echo "= Template migration status ="
+echo "date $(date)"
+echo ""
 
 # Install dependencies: We decided to do this within this script, because we
 # can than simply delete it after the python3 migration has finished.
@@ -27,17 +26,6 @@ which pip3 && pip3 -q install coverage
 if ! which asciidoctor; then
     apt-get -qq -y update
     apt-get -qq -y install asciidoctor
-fi
-echo ""
-echo "== Overview =="
-echo "The following table lists the current status of the python3 template migration"
-
-if which coverage2 && which coverage3; then
-    export PY2_COV=coverage2
-    export PY3_COV=coverage3
-else
-    export PY2_COV=python2-coverage
-    export PY3_COV=python3-coverage
 fi
 
 # safe the following awk script to disk:
@@ -62,39 +50,39 @@ END { exit exit_code }
 start && /@!@/ {
     section++
     # write header and code into a file
-    system("rm -f /tmp/cover.py")
+    # system("rm -f /tmp/cover.py")
     print preamble "\n" code > "/tmp/cover.py" ; close("/tmp/cover.py")
     # execute code coverage for python2. NOTE: debian has symlinked sh->dash,
     # awk uses sh to call any script, but we want bash
-    cmd = "bash -c \"rm -f .coverage ;" \
-          "$PY2_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
-          "  &>/tmp/py2.out && echo -n \|✅ || echo -n \|❎ ; echo -n \|" \
-		  "&& printf '%s' $($PY2_COV report | egrep -o [0-9]+%\$ || echo 0%) \""
-    print code | cmd ; close(cmd)
+    system("rm -f .coverage")
+    system("bash -c \"python2 -m coverage run /tmp/cover.py" \
+           "  &>/tmp/py2.out && printf '|%-8s' '✅' || printf '|%-8s' '❎' ;\"")
+    system("printf '|%-9s' $(python2 -m coverage report | grep cover.py | egrep -o [0-9]+%\$ || echo 0%)")
     # same thing (coverage) for python3. NOTE: egrep finds within the
     # coverage report the only line ending with a percent value
-    cmd = "bash -c \"rm -f .coverage ;" \
-          "$PY3_COV run --timid --include /tmp/cover.py /tmp/cover.py" \
-          "  &>/tmp/py3.out && echo -n \|✅ || echo -n \|❎ ; echo -n \| " \
-		  "&& printf '%s' $($PY3_COV report | egrep -o [0-9]+%\$ || echo 0%) \""
-    print code | cmd ; close(cmd)
+    system("rm -f .coverage")
+    system("bash -c \"python3 -m coverage run /tmp/cover.py" \
+           "  &>/tmp/py3.out && printf '|%-8s' '✅' || printf '|%-8s' '❎' ;\"")
+    system("printf '|%-9s' $(python3 -m coverage report | grep cover.py | egrep -o [0-9]+%\$ || echo 0%)")
     # compare what output both runs produced and if diff returns with an exit
     # code unequal to zero it means that there were differences in both files
     if (system("diff -q /tmp/py[23].out 2>&1 >/dev/null") == 0) {
-        printf "|✅"
+        printf "|%-13s", "✅"
     } else {
-        printf "|❎"
+        printf "|%-13s", "❎"
         exit_code=127
     }
- 
+
     # number of lines contained
-    printf "|% 4d", lines
+    printf "|%-12d", lines
     # the package that installed the file
     printf "|%s", package
     # filename
-    printf "|%s", ARGV[1]
+    FILE=ARGV[1]
+    gsub("/etc/univention/templates/", "", FILE)
+	printf "|%s", FILE
     # the code section
-    printf "|% 2d", section
+    printf "|%d", section
     # separate table rows with a blank line
     print ""
 
@@ -113,27 +101,31 @@ AWK
 # find all templates and create a markdown table. first prints the markdown
 # table header. NOTE: the markdown dialect is asciidoctor, because that allows
 # table column definitions to span multiple lines
+
+
+export SUCCESS=0
+export TOTAL=0
+
+echo ""
+echo ".Migration status"
+echo "|==="
+echo "|python2|coverage2|python3|coverage3|diff py2 py3|# code lines|package|path|section"
 (
-  echo ".Migration status"
-  echo "|==="
-  echo "python2|$PY2_COV|python3|$PY3_COV|diff py2 py3|# code lines|package|path|section"
-  let total=0
-  let success=0
   for F in $(find /etc/univention/templates/ -type f); do
-     let total=$(expr $total + 1)
+     export TOTAL=$(expr $TOTAL + 1)
      PACKAGE=$(dpkg -S /etc/univention/templates/scripts/etc/postfix | cut -d: -f1)
      if awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"; then
-       let success=$(expr $success + 1)
+       export SUCCESS=$(expr $SUCCESS + 1)
      fi
   done
-  echo "|==="
-  echo ""
-  echo "== Summary =="
-  echo $success/$total successful. limit: $SUCCESS_MIN.
-  exit $(test $success -ge $SUCCESS_MIN)
+  exit $(test $SUCCESS -ge $SUCCESS_MIN)
 ) | tee /var/log/univention/$0.md
 RETVAL=${PIPESTATUS[0]}
-which asciidoctor && asciidoctor /var/log/univention/$0.md
+echo "|==="
+echo ""
+echo "== Summary =="
+echo $SUCCESS/$TOTAL successful. limit: $SUCCESS_MIN.
+
 exit $RETVAL
 
 # vim:set ft=sh:awk:
