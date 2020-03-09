@@ -111,7 +111,7 @@ echo "|python2|coverage2|python3|coverage3|diff py2 py3|# code lines|package|sec
   let success=0
   for F in $(find /etc/univention/templates/ -type f); do
      let total=$(expr $total + 1)
-     PACKAGE=$(dpkg -S /etc/univention/templates/scripts/etc/postfix | cut -d: -f1)
+     PACKAGE=$(dpkg -S "$F" | cut -d: -f1)
      if awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"; then
 	   let success=$(expr $success + 1)
      fi
