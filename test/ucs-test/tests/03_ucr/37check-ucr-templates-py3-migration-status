@@ -23,11 +23,6 @@ echo "== $0: Dependencies =="
 which pip2 && pip2 -q install coverage
 which pip3 && pip3 -q install coverage
 
-if ! which asciidoctor; then
-    apt-get -qq -y update
-    apt-get -qq -y install asciidoctor
-fi
-
 # safe the following awk script to disk:
 cat <<"AWK" > /tmp/check-between.awk 
 #!/usr/bin/env -S awk -f between.awk test.conf
@@ -77,12 +72,12 @@ start && /@!@/ {
     printf "|%-12d", lines
     # the package that installed the file
     printf "|%s", package
+    # the code section
+    printf "|% 6d", section
     # filename
     FILE=ARGV[1]
     gsub("/etc/univention/templates/", "", FILE)
 	printf "|%s", FILE
-    # the code section
-    printf "|%d", section
     # separate table rows with a blank line
     print ""
 
@@ -109,23 +104,23 @@ export TOTAL=0
 echo ""
 echo ".Migration status"
 echo "|==="
-echo "|python2|coverage2|python3|coverage3|diff py2 py3|# code lines|package|path|section"
+echo "|python2|coverage2|python3|coverage3|diff py2 py3|# code lines|package|section|path"
 (
+  let total=0
+  let success=0
   for F in $(find /etc/univention/templates/ -type f); do
-     export TOTAL=$(expr $TOTAL + 1)
+     let total=$(expr $total + 1)
      PACKAGE=$(dpkg -S /etc/univention/templates/scripts/etc/postfix | cut -d: -f1)
      if awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"; then
-       export SUCCESS=$(expr $SUCCESS + 1)
+	   let success=$(expr $success + 1)
      fi
   done
-  exit $(test $SUCCESS -ge $SUCCESS_MIN)
+  echo "|==="
+  echo ""
+  echo "== Summary =="
+  echo $success/$total successful. limit: $SUCCESS_MIN.
+  exit $(test $success -ge $SUCCESS_MIN)
 ) | tee /var/log/univention/$0.md
-RETVAL=${PIPESTATUS[0]}
-echo "|==="
-echo ""
-echo "== Summary =="
-echo $SUCCESS/$TOTAL successful. limit: $SUCCESS_MIN.
-
-exit $RETVAL
+exit ${PIPESTATUS[0]}
 
 # vim:set ft=sh:awk:
