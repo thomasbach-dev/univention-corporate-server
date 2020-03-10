@@ -4,8 +4,6 @@
 ##  - basic
 ##  - apptest
 ##  - python3
-##  - performance
-##  - nightly
 ## exposure: dangerous
 
 # hard coded lowest number of successful tests below which this test fails
@@ -20,8 +18,8 @@ echo ""
 # Install dependencies: We decided to do this within this script, because we
 # can than simply delete it after the python3 migration has finished.
 echo "== $0: Dependencies =="
-which pip2 && pip2 -q install coverage
-which pip3 && pip3 -q install coverage
+which pip2 && pip2 -q install coverage || exit 1
+which pip3 && pip3 -q install coverage || exit 1
 
 # safe the following awk script to disk:
 cat <<"AWK" > /tmp/check-between.awk 
@@ -41,6 +39,9 @@ BEGIN {
 END { exit exit_code }
 # if start is 0 and we found a @!@-line: set start
 !start && /@!@/ { start = 1 ; next }
+# skip disclaimer message in UCR templates (only matters if @%@UCRWARNING@%@ is
+# used within a python code block, enclosed by @!@)
+/@%@UCRWARNING=# @%@/ { next }
 # if start is set (and we still are within a code section) and there comes a @!@
 start && /@!@/ {
     section++
@@ -111,7 +112,7 @@ echo "|python2|coverage2|python3|coverage3|diff py2 py3|# code lines|package|sec
   let success=0
   for F in $(find /etc/univention/templates/ -type f); do
      let total=$(expr $total + 1)
-     PACKAGE=$(dpkg -S "$F" | cut -d: -f1)
+     PACKAGE=$(dpkg -S "$F" 2>/dev/null | cut -d: -f1)
      if awk -f /tmp/check-between.awk -v package="$PACKAGE" "$F"; then
 	   let success=$(expr $success + 1)
      fi
