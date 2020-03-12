@@ -1,0 +1,4102 @@
+# ./univention-l10n-fr/conffiles/ucr-l10n-fr
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-l10n-fr/conffiles/ucr-l10n-fr	2020-03-12 10:37:29.551882657 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:30.419915206 +0100
+[0m[36m@@ -35,0 +36 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/logrotate.d/rsyslog
+
+/var/log/auth.log					      <
+/var/log/cron.log					      <
+/var/log/daemon.log					      <
+/var/log/debug						      <
+/var/log/kern.log					      <
+/var/log/lpr.log					      <
+/var/log/mail.err					      <
+/var/log/mail.info					      <
+/var/log/mail.log					      <
+/var/log/mail.warn					      <
+/var/log/messages					      <
+/var/log/news.crit					      <
+/var/log/news.err					      <
+/var/log/news.notice					      <
+/var/log/user.log					      <
+{							      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+	delaycompress					      <
+	sharedscripts					      <
+	postrotate					      <
+		invoke-rc.d rsyslog rotate > /dev/null	      <
+	endscript					      <
+}							      <
+/var/log/syslog						      <
+{							      <
+	daily						      <
+	rotate 84					      <
+	create 640 root adm				      <
+	notifempty					      <
+	compress					      <
+	missingok					      <
+	delaycompress					      <
+	sharedscripts					      <
+	postrotate					      <
+		invoke-rc.d rsyslog rotate > /dev/null	      <
+	endscript					      <
+}							      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/logrotate.d/rsyslog	2020-03-12 10:37:29.547882507 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:30.727926755 +0100
+[0m[36m@@ -30 +30 @@[0m
+[31m-for (cat, (paths, settings)) in FILES.items():[0m
+[32m+for (cat, (paths, settings)) in list(FILES.items()):[0m
+[36m@@ -39 +39 @@[0m
+[31m-for (cat, (paths, settings)) in FILES.iteritems():[0m
+[32m+for (cat, (paths, settings)) in FILES.items():[0m
+[36m@@ -41,5 +41,5 @@[0m
+[31m-		print path
+-	print '{'
+-	for setting in settings.values():
+-		print '\t%s' % (setting, )
+-	print """\[0m
+[32m+		print(path)
++	print('{')
++	for setting in list(settings.values()):
++		print('\t%s' % (setting, ))
++	print("""\[0m
+[36m@@ -51 +51 @@[0m
+[31m-}"""[0m
+[32m+}""")[0m
+# ./univention-base-files/conffiles/etc/logrotate.d/univention-config-registry-replog
+
+/var/log/univention/config-registry.replog {		      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/dpkg-divert.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/logrotate.d/univention-config-registry-replog	2020-03-12 10:37:29.547882507 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:31.047938753 +0100
+[0m[36m@@ -10,4 +10,4 @@[0m
+[31m-print "/var/log/univention/config-registry.replog {"
+-for setting in settings.keys():
+-        print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/univention/config-registry.replog {")
++for setting in list(settings.keys()):
++        print("\t%s" % settings[setting])
++print("}")[0m
+[36m@@ -19,4 +19,4 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name
+-for setting in settings.keys():
+-	print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/univention/%s.log {" % name)
++for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])
++print("}")[0m
+# ./univention-base-files/conffiles/etc/issue
+
+The UCS management system is available at https://ucs-7856.uc <
+							      <
+You can log into the Univention Management Console - the prin <
+users, groups, etc. - using the "Administrator" account and t <
+for the root user on the master domain controller.	      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/issue	2020-03-12 10:37:29.547882507 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:31.363950598 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print  '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))[0m
+[32m+	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))[0m
+[36m@@ -21 +21 @@[0m
+[31m-	print menutitle[0m
+[32m+	print(menutitle)[0m
+[36m@@ -25 +25 @@[0m
+[31m-	print[0m
+[32m+	print()[0m
+[36m@@ -41 +41 @@[0m
+[31m-		print 'The UCS management system is available at https://' + startsite[0m
+[32m+		print('The UCS management system is available at https://' + startsite)[0m
+[36m@@ -43,8 +43,8 @@[0m
+[31m-		print 'The UCS management system can be reached by following the link to the domain controller'
+-		print 'master at https://' + startsite + ' and selecting the'
+-		print 'Univention Management Console.'
+-
+-	print
+-	print 'You can log into the Univention Management Console - the principal tool to manage '
+-	print 'users, groups, etc. - using the "Administrator" account and the password selected '
+-	print 'for the root user on the master domain controller.'[0m
+[32m+		print('The UCS management system can be reached by following the link to the domain controller')
++		print('master at https://' + startsite + ' and selecting the')
++		print('Univention Management Console.')
++
++	print()
++	print('You can log into the Univention Management Console - the principal tool to manage ')
++	print('users, groups, etc. - using the "Administrator" account and the password selected ')
++	print('for the root user on the master domain controller.')[0m
+[36m@@ -53 +52,0 @@[0m
+[31m-[0m
+# ./univention-base-files/conffiles/etc/systemd/journald.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/systemd/journald.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:33.548032447 +0100
+[0m[36m@@ -15 +15 @@[0m
+[31m-	print "#Storage=auto"[0m
+[32m+	print("#Storage=auto")[0m
+[36m@@ -17 +17 @@[0m
+[31m-	print "Storage=%s" % (value, )[0m
+[32m+	print("Storage=%s" % (value, ))[0m
+[36m@@ -23 +23 @@[0m
+[31m-	print "#SplitMode=uid"[0m
+[32m+	print("#SplitMode=uid")[0m
+[36m@@ -25 +25 @@[0m
+[31m-	print "SplitMode=%s" % (value, )[0m
+[32m+	print("SplitMode=%s" % (value, ))[0m
+[36m@@ -32 +32 @@[0m
+[31m-	print "#SystemMaxUse="[0m
+[32m+	print("#SystemMaxUse=")[0m
+[36m@@ -34 +34 @@[0m
+[31m-	print "SystemMaxUse=%s" % (value, )[0m
+[32m+	print("SystemMaxUse=%s" % (value, ))[0m
+[36m@@ -37 +37 @@[0m
+[31m-	print "#SystemKeepFree="[0m
+[32m+	print("#SystemKeepFree=")[0m
+[36m@@ -39 +39 @@[0m
+[31m-	print "SystemKeepFree=%s" % (value, )[0m
+[32m+	print("SystemKeepFree=%s" % (value, ))[0m
+[36m@@ -42 +42 @@[0m
+[31m-	print "#SystemMaxFileSize="[0m
+[32m+	print("#SystemMaxFileSize=")[0m
+[36m@@ -44 +44 @@[0m
+[31m-	print "SystemMaxFileSize=%s" % (value, )[0m
+[32m+	print("SystemMaxFileSize=%s" % (value, ))[0m
+[36m@@ -51 +51 @@[0m
+[31m-	print "#MaxRetentionSec="[0m
+[32m+	print("#MaxRetentionSec=")[0m
+[36m@@ -53 +53 @@[0m
+[31m-	print "MaxRetentionSec=%s" % (value, )[0m
+[32m+	print("MaxRetentionSec=%s" % (value, ))[0m
+[36m@@ -56 +56 @@[0m
+[31m-	print "#MaxFileSec=1month"[0m
+[32m+	print("#MaxFileSec=1month")[0m
+[36m@@ -58 +58 @@[0m
+[31m-	print "MaxFileSec=%s" % (value, )[0m
+[32m+	print("MaxFileSec=%s" % (value, ))[0m
+[36m@@ -60,9 +59,0 @@[0m
+[31m-#ForwardToKMsg=no
+-#ForwardToConsole=no
+-#ForwardToWall=yes
+-#TTYPath=/dev/console
+-#MaxLevelStore=debug
+-#MaxLevelSyslog=debug
+-#MaxLevelKMsg=notice
+-#MaxLevelConsole=info
+-#MaxLevelWall=emerg[0m
+# ./univention-base-files/conffiles/etc/logrotate.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/logrotate.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:33.552032597 +0100
+[0m[36m@@ -36,0 +37 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/00header.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/00header.py	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:33.552032597 +0100
+[0m[36m@@ -2,0 +3 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/20utf8.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/20utf8.py	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:33.556032747 +0100
+[0m[36m@@ -4,0 +5 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/10apport.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/10apport.py	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:33.560032897 +0100
+[0m[36m@@ -7,0 +8 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/apt/apt.conf.d/80proxy
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/apt/apt.conf.d/80proxy	2020-03-12 10:12:25.665012676 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:33.876044736 +0100
+[0m[36m@@ -5,8 +5,8 @@[0m
+[31m-	print 'Acquire'
+-	print '{'
+-	print '    %s' % (proto,)
+-	print '    {'
+-	print '        Proxy "%s";' % proxy
+-	print '    }'
+-	print '}'
+-	print[0m
+[32m+	print('Acquire')
++	print('{')
++	print('    %s' % (proto,))
++	print('    {')
++	print('        Proxy "%s";' % proxy)
++	print('    }')
++	print('}')
++	print()[0m
+# ./univention-base-files/conffiles/etc/apt/apt.conf.d/20secureapt
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/apt/apt.conf.d/20secureapt	2020-03-12 10:12:25.665012676 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:34.184056274 +0100
+[0m[36m@@ -5,3 +5,3 @@[0m
+[31m-	print 'APT::Get::AllowUnauthenticated 0 ;'
+-	print 'Binary::apt-get::Acquire::AllowInsecureRepositories "false";'
+-	print 'Acquire::AllowInsecureRepositories "false";'[0m
+[32m+	print('APT::Get::AllowUnauthenticated 0 ;')
++	print('Binary::apt-get::Acquire::AllowInsecureRepositories "false";')
++	print('Acquire::AllowInsecureRepositories "false";')[0m
+[36m@@ -9,3 +9,3 @@[0m
+[31m-	print 'APT::Get::AllowUnauthenticated 1 ;'
+-	print 'Binary::apt-get::Acquire::AllowInsecureRepositories "true";'
+-	print 'Acquire::AllowInsecureRepositories "true";'[0m
+[32m+	print('APT::Get::AllowUnauthenticated 1 ;')
++	print('Binary::apt-get::Acquire::AllowInsecureRepositories "true";')
++	print('Acquire::AllowInsecureRepositories "true";')[0m
+# ./univention-base-files/conffiles/etc/bash.bashrc
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/bash.bashrc	2020-03-12 10:12:25.665012676 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:34.188056424 +0100
+[0m[36m@@ -61,0 +62 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/e2fsck.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/e2fsck.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:34.516068709 +0100
+[0m[36m@@ -10 +10 @@[0m
+[31m-from ConfigParser import RawConfigParser, NoSectionError[0m
+[32m+from configparser import RawConfigParser, NoSectionError[0m
+[36m@@ -23 +23 @@[0m
+[31m-for key, value in configRegistry.items():[0m
+[32m+for key, value in list(configRegistry.items()):[0m
+# ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/00header.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/00header.py	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:34.516068709 +0100
+[0m[36m@@ -2,0 +3 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/20utf8.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/20utf8.py	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:34.520068859 +0100
+[0m[36m@@ -4,0 +5 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/10apport.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/10apport.py	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:34.524069009 +0100
+[0m[36m@@ -7,0 +8 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/ssh/ssh_config
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/ssh/ssh_config	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:34.840080845 +0100
+[0m[36m@@ -48 +48 @@[0m
+[31m-   print '    GSSAPIAuthentication yes'[0m
+[32m+   print('    GSSAPIAuthentication yes')[0m
+[36m@@ -50 +49,0 @@[0m
+[31m-    GSSAPIDelegateCredentials no[0m
+# ./univention-base-files/conffiles/etc/ssh/sshd_config
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/ssh/sshd_config	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:37.080164718 +0100
+[0m[36m@@ -17 +17 @@[0m
+[31m-print 'Port %s' % configRegistry.get('sshd/port', '22')[0m
+[32m+print('Port %s' % configRegistry.get('sshd/port', '22'))[0m
+[36m@@ -19 +19 @@[0m
+[31m-	print 'AddressFamily %(sshd/AddressFamily)s' % configRegistry[0m
+[32m+	print('AddressFamily %(sshd/AddressFamily)s' % configRegistry)[0m
+[36m@@ -21 +21 @@[0m
+[31m-	print '#AddressFamily any'[0m
+[32m+	print('#AddressFamily any')[0m
+[36m@@ -23,2 +23,2 @@[0m
+[31m-	for ip in filter(None, configRegistry.get('sshd/ListenAddress', '').split(',')):
+-		print 'ListenAddress %s' % ip[0m
+[32m+	for ip in [_f for _f in configRegistry.get('sshd/ListenAddress', '').split(',') if _f]:
++		print('ListenAddress %s' % ip)[0m
+[36m@@ -26,3 +26,3 @@[0m
+[31m-	print '#ListenAddress 0.0.0.0'
+-	print '#ListenAddress ::'
+-print ''[0m
+[32m+	print('#ListenAddress 0.0.0.0')
++	print('#ListenAddress ::')
++print('')[0m
+[36m@@ -41,4 +41,4 @@[0m
+[31m-		print "HostKey %s" % (filename,)
+-print ''
+-print ''
+-print '# Ciphers and keying'[0m
+[32m+		print("HostKey %s" % (filename,))
++print('')
++print('')
++print('# Ciphers and keying')[0m
+[36m@@ -46 +46 @@[0m
+[31m-	print 'RekeyLimit %(sshd/RekeyLimit)s' % configRegistry[0m
+[32m+	print('RekeyLimit %(sshd/RekeyLimit)s' % configRegistry)[0m
+[36m@@ -48,3 +48,3 @@[0m
+[31m-	print '#RekeyLimit default none'
+-print ''
+-print '# Logging'[0m
+[32m+	print('#RekeyLimit default none')
++print('')
++print('# Logging')[0m
+[36m@@ -52 +52 @@[0m
+[31m-	print 'SyslogFacility %(sshd/SyslogFacility)s' % configRegistry[0m
+[32m+	print('SyslogFacility %(sshd/SyslogFacility)s' % configRegistry)[0m
+[36m@@ -54 +54 @@[0m
+[31m-	print '#SyslogFacility AUTH'[0m
+[32m+	print('#SyslogFacility AUTH')[0m
+[36m@@ -56 +56 @@[0m
+[31m-	print 'LogLevel %(sshd/LogLevel)s' % configRegistry[0m
+[32m+	print('LogLevel %(sshd/LogLevel)s' % configRegistry)[0m
+[36m@@ -58,4 +58,4 @@[0m
+[31m-	print '#LogLevel INFO'
+-print ''
+-print '# Authentication:'
+-print ''[0m
+[32m+	print('#LogLevel INFO')
++print('')
++print('# Authentication:')
++print('')[0m
+[36m@@ -63 +63 @@[0m
+[31m-	print 'LoginGraceTime %(sshd/LoginGraceTime)s' % configRegistry[0m
+[32m+	print('LoginGraceTime %(sshd/LoginGraceTime)s' % configRegistry)[0m
+[36m@@ -65,2 +65,2 @@[0m
+[31m-	print 'LoginGraceTime 600'
+-print 'PermitRootLogin %s' % configRegistry.get('sshd/permitroot', 'prohibit-password')[0m
+[32m+	print('LoginGraceTime 600')
++print('PermitRootLogin %s' % configRegistry.get('sshd/permitroot', 'prohibit-password'))[0m
+[36m@@ -68 +68 @@[0m
+[31m-	print 'StrictModes %(sshd/StrictModes)s' % configRegistry[0m
+[32m+	print('StrictModes %(sshd/StrictModes)s' % configRegistry)[0m
+[36m@@ -70 +70 @@[0m
+[31m-	print '#StrictModes yes'[0m
+[32m+	print('#StrictModes yes')[0m
+[36m@@ -72 +72 @@[0m
+[31m-	print 'MaxAuthTries %(sshd/MaxAuthTries)s' % configRegistry[0m
+[32m+	print('MaxAuthTries %(sshd/MaxAuthTries)s' % configRegistry)[0m
+[36m@@ -74 +74 @@[0m
+[31m-	print '#MaxAuthTries 6'[0m
+[32m+	print('#MaxAuthTries 6')[0m
+[36m@@ -76 +76 @@[0m
+[31m-	print 'MaxSessions %(sshd/MaxSessions)s' % configRegistry[0m
+[32m+	print('MaxSessions %(sshd/MaxSessions)s' % configRegistry)[0m
+[36m@@ -78,2 +78,2 @@[0m
+[31m-	print '#MaxSessions 10'
+-print ''[0m
+[32m+	print('#MaxSessions 10')
++print('')[0m
+[36m@@ -81 +81 @@[0m
+[31m-	print 'PubkeyAuthentication %(sshd/PubkeyAuthentication)s' % configRegistry[0m
+[32m+	print('PubkeyAuthentication %(sshd/PubkeyAuthentication)s' % configRegistry)[0m
+[36m@@ -83,3 +83,3 @@[0m
+[31m-	print '#PubkeyAuthentication yes'
+-print ''
+-print '# Expect .ssh/authorized_keys2 to be disregarded by default in future.'[0m
+[32m+	print('#PubkeyAuthentication yes')
++print('')
++print('# Expect .ssh/authorized_keys2 to be disregarded by default in future.')[0m
+[36m@@ -87 +87 @@[0m
+[31m-	print 'AuthorizedKeysFile %(sshd/AuthorizedKeysFile)s' % configRegistry[0m
+[32m+	print('AuthorizedKeysFile %(sshd/AuthorizedKeysFile)s' % configRegistry)[0m
+[36m@@ -89,2 +89,2 @@[0m
+[31m-	print '#AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2'
+-print ''[0m
+[32m+	print('#AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys2')
++print('')[0m
+[36m@@ -92 +92 @@[0m
+[31m-	print 'AuthorizedPrincipalsFile %(sshd/AuthorizedPrincipalsFile)s' % configRegistry[0m
+[32m+	print('AuthorizedPrincipalsFile %(sshd/AuthorizedPrincipalsFile)s' % configRegistry)[0m
+[36m@@ -94,2 +94,2 @@[0m
+[31m-	print '#AuthorizedPrincipalsFile none'
+-print ''[0m
+[32m+	print('#AuthorizedPrincipalsFile none')
++print('')[0m
+[36m@@ -97 +97 @@[0m
+[31m-	print 'AuthorizedKeysCommand %(sshd/AuthorizedKeysCommand)s' % configRegistry[0m
+[32m+	print('AuthorizedKeysCommand %(sshd/AuthorizedKeysCommand)s' % configRegistry)[0m
+[36m@@ -99 +99 @@[0m
+[31m-	print '#AuthorizedKeysCommand none'[0m
+[32m+	print('#AuthorizedKeysCommand none')[0m
+[36m@@ -101 +101 @@[0m
+[31m-	print 'AuthorizedKeysCommandUser %(sshd/AuthorizedKeysCommandUser)s' % configRegistry[0m
+[32m+	print('AuthorizedKeysCommandUser %(sshd/AuthorizedKeysCommandUser)s' % configRegistry)[0m
+[36m@@ -103,3 +103,3 @@[0m
+[31m-	print '#AuthorizedKeysCommandUser nobody'
+-print ''
+-print '# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts'[0m
+[32m+	print('#AuthorizedKeysCommandUser nobody')
++print('')
++print('# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts')[0m
+[36m@@ -107 +107 @@[0m
+[31m-	print 'HostbasedAuthentication %(sshd/HostbasedAuthentication)s' % configRegistry[0m
+[32m+	print('HostbasedAuthentication %(sshd/HostbasedAuthentication)s' % configRegistry)[0m
+[36m@@ -109,3 +109,3 @@[0m
+[31m-	print '#HostbasedAuthentication no'
+-print '# Change to yes if you don\'t trust ~/.ssh/known_hosts for'
+-print '# HostbasedAuthentication'[0m
+[32m+	print('#HostbasedAuthentication no')
++print('# Change to yes if you don\'t trust ~/.ssh/known_hosts for')
++print('# HostbasedAuthentication')[0m
+[36m@@ -113 +113 @@[0m
+[31m-	print 'IgnoreUserKnownHosts %(sshd/IgnoreUserKnownHosts)s' % configRegistry[0m
+[32m+	print('IgnoreUserKnownHosts %(sshd/IgnoreUserKnownHosts)s' % configRegistry)[0m
+[36m@@ -115,2 +115,2 @@[0m
+[31m-	print '#IgnoreUserKnownHosts no'
+-print '# Don\'t read the user\'s ~/.rhosts and ~/.shosts files'[0m
+[32m+	print('#IgnoreUserKnownHosts no')
++print('# Don\'t read the user\'s ~/.rhosts and ~/.shosts files')[0m
+[36m@@ -118 +118 @@[0m
+[31m-	print 'IgnoreRhosts %(sshd/IgnoreRhosts)s' % configRegistry[0m
+[32m+	print('IgnoreRhosts %(sshd/IgnoreRhosts)s' % configRegistry)[0m
+[36m@@ -120,4 +120,4 @@[0m
+[31m-	print '#IgnoreRhosts yes'
+-print ''
+-print '# To disable tunneled clear text passwords, change to no here!'
+-print 'PasswordAuthentication %s' % configRegistry.get('sshd/passwordauthentication', 'yes')[0m
+[32m+	print('#IgnoreRhosts yes')
++print('')
++print('# To disable tunneled clear text passwords, change to no here!')
++print('PasswordAuthentication %s' % configRegistry.get('sshd/passwordauthentication', 'yes'))[0m
+[36m@@ -125 +125 @@[0m
+[31m-	print 'PermitEmptyPasswords %(sshd/PermitEmptyPasswords)s' % configRegistry[0m
+[32m+	print('PermitEmptyPasswords %(sshd/PermitEmptyPasswords)s' % configRegistry)[0m
+[36m@@ -127,4 +127,4 @@[0m
+[31m-	print '#PermitEmptyPasswords no'
+-print ''
+-print '# Change to yes to enable challenge-response passwords (beware issues with'
+-print '# some PAM modules and threads)'[0m
+[32m+	print('#PermitEmptyPasswords no')
++print('')
++print('# Change to yes to enable challenge-response passwords (beware issues with')
++print('# some PAM modules and threads)')[0m
+[36m@@ -132 +132 @@[0m
+[31m-	print "ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse')[0m
+[32m+	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))[0m
+[36m@@ -134,2 +134,2 @@[0m
+[31m-		print >> sys.stderr, 'WARNING: The value for ChallengeResponseAuthentication is ' \
+-			'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse'[0m
+[32m+		print('WARNING: The value for ChallengeResponseAuthentication is ' \
++			'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse', file=sys.stderr)[0m
+[36m@@ -137,3 +137,3 @@[0m
+[31m-	print "ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes')
+-print ''
+-print '# Kerberos options'[0m
+[32m+	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
++print('')
++print('# Kerberos options')[0m
+[36m@@ -141 +141 @@[0m
+[31m-	print 'KerberosAuthentication %(sshd/KerberosAuthentication)s' % configRegistry[0m
+[32m+	print('KerberosAuthentication %(sshd/KerberosAuthentication)s' % configRegistry)[0m
+[36m@@ -143 +143 @@[0m
+[31m-	print '#KerberosAuthentication no'[0m
+[32m+	print('#KerberosAuthentication no')[0m
+[36m@@ -145 +145 @@[0m
+[31m-	print 'KerberosOrLocalPasswd %(sshd/KerberosOrLocalPasswd)s' % configRegistry[0m
+[32m+	print('KerberosOrLocalPasswd %(sshd/KerberosOrLocalPasswd)s' % configRegistry)[0m
+[36m@@ -147 +147 @@[0m
+[31m-	print '#KerberosOrLocalPasswd yes'[0m
+[32m+	print('#KerberosOrLocalPasswd yes')[0m
+[36m@@ -149 +149 @@[0m
+[31m-	print 'KerberosTicketCleanup %(sshd/KerberosTicketCleanup)s' % configRegistry[0m
+[32m+	print('KerberosTicketCleanup %(sshd/KerberosTicketCleanup)s' % configRegistry)[0m
+[36m@@ -151 +151 @@[0m
+[31m-	print '#KerberosTicketCleanup yes'[0m
+[32m+	print('#KerberosTicketCleanup yes')[0m
+[36m@@ -153 +153 @@[0m
+[31m-	print 'KerberosGetAFSToken %(sshd/KerberosGetAFSToken)s' % configRegistry[0m
+[32m+	print('KerberosGetAFSToken %(sshd/KerberosGetAFSToken)s' % configRegistry)[0m
+[36m@@ -155,4 +155,4 @@[0m
+[31m-	print '#KerberosGetAFSToken no'
+-print ''
+-print '# GSSAPI options'
+-print 'GSSAPIAuthentication %s' % configRegistry.get('sshd/GSSAPIAuthentication', 'yes')[0m
+[32m+	print('#KerberosGetAFSToken no')
++print('')
++print('# GSSAPI options')
++print('GSSAPIAuthentication %s' % configRegistry.get('sshd/GSSAPIAuthentication', 'yes'))[0m
+[36m@@ -160 +160 @@[0m
+[31m-	print 'GSSAPICleanupCredentials %(sshd/GSSAPICleanupCredentials)s' % configRegistry[0m
+[32m+	print('GSSAPICleanupCredentials %(sshd/GSSAPICleanupCredentials)s' % configRegistry)[0m
+[36m@@ -162 +162 @@[0m
+[31m-	print '#GSSAPICleanupCredentials yes'[0m
+[32m+	print('#GSSAPICleanupCredentials yes')[0m
+[36m@@ -164 +164 @@[0m
+[31m-	print 'GSSAPIStrictAcceptorCheck %(sshd/GSSAPIStrictAcceptorCheck)s' % configRegistry[0m
+[32m+	print('GSSAPIStrictAcceptorCheck %(sshd/GSSAPIStrictAcceptorCheck)s' % configRegistry)[0m
+[36m@@ -166,2 +166,2 @@[0m
+[31m-	print '#GSSAPIStrictAcceptorCheck yes'
+-print 'GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes')[0m
+[32m+	print('#GSSAPIStrictAcceptorCheck yes')
++print('GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes'))[0m
+[36m@@ -181,2 +181,2 @@[0m
+[31m-print 'UsePAM %s' % configRegistry.get('sshd/UsePAM', 'yes')
+-print ''[0m
+[32m+print('UsePAM %s' % configRegistry.get('sshd/UsePAM', 'yes'))
++print('')[0m
+[36m@@ -184 +184 @@[0m
+[31m-	print 'AllowAgentForwarding %(sshd/AllowAgentForwarding)s' % configRegistry[0m
+[32m+	print('AllowAgentForwarding %(sshd/AllowAgentForwarding)s' % configRegistry)[0m
+[36m@@ -186 +186 @@[0m
+[31m-	print '#AllowAgentForwarding yes'[0m
+[32m+	print('#AllowAgentForwarding yes')[0m
+[36m@@ -188 +188 @@[0m
+[31m-	print 'AllowTcpForwarding %(sshd/AllowTcpForwarding)s' % configRegistry[0m
+[32m+	print('AllowTcpForwarding %(sshd/AllowTcpForwarding)s' % configRegistry)[0m
+[36m@@ -190 +190 @@[0m
+[31m-	print '#AllowTcpForwarding yes'[0m
+[32m+	print('#AllowTcpForwarding yes')[0m
+[36m@@ -192 +192 @@[0m
+[31m-	print 'GatewayPorts %(sshd/GatewayPorts)s' % configRegistry[0m
+[32m+	print('GatewayPorts %(sshd/GatewayPorts)s' % configRegistry)[0m
+[36m@@ -194 +194 @@[0m
+[31m-	print '#GatewayPorts no'[0m
+[32m+	print('#GatewayPorts no')[0m
+[36m@@ -196 +196 @@[0m
+[31m-	print "X11Forwarding %s" % configRegistry.get('sshd/xforwarding')[0m
+[32m+	print("X11Forwarding %s" % configRegistry.get('sshd/xforwarding'))[0m
+[36m@@ -198,2 +198,2 @@[0m
+[31m-		print >> sys.stderr, 'WARNING: The value for X11Forwarding is ' \
+-			'set twice: via sshd/X11Forwarding and sshd/xforwarding'[0m
+[32m+		print('WARNING: The value for X11Forwarding is ' \
++			'set twice: via sshd/X11Forwarding and sshd/xforwarding', file=sys.stderr)[0m
+[36m@@ -201 +201 @@[0m
+[31m-	print "X11Forwarding %s" % configRegistry.get('sshd/X11Forwarding', 'no')[0m
+[32m+	print("X11Forwarding %s" % configRegistry.get('sshd/X11Forwarding', 'no'))[0m
+[36m@@ -203 +203 @@[0m
+[31m-	print "X11DisplayOffset %s" % configRegistry.get('sshd/xdisplayoffset')[0m
+[32m+	print("X11DisplayOffset %s" % configRegistry.get('sshd/xdisplayoffset'))[0m
+[36m@@ -205,2 +205,2 @@[0m
+[31m-		print >> sys.stderr, 'WARNING: The value for X11DisplayOffset is ' \
+-			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset'[0m
+[32m+		print('WARNING: The value for X11DisplayOffset is ' \
++			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset', file=sys.stderr)[0m
+[36m@@ -208 +208 @@[0m
+[31m-	print "X11DisplayOffset %s" % configRegistry.get('sshd/X11DisplayOffset')[0m
+[32m+	print("X11DisplayOffset %s" % configRegistry.get('sshd/X11DisplayOffset'))[0m
+[36m@@ -210 +210 @@[0m
+[31m-	print "X11UseLocalHost %s" % configRegistry.get('sshd/xuselocalhost')[0m
+[32m+	print("X11UseLocalHost %s" % configRegistry.get('sshd/xuselocalhost'))[0m
+[36m@@ -212,2 +212,2 @@[0m
+[31m-		print >> sys.stderr, 'WARNING: The value for X11UseLocalHost is ' \
+-			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost'[0m
+[32m+		print('WARNING: The value for X11UseLocalHost is ' \
++			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost', file=sys.stderr)[0m
+[36m@@ -215,2 +215,2 @@[0m
+[31m-	print "X11UseLocalHost %s" % configRegistry.get('sshd/X11UseLocalHost')
+-print ''[0m
+[32m+	print("X11UseLocalHost %s" % configRegistry.get('sshd/X11UseLocalHost'))
++print('')[0m
+[36m@@ -218 +218 @@[0m
+[31m-	print 'PermitTTY %(sshd/PermitTTY)s' % configRegistry[0m
+[32m+	print('PermitTTY %(sshd/PermitTTY)s' % configRegistry)[0m
+[36m@@ -220,2 +220,2 @@[0m
+[31m-	print '#PermitTTY yes'
+-print 'PrintMotd %s' % configRegistry.get('sshd/PrintMotd', 'no')[0m
+[32m+	print('#PermitTTY yes')
++print('PrintMotd %s' % configRegistry.get('sshd/PrintMotd', 'no'))[0m
+[36m@@ -223 +223 @@[0m
+[31m-	print 'TCPKeepAlive %(sshd/TCPKeepAlive)s' % configRegistry[0m
+[32m+	print('TCPKeepAlive %(sshd/TCPKeepAlive)s' % configRegistry)[0m
+[36m@@ -225 +225 @@[0m
+[31m-	print '#TCPKeepAlive yes'[0m
+[32m+	print('#TCPKeepAlive yes')[0m
+[36m@@ -227 +227 @@[0m
+[31m-	print 'PrintLastLog %(sshd/PrintLastLog)s' % configRegistry[0m
+[32m+	print('PrintLastLog %(sshd/PrintLastLog)s' % configRegistry)[0m
+[36m@@ -229,2 +229,2 @@[0m
+[31m-	print '#PrintLastLog yes'
+-print ''[0m
+[32m+	print('#PrintLastLog yes')
++print('')[0m
+[36m@@ -232 +232 @@[0m
+[31m-	print 'UsePrivilegeSeparation %(sshd/UsePrivilegeSeparation)s' % configRegistry[0m
+[32m+	print('UsePrivilegeSeparation %(sshd/UsePrivilegeSeparation)s' % configRegistry)[0m
+[36m@@ -234 +234 @@[0m
+[31m-	print '#UsePrivilegeSeparation sandbox'[0m
+[32m+	print('#UsePrivilegeSeparation sandbox')[0m
+[36m@@ -236 +236 @@[0m
+[31m-	print 'PermitUserEnvironment %(sshd/PermitUserEnvironment)s' % configRegistry[0m
+[32m+	print('PermitUserEnvironment %(sshd/PermitUserEnvironment)s' % configRegistry)[0m
+[36m@@ -238 +238 @@[0m
+[31m-	print '#PermitUserEnvironment no'[0m
+[32m+	print('#PermitUserEnvironment no')[0m
+[36m@@ -240 +240 @@[0m
+[31m-	print 'Compression %(sshd/Compression)s' % configRegistry[0m
+[32m+	print('Compression %(sshd/Compression)s' % configRegistry)[0m
+[36m@@ -242 +242 @@[0m
+[31m-	print '#Compression delayed'[0m
+[32m+	print('#Compression delayed')[0m
+[36m@@ -244 +244 @@[0m
+[31m-	print 'ClientAliveInterval %(sshd/ClientAliveInterval)s' % configRegistry[0m
+[32m+	print('ClientAliveInterval %(sshd/ClientAliveInterval)s' % configRegistry)[0m
+[36m@@ -246 +246 @@[0m
+[31m-	print '#ClientAliveInterval 0'[0m
+[32m+	print('#ClientAliveInterval 0')[0m
+[36m@@ -248 +248 @@[0m
+[31m-	print 'ClientAliveCountMax %(sshd/ClientAliveCountMax)s' % configRegistry[0m
+[32m+	print('ClientAliveCountMax %(sshd/ClientAliveCountMax)s' % configRegistry)[0m
+[36m@@ -250 +250 @@[0m
+[31m-	print '#ClientAliveCountMax 3'[0m
+[32m+	print('#ClientAliveCountMax 3')[0m
+[36m@@ -252 +252 @@[0m
+[31m-	print 'UseDNS %(sshd/UseDNS)s' % configRegistry[0m
+[32m+	print('UseDNS %(sshd/UseDNS)s' % configRegistry)[0m
+[36m@@ -254 +254 @@[0m
+[31m-	print '#UseDNS no'[0m
+[32m+	print('#UseDNS no')[0m
+[36m@@ -256 +256 @@[0m
+[31m-	print 'PidFile %(sshd/PidFile)s' % configRegistry[0m
+[32m+	print('PidFile %(sshd/PidFile)s' % configRegistry)[0m
+[36m@@ -258 +258 @@[0m
+[31m-	print '#PidFile /var/run/sshd.pid'[0m
+[32m+	print('#PidFile /var/run/sshd.pid')[0m
+[36m@@ -260 +260 @@[0m
+[31m-	print 'MaxStartups %(sshd/MaxStartups)s' % configRegistry[0m
+[32m+	print('MaxStartups %(sshd/MaxStartups)s' % configRegistry)[0m
+[36m@@ -262 +262 @@[0m
+[31m-	print '#MaxStartups 10:30:100'[0m
+[32m+	print('#MaxStartups 10:30:100')[0m
+[36m@@ -264 +264 @@[0m
+[31m-	print 'PermitTunnel %(sshd/PermitTunnel)s' % configRegistry[0m
+[32m+	print('PermitTunnel %(sshd/PermitTunnel)s' % configRegistry)[0m
+[36m@@ -266 +266 @@[0m
+[31m-	print '#PermitTunnel no'[0m
+[32m+	print('#PermitTunnel no')[0m
+[36m@@ -268 +268 @@[0m
+[31m-	print 'ChrootDirectory %(sshd/ChrootDirectory)s' % configRegistry[0m
+[32m+	print('ChrootDirectory %(sshd/ChrootDirectory)s' % configRegistry)[0m
+[36m@@ -270 +270 @@[0m
+[31m-	print '#ChrootDirectory none'[0m
+[32m+	print('#ChrootDirectory none')[0m
+[36m@@ -272 +272 @@[0m
+[31m-	print 'VersionAddendum %(sshd/VersionAddendum)s' % configRegistry[0m
+[32m+	print('VersionAddendum %(sshd/VersionAddendum)s' % configRegistry)[0m
+[36m@@ -274 +274 @@[0m
+[31m-	print '#VersionAddendum none'[0m
+[32m+	print('#VersionAddendum none')[0m
+[36m@@ -276,3 +276,3 @@[0m
+[31m-	print ''
+-	print '# no default banner path'
+-	print "Banner %s" % configRegistry.get('sshd/banner')[0m
+[32m+	print('')
++	print('# no default banner path')
++	print("Banner %s" % configRegistry.get('sshd/banner'))[0m
+[36m@@ -280,2 +280,2 @@[0m
+[31m-		print >> sys.stderr, 'WARNING: The value for Banner is ' \
+-			'set twice: via sshd/Banner and sshd/banner'[0m
+[32m+		print('WARNING: The value for Banner is ' \
++			'set twice: via sshd/Banner and sshd/banner', file=sys.stderr)[0m
+[36m@@ -283,5 +283,5 @@[0m
+[31m-	print ''
+-	print '# no default banner path'
+-	print "Banner %s" % configRegistry.get('sshd/Banner')
+-print ''
+-print ''[0m
+[32m+	print('')
++	print('# no default banner path')
++	print("Banner %s" % configRegistry.get('sshd/Banner'))
++print('')
++print('')[0m
+[36m@@ -289 +289 @@[0m
+[31m-	print 'AcceptEnv %(sshd/AcceptEnv)s' % configRegistry[0m
+[32m+	print('AcceptEnv %(sshd/AcceptEnv)s' % configRegistry)[0m
+[36m@@ -291,2 +291,2 @@[0m
+[31m-	print '# Allow client to pass locale environment variables'
+-	print 'AcceptEnv LANG LC_*'[0m
+[32m+	print('# Allow client to pass locale environment variables')
++	print('AcceptEnv LANG LC_*')[0m
+[36m@@ -306 +306 @@[0m
+[31m-	print "MACs %(sshd/MACs)s" % configRegistry[0m
+[32m+	print("MACs %(sshd/MACs)s" % configRegistry)[0m
+[36m@@ -308 +308 @@[0m
+[31m-	print "Ciphers %(sshd/Ciphers)s" % configRegistry[0m
+[32m+	print("Ciphers %(sshd/Ciphers)s" % configRegistry)[0m
+[36m@@ -310 +310 @@[0m
+[31m-	print "KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry[0m
+[32m+	print("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry)[0m
+[36m@@ -319 +319 @@[0m
+[31m-	for (key, value) in configRegistry.items()[0m
+[32m+	for (key, value) in list(configRegistry.items())[0m
+[36m@@ -323 +323 @@[0m
+[31m-	print '\n'.join(line.lstrip(DIGITS) for line in sorted(config))[0m
+[32m+	print('\n'.join(line.lstrip(DIGITS) for line in sorted(config)))[0m
+# ./univention-base-files/conffiles/etc/resolv.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/resolv.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:37.416177293 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-	print 'domain  %s' % configRegistry['domain/domainname'][0m
+[32m+	print('domain  %s' % configRegistry['domain/domainname'])[0m
+[36m@@ -11 +11 @@[0m
+[31m-	print 'search %s' % configRegistry['domain/search'][0m
+[32m+	print('search %s' % configRegistry['domain/search'])[0m
+[36m@@ -15 +15 @@[0m
+[31m-	print 'domain	'+configRegistry['domainname'][0m
+[32m+	print('domain	'+configRegistry['domainname'])[0m
+[36m@@ -18 +18 @@[0m
+[31m-	print 'nameserver  '+configRegistry['nameserver1'][0m
+[32m+	print('nameserver  '+configRegistry['nameserver1'])[0m
+[36m@@ -20 +20 @@[0m
+[31m-	print 'nameserver  '+configRegistry['nameserver2'][0m
+[32m+	print('nameserver  '+configRegistry['nameserver2'])[0m
+[36m@@ -22 +22 @@[0m
+[31m-	print 'nameserver  '+configRegistry['nameserver3'][0m
+[32m+	print('nameserver  '+configRegistry['nameserver3'])[0m
+[36m@@ -25 +25 @@[0m
+[31m-	print 'options timeout:%s' % configRegistry['nameserver/option/timeout'][0m
+[32m+	print('options timeout:%s' % configRegistry['nameserver/option/timeout'])[0m
+# ./univention-base-files/conffiles/etc/sysctl.d/local.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/sysctl.d/local.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:37.736189270 +0100
+[0m[36m@@ -12 +12 @@[0m
+[31m-			print 'net.ipv6.conf.%s.accept_ra = 0' % (iface,)[0m
+[32m+			print('net.ipv6.conf.%s.accept_ra = 0' % (iface,))[0m
+[36m@@ -15 +15 @@[0m
+[31m-	print 'fs.inotify.max_user_instances=%s' % configRegistry.get('kernel/fs/inotify/max_user_instances')[0m
+[32m+	print('fs.inotify.max_user_instances=%s' % configRegistry.get('kernel/fs/inotify/max_user_instances'))[0m
+[36m@@ -17 +17 @@[0m
+[31m-	print 'fs.inotify.max_user_watches=%s' % configRegistry.get('kernel/fs/inotify/max_user_watches')[0m
+[32m+	print('fs.inotify.max_user_watches=%s' % configRegistry.get('kernel/fs/inotify/max_user_watches'))[0m
+[36m@@ -19 +19 @@[0m
+[31m-	print 'fs.inotify.max_queued_events=%s' % configRegistry.get('kernel/fs/inotify/max_queued_events')[0m
+[32m+	print('fs.inotify.max_queued_events=%s' % configRegistry.get('kernel/fs/inotify/max_queued_events'))[0m
+# ./univention-base-files/conffiles/etc/modprobe.d/vmgfx.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/modprobe.d/vmgfx.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:37.740189420 +0100
+[0m[36m@@ -5 +5,2 @@[0m
+[31m-options vmwgfx enable_fbdev=1[0m
+\ No newline at end of file
+[32m+options vmwgfx enable_fbdev=1
++[0m
+# ./univention-base-files/conffiles/etc/modprobe.d/univention-blacklist.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/modprobe.d/univention-blacklist.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:38.072201846 +0100
+[0m[36m@@ -7 +7 @@[0m
+[31m-		print 'blacklist %s' % i[0m
+[32m+		print('blacklist %s' % i)[0m
+[36m@@ -9 +8,0 @@[0m
+[31m-[0m
+# ./univention-base-files/conffiles/etc/welcome.msg
+
+The UCS management system is available at https://ucs-7856.uc <
+							      <
+You can log into the Univention Management Console - the prin <
+users, groups, etc. - using the "Administrator" account and t <
+for the root user on the master domain controller.	      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/welcome.msg	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:38.420214867 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))[0m
+[32m+	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))[0m
+[36m@@ -21 +21 @@[0m
+[31m-	print 'Univention Thin Client'[0m
+[32m+	print('Univention Thin Client')[0m
+[36m@@ -24 +24 @@[0m
+[31m-	print[0m
+[32m+	print()[0m
+[36m@@ -40 +40 @@[0m
+[31m-		print 'The UCS management system is available at https://' + startsite[0m
+[32m+		print('The UCS management system is available at https://' + startsite)[0m
+[36m@@ -42,8 +42,8 @@[0m
+[31m-		print 'The UCS management system can be reached by following the link to the domain controller'
+-		print 'master at https://' + startsite + ' and selecting the'
+-		print 'Univention Management Console.'
+-
+-	print
+-	print 'You can log into the Univention Management Console - the principal tool to manage '
+-	print 'users, groups, etc. - using the "Administrator" account and the password selected '
+-	print 'for the root user on the master domain controller.'[0m
+[32m+		print('The UCS management system can be reached by following the link to the domain controller')
++		print('master at https://' + startsite + ' and selecting the')
++		print('Univention Management Console.')
++
++	print()
++	print('You can log into the Univention Management Console - the principal tool to manage ')
++	print('users, groups, etc. - using the "Administrator" account and the password selected ')
++	print('for the root user on the master domain controller.')[0m
+[36m@@ -52 +51,0 @@[0m
+[31m-[0m
+# ./univention-base-files/conffiles/etc/locale.gen
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/locale.gen	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:38.740226841 +0100
+[0m[36m@@ -21 +21 @@[0m
+[31m-        print dl.replace(':', ' ')[0m
+[32m+        print(dl.replace(':', ' '))[0m
+[36m@@ -26 +26 @@[0m
+[31m-                        print l.replace(':', ' ')[0m
+[32m+                        print(l.replace(':', ' '))[0m
+# ./univention-base-files/conffiles/etc/hostname
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/hostname	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:38.744226990 +0100
+[0m[36m@@ -1,0 +2 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/issue.net
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/issue.net	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.084239711 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print  '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))[0m
+[32m+	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))[0m
+[36m@@ -21 +21 @@[0m
+[31m-	print menutitle[0m
+[32m+	print(menutitle)[0m
+[36m@@ -23 +22,0 @@[0m
+[31m-[0m
+# ./univention-base-files/conffiles/etc/init.d/nscd
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/init.d/nscd	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.084239711 +0100
+[0m[36m@@ -149,0 +150 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/init.d/rpcbind
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/init.d/rpcbind	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.088239862 +0100
+[0m[36m@@ -114,0 +115 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/init.d/networking
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/init.d/networking	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.092240011 +0100
+[0m[36m@@ -210,0 +211 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/init.d/rdate
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/init.d/rdate	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.092240011 +0100
+[0m[36m@@ -53,0 +54 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/modules
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/modules	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.424252430 +0100
+[0m[36m@@ -7 +7 @@[0m
+[31m-		print mod[0m
+[32m+		print(mod)[0m
+# ./univention-base-files/conffiles/etc/pam.d/common-session.d/20welcome-message-ssh
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/pam.d/common-session.d/20welcome-message-ssh	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.428252580 +0100
+[0m[36m@@ -0,0 +1 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/default/ssh
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/default/ssh	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.428252580 +0100
+[0m[36m@@ -13,0 +14 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/default/locale
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/default/locale	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:39.764265150 +0100
+[0m[36m@@ -5 +5 @@[0m
+[31m-	print 'LANG=%s' % configRegistry['locale/default'].split(':')[0][0m
+[32m+	print('LANG=%s' % configRegistry['locale/default'].split(':')[0])[0m
+# ./univention-base-files/conffiles/etc/default/ntpdate
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/default/ntpdate	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:40.100277718 +0100
+[0m[36m@@ -9 +9 @@[0m
+[31m-	dcs = filter(None, [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' '))[0m
+[32m+	dcs = [_f for _f in [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' ') if _f][0m
+[36m@@ -12 +12 @@[0m
+[31m-		servers.extend(filter(lambda dc: dc != fqdn, dcs))[0m
+[32m+		servers.extend([dc for dc in dcs if dc != fqdn])[0m
+[36m@@ -18 +18 @@[0m
+[31m-	print 'NTPSERVERS="%s"' % ' '.join(servers)[0m
+[32m+	print('NTPSERVERS="%s"' % ' '.join(servers))[0m
+# ./univention-base-files/conffiles/etc/default/keyboard
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/default/keyboard	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:40.104277868 +0100
+[0m[36m@@ -11,0 +12 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/inputrc
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/inputrc	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:40.108278017 +0100
+[0m[36m@@ -69,0 +70 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/security/packetfilter.d/20_rsyslog.sh
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/security/packetfilter.d/20_rsyslog.sh	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:40.448290733 +0100
+[0m[36m@@ -35,2 +35,2 @@[0m
+[31m-		print "# rsyslog %s" % (typ,)
+-		print "iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port)[0m
+[32m+		print("# rsyslog %s" % (typ,))
++		print("iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port))[0m
+# ./univention-base-files/conffiles/etc/kernel-img.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/kernel-img.conf	2020-03-12 10:12:25.669012793 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:40.788303448 +0100
+[0m[36m@@ -4 +4 @@[0m
+[31m-print 'do_initrd = %s' % configRegistry.get('kernel/do_initrd', 'yes')[0m
+[32m+print('do_initrd = %s' % configRegistry.get('kernel/do_initrd', 'yes'))[0m
+[36m@@ -6 +6 @@[0m
+[31m-print 'do_bootfloppy = %s' % configRegistry.get('kernel/do_bootfloppy', 'no')[0m
+[32m+print('do_bootfloppy = %s' % configRegistry.get('kernel/do_bootfloppy', 'no'))[0m
+[36m@@ -8 +8 @@[0m
+[31m-print 'silent_loader = %s' % configRegistry.get('kernel/silent_loader', 'yes')[0m
+[32m+print('silent_loader = %s' % configRegistry.get('kernel/silent_loader', 'yes'))[0m
+[36m@@ -10 +10 @@[0m
+[31m-print 'clobber_modules = %s' % configRegistry.get('kernel/clobber_modules', 'yes')[0m
+[32m+print('clobber_modules = %s' % configRegistry.get('kernel/clobber_modules', 'yes'))[0m
+[36m@@ -13 +13 @@[0m
+[31m-	print 'ramdisk = %s' % (configRegistry['kernel/ramdisk'])[0m
+[32m+	print('ramdisk = %s' % (configRegistry['kernel/ramdisk']))[0m
+[36m@@ -16 +16 @@[0m
+[31m-	print 'postinst_hook = %s' % (configRegistry['kernel/postinst_hook'])[0m
+[32m+	print('postinst_hook = %s' % (configRegistry['kernel/postinst_hook']))[0m
+# ./univention-base-files/conffiles/etc/rsyslog.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/rsyslog.conf	2020-03-12 10:37:29.547882507 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:44.936458487 +0100
+[0m[36m@@ -16 +16 @@[0m
+[31m-print '$MaxMessageSize %s' % (configRegistry.get("syslog/maxmessagesize", '4k'),)[0m
+[32m+print('$MaxMessageSize %s' % (configRegistry.get("syslog/maxmessagesize", '4k'),))[0m
+[36m@@ -25,2 +25,2 @@[0m
+[31m-print '$SystemLogRateLimitInterval %s' % (configRegistry.get('syslog/limit/interval', '5'),)
+-print '$SystemLogRateLimitBurst %s' % (configRegistry.get('syslog/limit/burst', '200'),)[0m
+[32m+print('$SystemLogRateLimitInterval %s' % (configRegistry.get('syslog/limit/interval', '5'),))
++print('$SystemLogRateLimitBurst %s' % (configRegistry.get('syslog/limit/burst', '200'),))[0m
+[36m@@ -39 +39 @@[0m
+[31m-	print '# provides %s syslog reception' % (typ.upper(),)[0m
+[32m+	print('# provides %s syslog reception' % (typ.upper(),))[0m
+[36m@@ -43,3 +43,3 @@[0m
+[31m-	print '%s$ModLoad im%s' % (pfx, typ)
+-	print '%s$%sServerRun %s' % (pfx, cfg, port or 514)
+-	print[0m
+[32m+	print('%s$ModLoad im%s' % (pfx, typ))
++	print('%s$%sServerRun %s' % (pfx, cfg, port or 514))
++	print()[0m
+[36m@@ -57 +57 @@[0m
+[31m-print '$ActionFileDefaultTemplate %s' % (configRegistry.get('syslog/template/default', 'RSYSLOG_TraditionalFileFormat'),)[0m
+[32m+print('$ActionFileDefaultTemplate %s' % (configRegistry.get('syslog/template/default', 'RSYSLOG_TraditionalFileFormat'),))[0m
+[36m@@ -85 +85 @@[0m
+[31m-remote_list = filter(None, configRegistry.get('syslog/remote', '').split())[0m
+[32m+remote_list = [_f for _f in configRegistry.get('syslog/remote', '').split() if _f][0m
+[36m@@ -88 +88 @@[0m
+[31m-	fallback_list = filter(None, configRegistry.get('syslog/remote/fallback', '').split())[0m
+[32m+	fallback_list = [_f for _f in configRegistry.get('syslog/remote/fallback', '').split() if _f][0m
+[36m@@ -90 +90 @@[0m
+[31m-		print '$ModLoad omrelp'[0m
+[32m+		print('$ModLoad omrelp')[0m
+[36m@@ -92 +92 @@[0m
+[31m-		print '%s	%s' % (selector, server)[0m
+[32m+		print('%s	%s' % (selector, server))[0m
+[36m@@ -94 +94 @@[0m
+[31m-			print '$ActionExecOnlyWhenPreviousIsSuspended on'[0m
+[32m+			print('$ActionExecOnlyWhenPreviousIsSuspended on')[0m
+[36m@@ -96,2 +96,2 @@[0m
+[31m-				print '&	%s' % (fallback,)
+-			print '$ActionExecOnlyWhenPreviousIsSuspended off'[0m
+[32m+				print('&	%s' % (fallback,))
++			print('$ActionExecOnlyWhenPreviousIsSuspended off')[0m
+[36m@@ -107 +107 @@[0m
+[31m-		print template.strip()[0m
+[32m+		print(template.strip())[0m
+[36m@@ -150 +150 @@[0m
+[31m-	print "%s			-/var/log/syslog" % (selector,)[0m
+[32m+	print("%s			-/var/log/syslog" % (selector,))[0m
+[36m@@ -161 +161 @@[0m
+[31m-		print "%s		%s" % (selector, target)[0m
+[32m+		print("%s		%s" % (selector, target))[0m
+[36m@@ -173 +173 @@[0m
+[31m-print r"""[0m
+[32m+print(r"""[0m
+[36m@@ -196 +196 @@[0m
+[31m-"""[0m
+[32m+""")[0m
+# ./univention-base-files/conffiles/etc/hosts.d/90-ipv6defaults
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/hosts.d/90-ipv6defaults	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:44.940458636 +0100
+[0m[36m@@ -6,0 +7 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/hosts.d/20-static
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/hosts.d/20-static	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:45.288471635 +0100
+[0m[36m@@ -4 +4 @@[0m
+[31m-for key, value in configRegistry.items():[0m
+[32m+for key, value in list(configRegistry.items()):[0m
+[36m@@ -6 +6 @@[0m
+[31m-		print "%s\t%s" % (key.split('/')[-1], value)[0m
+[32m+		print("%s\t%s" % (key.split('/')[-1], value))[0m
+# ./univention-base-files/conffiles/etc/hosts.d/00-base
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/hosts.d/00-base	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:45.628484335 +0100
+[0m[36m@@ -15 +15 @@[0m
+[31m-for key, value in configRegistry.items():[0m
+[32m+for key, value in list(configRegistry.items()):[0m
+[36m@@ -39 +39 @@[0m
+[31m-	print line[0m
+[32m+	print(line)[0m
+[36m@@ -41 +41 @@[0m
+[31m-	print line[0m
+[32m+	print(line)[0m
+# ./univention-base-files/conffiles/etc/networks
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/networks	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:45.632484484 +0100
+[0m[36m@@ -6,0 +7 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/network/interfaces.d/10-default
+
+							      <
+auto ens3						      <
+iface ens3 inet dhcp					      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/network/interfaces.d/10-default	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:46.016498827 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-	print[0m
+[32m+	print()[0m
+[36m@@ -12 +12 @@[0m
+[31m-		print 'auto %s' % (interface,)[0m
+[32m+		print('auto %s' % (interface,))[0m
+[36m@@ -20 +20 @@[0m
+[31m-		print '# WARNING: invalid IPv4 address in gateway'[0m
+[32m+		print('# WARNING: invalid IPv4 address in gateway')[0m
+[36m@@ -28 +28 @@[0m
+[31m-				print 'iface %s inet dhcp' % (iface.name,)[0m
+[32m+				print('iface %s inet dhcp' % (iface.name,))[0m
+[36m@@ -33 +33 @@[0m
+[31m-			print 'iface %s inet manual' % (iface.name,)[0m
+[32m+			print('iface %s inet manual' % (iface.name,))[0m
+[36m@@ -35 +35 @@[0m
+[31m-			print '# ERROR: invalid IPv4 address for interface %s' % (name,)[0m
+[32m+			print('# ERROR: invalid IPv4 address for interface %s' % (name,))[0m
+[36m@@ -39,3 +39,3 @@[0m
+[31m-			print 'iface %s inet static' % (iface.name,)
+-			print '\taddress %s' % (addr.ip,)
+-			print '\tnetmask %s' % (addr.netmask,)[0m
+[32m+			print('iface %s inet static' % (iface.name,))
++			print('\taddress %s' % (addr.ip,))
++			print('\tnetmask %s' % (addr.netmask,))[0m
+[36m@@ -43 +43 @@[0m
+[31m-				print '\tnetwork %s' % (iface.network,)[0m
+[32m+				print('\tnetwork %s' % (iface.network,))[0m
+[36m@@ -45 +45 @@[0m
+[31m-				print '\tbroadcast %s' % (iface.broadcast,)[0m
+[32m+				print('\tbroadcast %s' % (iface.broadcast,))[0m
+[36m@@ -47 +47 @@[0m
+[31m-				print '\tmtu %(mtu)s' % iface[0m
+[32m+				print('\tmtu %(mtu)s' % iface)[0m
+[36m@@ -51,2 +51,2 @@[0m
+[31m-					print '\tpointopoint %s' % (gateway,)
+-					print '\tgateway %s' % (gateway,)[0m
+[32m+					print('\tpointopoint %s' % (gateway,))
++					print('\tgateway %s' % (gateway,))[0m
+[36m@@ -55 +55 @@[0m
+[31m-					print '\tgateway %s' % (gateway,)[0m
+[32m+					print('\tgateway %s' % (gateway,))[0m
+[36m@@ -61 +61 @@[0m
+[31m-			print '\tup route add -%s dev %s' % (route, iface.name)[0m
+[32m+			print('\tup route add -%s dev %s' % (route, iface.name))[0m
+[36m@@ -64 +64 @@[0m
+[31m-			print '\t%s' % (value,)[0m
+[32m+			print('\t%s' % (value,))[0m
+[36m@@ -70 +70 @@[0m
+[31m-		print '# WARNING: invalid IPv6 address in ipv6/gateway'[0m
+[32m+		print('# WARNING: invalid IPv6 address in ipv6/gateway')[0m
+[36m@@ -79,2 +79,2 @@[0m
+[31m-				print '# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
+-					(iface.name, name)[0m
+[32m+				print('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
++					(iface.name, name))[0m
+[36m@@ -84,2 +84,2 @@[0m
+[31m-				print '# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
+-					(iface.name, name)[0m
+[32m+				print('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
++					(iface.name, name))[0m
+[36m@@ -97 +97 @@[0m
+[31m-		print 'iface %s inet6 static' % (iface.name,)[0m
+[32m+		print('iface %s inet6 static' % (iface.name,))[0m
+[36m@@ -100 +100 @@[0m
+[31m-			print '\tgateway %s' % (gateway, )[0m
+[32m+			print('\tgateway %s' % (gateway, ))[0m
+[36m@@ -108 +108 @@[0m
+[31m-			print '# %s' % (name,)[0m
+[32m+			print('# %s' % (name,))[0m
+[36m@@ -110,2 +110,2 @@[0m
+[31m-				print '\taddress %s' % (addr.ip,)
+-				print '\tnetmask %s' % (addr.prefixlen,)[0m
+[32m+				print('\taddress %s' % (addr.ip,))
++				print('\tnetmask %s' % (addr.prefixlen,))[0m
+[36m@@ -113,2 +113,2 @@[0m
+[31m-				print '\tup   ip -6 addr add %s dev %s' % (addr, iface.name)
+-				print '\tdown ip -6 addr del %s dev %s' % (addr, iface.name)[0m
+[32m+				print('\tup   ip -6 addr add %s dev %s' % (addr, iface.name))
++				print('\tdown ip -6 addr del %s dev %s' % (addr, iface.name))[0m
+[36m@@ -116 +116 @@[0m
+[31m-				print '\tmtu %(mtu)s' % iface[0m
+[32m+				print('\tmtu %(mtu)s' % iface)[0m
+[36m@@ -123,4 +123,4 @@[0m
+[31m-						print '\tup   ip -6 route add %s dev %s' % data
+-						print '\tup   ip -6 route add default via %s dev %s' % data
+-						print '\tdown ip -6 route del default via %s dev %s' % data
+-						print '\tdown ip -6 route del %s dev %s' % data[0m
+[32m+						print('\tup   ip -6 route add %s dev %s' % data)
++						print('\tup   ip -6 route add default via %s dev %s' % data)
++						print('\tdown ip -6 route del default via %s dev %s' % data)
++						print('\tdown ip -6 route del %s dev %s' % data)[0m
+[36m@@ -129 +129 @@[0m
+[31m-						print '\tgateway %s' % (gateway,)[0m
+[32m+						print('\tgateway %s' % (gateway,))[0m
+[36m@@ -134 +134 @@[0m
+[31m-				print '\t%s' % (value,)[0m
+[32m+				print('\t%s' % (value,))[0m
+# ./univention-base-files/conffiles/etc/network/interfaces.d/00-base
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/network/interfaces.d/00-base	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:46.020498976 +0100
+[0m[36m@@ -5,0 +6 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/etc/cron.d/univention-config-registry-backup
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/cron.d/univention-config-registry-backup	2020-03-12 10:06:28.926416493 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:46.344511075 +0100
+[0m[36m@@ -11 +11 @@[0m
+[31m-print '%s30 3     * * *   root            /usr/share/univention-config-registry/univention-config-registry-backup' % comment[0m
+[32m+print('%s30 3     * * *   root            /usr/share/univention-config-registry/univention-config-registry-backup' % comment)[0m
+# ./univention-base-files/conffiles/etc/cron.d/univention-ucr-cronjobs
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/cron.d/univention-ucr-cronjobs	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:46.708524668 +0100
+[0m[36m@@ -18 +18 @@[0m
+[31m-		print >> sys.stderr, "E: This cron UCR key is not properly formatted: %s" % key[0m
+[32m+		print("E: This cron UCR key is not properly formatted: %s" % key, file=sys.stderr)[0m
+[36m@@ -34 +34 @@[0m
+[31m-			print >> sys.stderr, "E: Time or command is missing for cron job cron/%s" % job[0m
+[32m+			print("E: Time or command is missing for cron job cron/%s" % job, file=sys.stderr)[0m
+[36m@@ -37 +37 @@[0m
+[31m-		print '\n'[0m
+[32m+		print('\n')[0m
+[36m@@ -39 +39 @@[0m
+[31m-			print "# %s" % description[0m
+[32m+			print("# %s" % description)[0m
+[36m@@ -42,2 +42,2 @@[0m
+[31m-		print "MAILTO=%s" % mailto
+-		print "%s %s %s" % (time, user, command)[0m
+[32m+		print("MAILTO=%s" % mailto)
++		print("%s %s %s" % (time, user, command))[0m
+[36m@@ -46 +46 @@[0m
+[31m-print 'PATH="%s"' % path[0m
+[32m+print('PATH="%s"' % path)[0m
+[36m@@ -50 +50 @@[0m
+[31m-	print '\n# cron jobs defined by UCR have been disabled by cron/ucr/disabled'[0m
+[32m+	print('\n# cron jobs defined by UCR have been disabled by cron/ucr/disabled')[0m
+[36m@@ -52 +52 @@[0m
+[31m-	for key in configRegistry.keys():[0m
+[32m+	for key in list(configRegistry.keys()):[0m
+# ./univention-base-files/conffiles/etc/profile
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/profile	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:47.680560958 +0100
+[0m[36m@@ -30 +30 @@[0m
+[31m-	print 'export http_proxy="%s"' % configRegistry['proxy/http'][0m
+[32m+	print('export http_proxy="%s"' % configRegistry['proxy/http'])[0m
+[36m@@ -32 +32 @@[0m
+[31m-		print 'export https_proxy="%s"' % configRegistry['proxy/http'][0m
+[32m+		print('export https_proxy="%s"' % configRegistry['proxy/http'])[0m
+[36m@@ -35 +35 @@[0m
+[31m-	print 'export https_proxy="%s"' % configRegistry['proxy/https'][0m
+[32m+	print('export https_proxy="%s"' % configRegistry['proxy/https'])[0m
+[36m@@ -37 +37 @@[0m
+[31m-print 'export PATH PS1'[0m
+[32m+print('export PATH PS1')[0m
+[36m@@ -40 +40 @@[0m
+[31m-	print 'export no_proxy="%s"' % configRegistry['proxy/no_proxy'][0m
+[32m+	print('export no_proxy="%s"' % configRegistry['proxy/no_proxy'])[0m
+[36m@@ -43 +43 @@[0m
+[31m-	print 'export LANG="%s"' % configRegistry['locale/default'].split(":")[0][0m
+[32m+	print('export LANG="%s"' % configRegistry['locale/default'].split(":")[0])[0m
+[36m@@ -61 +61 @@[0m
+[31m-	print 'umask %s' % configRegistry['umask'][0m
+[32m+	print('umask %s' % configRegistry['umask'])[0m
+[36m@@ -63 +63 @@[0m
+[31m-	print 'umask 022'[0m
+[32m+	print('umask 022')[0m
+# ./univention-base-files/conffiles/etc/ntp.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/ntp.conf	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:48.680598284 +0100
+[0m[36m@@ -21 +21 @@[0m
+[31m-	dcs = filter(None, [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' '))[0m
+[32m+	dcs = [_f for _f in [configRegistry.get('ldap/master')] + configRegistry.get('ldap/backup', '').split(' ') if _f][0m
+[36m@@ -26 +26 @@[0m
+[31m-				print "server %s" % ts[0m
+[32m+				print("server %s" % ts)[0m
+[36m@@ -29 +29 @@[0m
+[31m-			print "server %s" % ts[0m
+[32m+			print("server %s" % ts)[0m
+[36m@@ -32 +32 @@[0m
+[31m-	print 'ntpsigndsocket /var/lib/samba/ntp_signd'[0m
+[32m+	print('ntpsigndsocket /var/lib/samba/ntp_signd')[0m
+[36m@@ -34,3 +34,3 @@[0m
+[31m-		print 'restrict default mssntp noquery'
+-		print 'restrict 127.0.0.1'
+-		print 'restrict ::1'[0m
+[32m+		print('restrict default mssntp noquery')
++		print('restrict 127.0.0.1')
++		print('restrict ::1')[0m
+[36m@@ -38 +38 @@[0m
+[31m-		print 'restrict default mssntp'[0m
+[32m+		print('restrict default mssntp')[0m
+[36m@@ -41,4 +41,4 @@[0m
+[31m-		print 'restrict default noquery'
+-		print 'restrict 127.0.0.1'
+-		print 'restrict ::1'
+-print 'tinker panic %s' % configRegistry.get('ntp/tinker/panic', '0')[0m
+[32m+		print('restrict default noquery')
++		print('restrict 127.0.0.1')
++		print('restrict ::1')
++print('tinker panic %s' % configRegistry.get('ntp/tinker/panic', '0'))[0m
+[36m@@ -54 +54 @@[0m
+[31m-		print 'fudge 127.127.1.0 stratum 1'[0m
+[32m+		print('fudge 127.127.1.0 stratum 1')[0m
+[36m@@ -56 +56 @@[0m
+[31m-		print 'fudge 127.127.1.0 stratum 5'[0m
+[32m+		print('fudge 127.127.1.0 stratum 5')[0m
+[36m@@ -58 +58 @@[0m
+[31m-	print 'fudge 127.127.1.0 stratum 9'[0m
+[32m+	print('fudge 127.127.1.0 stratum 9')[0m
+# ./univention-base-files/conffiles/etc/lsb-release
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/etc/lsb-release	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:49.012610675 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-	print 'DISTRIB_CODENAME="%s"' % release[0m
+[32m+	print('DISTRIB_CODENAME="%s"' % release)[0m
+[36m@@ -10 +10 @@[0m
+[31m-	print 'DISTRIB_CODENAME=%s' % release[0m
+[32m+	print('DISTRIB_CODENAME=%s' % release)[0m
+[36m@@ -12 +11,0 @@[0m
+[31m-DISTRIB_DESCRIPTION="Univention Corporate Server @%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@ (@%@version/releasename@%@)"[0m
+# ./univention-base-files/conffiles/xkbKeyboard.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/xkbKeyboard.py	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:49.012610675 +0100
+[0m[36m@@ -38,0 +39 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/boot/boot.msg
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/boot/boot.msg	2020-03-12 10:06:28.926416493 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:49.016610825 +0100
+[0m[36m@@ -6,0 +7 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/interfaces.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/interfaces.py	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:49.020610973 +0100
+[0m[36m@@ -77,0 +78 @@[0m
+[32m+[0m
+# ./univention-base-files/conffiles/autostart.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-base-files/conffiles/autostart.py	2020-03-12 10:06:28.926416493 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:49.020610973 +0100
+[0m[36m@@ -85,0 +86 @@[0m
+[32m+[0m
+# ./univention-debmirror/conffiles/etc/apache2/sites-available/univention-repository.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-debmirror/conffiles/etc/apache2/sites-available/univention-repository.conf	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:49.024611123 +0100
+[0m[36m@@ -9,0 +10 @@[0m
+[32m+[0m
+# ./univention-printclient/conffiles/etc/cups/client.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-printclient/conffiles/etc/cups/client.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:49.376624257 +0100
+[0m[36m@@ -44 +44 @@[0m
+[31m-	print 'ServerName %s' % configRegistry['cups/server'][0m
+[32m+	print('ServerName %s' % configRegistry['cups/server'])[0m
+[36m@@ -46 +46 @@[0m
+[31m-	print  'ServerName %s' % configRegistry['ldap/server/name'][0m
+[32m+	print('ServerName %s' % configRegistry['ldap/server/name'])[0m
+[36m@@ -48 +48 @@[0m
+[31m-	print '#ServerName cupsserver'[0m
+[32m+	print('#ServerName cupsserver')[0m
+[36m@@ -51,20 +50,0 @@[0m
+[31m-#
+-# Encryption: whether or not to use encryption; this depends on having
+-# the OpenSSL library linked into the CUPS library.
+-#
+-# Possible values:
+-#
+-#     Always       - Always use encryption (SSL)
+-#     Never        - Never use encryption
+-#     Required     - Use TLS encryption upgrade
+-#     IfRequested  - Use encryption if the server requests it
+-#
+-# The default value is "IfRequested".  This parameter can also be set
+-# using the CUPS_ENCRYPTION environment variable.
+-#
+-
+-#Encryption Always
+-#Encryption Never
+-#Encryption Required
+-#Encryption IfRequested
+-[0m
+# ./univention-network-manager/conffiles/etc/dhcp/dhclient.conf
+
+  fixed-address 169.254.4.126;				      |	  fixed-address 169.254.205.110;
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-network-manager/conffiles/etc/dhcp/dhclient.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.008685144 +0100
+[0m[36m@@ -20 +20 @@[0m
+[31m-    print 'send host-name "%s";' % configRegistry.get('hostname', '')[0m
+[32m+    print('send host-name "%s";' % configRegistry.get('hostname', ''))[0m
+[36m@@ -22 +22 @@[0m
+[31m-        print 'send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('dhclient/options/ddns/zone', None))[0m
+[32m+        print('send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('dhclient/options/ddns/zone', None)))[0m
+[36m@@ -24 +24 @@[0m
+[31m-        print 'send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('domainname', ''))[0m
+[32m+        print('send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('domainname', '')))[0m
+[36m@@ -26 +26 @@[0m
+[31m-        print 'send fqdn.server-update on;'[0m
+[32m+        print('send fqdn.server-update on;')[0m
+[36m@@ -28,2 +28,2 @@[0m
+[31m-        print 'send fqdn.server-update off;'
+-    print 'send fqdn.encoded on;'[0m
+[32m+        print('send fqdn.server-update off;')
++    print('send fqdn.encoded on;')[0m
+[36m@@ -42,2 +42,2 @@[0m
+[31m-print 'timeout %s;' % configRegistry.get( 'dhclient/options/timeout', '30' )
+-print 'retry %s;' % configRegistry.get( 'dhclient/options/retry', '60' )[0m
+[32m+print('timeout %s;' % configRegistry.get( 'dhclient/options/timeout', '30' ))
++print('retry %s;' % configRegistry.get( 'dhclient/options/retry', '60' ))[0m
+[36m@@ -79 +79 @@[0m
+[31m-	for k in configRegistry.keys():[0m
+[32m+	for k in list(configRegistry.keys()):[0m
+[36m@@ -92,5 +92,5 @@[0m
+[31m-			print 'lease {'
+-			print '  interface "%s";' % (iface)
+-			print '  fixed-address %s;' % current_addr
+-			print '  option subnet-mask 255.255.0.0;'
+-			print '  option broadcast-address 169.254.255.255;'[0m
+[32m+			print('lease {')
++			print('  interface "%s";' % (iface))
++			print('  fixed-address %s;' % current_addr)
++			print('  option subnet-mask 255.255.0.0;')
++			print('  option broadcast-address 169.254.255.255;')[0m
+[36m@@ -98,2 +98,2 @@[0m
+[31m-			print '  expire %d %d/%d/%d %s:%s:%s;' % (d.weekday(), d.year, d.month, d.day, str(d.hour).zfill(2), str(d.minute).zfill(2), str(d.second).zfill(2))
+-			print '}'[0m
+[32m+			print('  expire %d %d/%d/%d %s:%s:%s;' % (d.weekday(), d.year, d.month, d.day, str(d.hour).zfill(2), str(d.minute).zfill(2), str(d.second).zfill(2)))
++			print('}')[0m
+[36m@@ -103 +103 @@[0m
+[31m-	print 'include "%s";' % LOCAL[0m
+[32m+	print('include "%s";' % LOCAL)[0m
+# ./univention-network-manager/conffiles/etc/default/ifplugd
+
+INTERFACES="ens3"					      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-network-manager/conffiles/etc/default/ifplugd	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.356698122 +0100
+[0m[36m@@ -7 +7 @@[0m
+[31m-print 'INTERFACES="%s"' % (' '.join(managed),)[0m
+[32m+print('INTERFACES="%s"' % (' '.join(managed),))[0m
+[36m@@ -9,3 +8,0 @@[0m
+[31m-HOTPLUG_INTERFACES=""
+-ARGS="-q -f -u0 -d10 -w -I"
+-SUSPEND_ACTION="stop"[0m
+# ./univention-server/conffiles/etc/logrotate.d/univention-server-password-change
+
+/var/log/univention/server_password_change.log {	      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-server/conffiles/etc/logrotate.d/univention-server-password-change	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.696710803 +0100
+[0m[36m@@ -9 +9 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name[0m
+[32m+print("/var/log/univention/%s.log {" % name)[0m
+[36m@@ -11,2 +11,2 @@[0m
+[31m-for setting in settings.keys():
+-	print "\t%s" % settings[setting][0m
+[32m+for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])[0m
+[36m@@ -14,2 +13,0 @@[0m
+[31m-}
+-[0m
+# ./univention-server/conffiles/etc/cron.d/univention-server-member
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-server/conffiles/etc/cron.d/univention-server-member	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.700710952 +0100
+[0m[36m@@ -4,0 +5 @@[0m
+[32m+[0m
+# ./univention-server/conffiles/etc/cron.d/univention-server-master
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-server/conffiles/etc/cron.d/univention-server-master	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.700710952 +0100
+[0m[36m@@ -4,0 +5 @@[0m
+[32m+[0m
+# ./univention-server/conffiles/etc/cron.d/univention-server-backup
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-server/conffiles/etc/cron.d/univention-server-backup	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.704711102 +0100
+[0m[36m@@ -4,0 +5 @@[0m
+[32m+[0m
+# ./univention-server/conffiles/etc/cron.d/univention-server-slave
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-server/conffiles/etc/cron.d/univention-server-slave	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.708711251 +0100
+[0m[36m@@ -4,0 +5 @@[0m
+[32m+[0m
+# ./univention-initrd/conffiles/usr/share/initramfs-tools/init
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-initrd/conffiles/usr/share/initramfs-tools/init	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:51.708711251 +0100
+[0m[36m@@ -331,0 +332 @@[0m
+[32m+[0m
+# ./univention-initrd/conffiles/etc/initramfs-tools/initramfs.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-initrd/conffiles/etc/initramfs-tools/initramfs.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:52.056724229 +0100
+[0m[36m@@ -30,42 +29,0 @@[0m
+[31m-
+-# KEYMAP: [ y | n ]
+-#
+-# Load a keymap during the initramfs stage.
+-#
+-
+-KEYMAP=n
+-
+-# COMPRESS: [ gzip | bzip2 | lzma | lzop | xz ]
+-#
+-# local - Boot off of local media (harddrive, USB stick).
+-
+-COMPRESS=gzip
+-
+-#
+-# NFS Section of the config.
+-#
+-
+-#
+-# BOOT: [ local | nfs ]
+-#
+-# local - Boot off of local media (harddrive, USB stick).
+-#
+-# nfs - Boot using an NFS drive as the root of the drive.
+-#
+-
+-BOOT=local
+-
+-#
+-# DEVICE: ...
+-#
+-# Specify the network interface, like eth0
+-#
+-
+-DEVICE=eth0
+-
+-#
+-# NFSROOT: [ auto | HOST:MOUNT ]
+-#
+-
+-NFSROOT=auto
+-[0m
+# ./univention-grub/conffiles/grub-update.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-grub/conffiles/grub-update.py	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:52.060724378 +0100
+[0m[36m@@ -37,0 +38 @@[0m
+[32m+[0m
+# ./univention-grub/conffiles/etc/default/grub
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-grub/conffiles/etc/default/grub	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:55.028835014 +0100
+[0m[36m@@ -10 +10 @@[0m
+[31m-print 'GRUB_DEFAULT=%s' % (quote(default),)[0m
+[32m+print('GRUB_DEFAULT=%s' % (quote(default),))[0m
+[36m@@ -12 +12 @@[0m
+[31m-print 'GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',)[0m
+[32m+print('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',))[0m
+[36m@@ -28 +28 @@[0m
+[31m-print 'GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions[0m
+[32m+print('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions)[0m
+[36m@@ -43 +43 @@[0m
+[31m-	print 'GRUB_TERMINAL="%s"' % (terminal,)[0m
+[32m+	print('GRUB_TERMINAL="%s"' % (terminal,))[0m
+[36m@@ -45 +45 @@[0m
+[31m-	print '#GRUB_TERMINAL="console"'[0m
+[32m+	print('#GRUB_TERMINAL="console"')[0m
+[36m@@ -51 +51 @@[0m
+[31m-	print 'GRUB_SERIAL_COMMAND="%s"' % (serial,)[0m
+[32m+	print('GRUB_SERIAL_COMMAND="%s"' % (serial,))[0m
+[36m@@ -53 +53 @@[0m
+[31m-	print '#GRUB_SERIAL_COMMAND="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"'[0m
+[32m+	print('#GRUB_SERIAL_COMMAND="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"')[0m
+[36m@@ -73 +73 @@[0m
+[31m-	print 'GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"][0m
+[32m+	print('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"])[0m
+[36m@@ -75 +75 @@[0m
+[31m-	print 'GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"][0m
+[32m+	print('GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"])[0m
+[36m@@ -77 +77 @@[0m
+[31m-	print 'GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"][0m
+[32m+	print('GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"])[0m
+[36m@@ -79 +79 @@[0m
+[31m-	print 'GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"][0m
+[32m+	print('GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"])[0m
+[36m@@ -81 +81 @@[0m
+[31m-	print 'GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"][0m
+[32m+	print('GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"])[0m
+[36m@@ -83,3 +82,0 @@[0m
+[31m-
+-# Uncomment to get a beep at grub start
+-#GRUB_INIT_TUNE="480 440 1"[0m
+# ./univention-doc/conffiles/etc/apache2/sites-available/univention-doc.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-doc/conffiles/etc/apache2/sites-available/univention-doc.conf	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:55.032835163 +0100
+[0m[36m@@ -5,0 +6 @@[0m
+[32m+[0m
+# ./univention-passwd-store/conffiles/etc/pam.d/common-auth.d/40univention-passwd-store
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-passwd-store/conffiles/etc/pam.d/common-auth.d/40univention-passwd-store	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:55.368847682 +0100
+[0m[36m@@ -3 +3 @@[0m
+[31m-	print 'auth     required                           pam_runasroot.so save_pass'[0m
+[32m+	print('auth     required                           pam_runasroot.so save_pass')[0m
+# ./univention-passwd-store/conffiles/etc/pam.d/common-session.d/90univention-passwd-store
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-passwd-store/conffiles/etc/pam.d/common-session.d/90univention-passwd-store	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:55.716860647 +0100
+[0m[36m@@ -3 +3 @@[0m
+[31m-	print 'session    required   pam_runasroot.so export_pass program=/usr/sbin/univention-passwd-store silent'[0m
+[32m+	print('session    required   pam_runasroot.so export_pass program=/usr/sbin/univention-passwd-store silent')[0m
+# ./univention-updater/conffiles/apt-mirror.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/apt-mirror.py	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:55.720860796 +0100
+[0m[36m@@ -52,0 +53 @@[0m
+[32m+[0m
+# ./univention-updater/conffiles/etc/logrotate.d/univention-updater
+
+/var/log/univention/updater.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/actualise.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/repository.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/errata-updates.log {		      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/etc/logrotate.d/univention-updater	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:56.080874208 +0100
+[0m[36m@@ -8,4 +8,4 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name
+-for setting in settings.keys():
+-	print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/univention/%s.log {" % name)
++for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])
++print("}")[0m
+[36m@@ -15,4 +15,4 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name
+-for setting in settings.keys():
+-	print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/univention/%s.log {" % name)
++for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])
++print("}")[0m
+[36m@@ -22,4 +22,4 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name
+-for setting in settings.keys():
+-	print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/univention/%s.log {" % name)
++for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])
++print("}")[0m
+[36m@@ -29,4 +29,4 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name
+-for setting in settings.keys():
+-	print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/univention/%s.log {" % name)
++for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])
++print("}")[0m
+# ./univention-updater/conffiles/etc/apt/apt.conf.d/55user_agent
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/etc/apt/apt.conf.d/55user_agent	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:56.424887022 +0100
+[0m[36m@@ -13 +13 @@[0m
+[31m-print '''[0m
+[32m+print('''[0m
+[36m@@ -20 +20 @@[0m
+[31m-}; ''' % user_agent[0m
+[32m+}; ''' % user_agent)[0m
+# ./univention-updater/conffiles/etc/apt/mirror.list
+
+# The mirror mode is disabled and can be enabled with:	      <
+#   univention-config-registry set repository/mirror=true     <
+							      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/etc/apt/mirror.list	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:56.796900878 +0100
+[0m[36m@@ -21,3 +21,3 @@[0m
+[31m-		print '# The mirror mode is disabled and can be enabled with:'
+-		print '#   univention-config-registry set repository/mirror=true'
+-		print ''[0m
+[32m+		print('# The mirror mode is disabled and can be enabled with:')
++		print('#   univention-config-registry set repository/mirror=true')
++		print('')[0m
+[36m@@ -31,2 +31,2 @@[0m
+[31m-		print mirror.print_version_repositories(clean=True, dists=True, start=start, end=end)
+-		print mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True)[0m
+[32m+		print(mirror.print_version_repositories(clean=True, dists=True, start=start, end=end))
++		print(mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True))[0m
+[36m@@ -34 +34 @@[0m
+[31m-	print '# An error occurred during the repository check. The error message:'[0m
+[32m+	print('# An error occurred during the repository check. The error message:')[0m
+[36m@@ -36,7 +36,7 @@[0m
+[31m-		print '#   %s' % line
+-	print '#'
+-	print ''
+-	print '# After fixing this issue, you should rewrite this file with the following command:'
+-	print '#   univention-config-registry commit /etc/apt/mirror.list'
+-	print '#'
+-	print ''[0m
+[32m+		print('#   %s' % line)
++	print('#')
++	print('')
++	print('# After fixing this issue, you should rewrite this file with the following command:')
++	print('#   univention-config-registry commit /etc/apt/mirror.list')
++	print('#')
++	print('')[0m
+# ./univention-updater/conffiles/etc/apt/sources.list.d/20_ucs-online-component.list
+
+deb https://updates.software-univention.de/4.4/maintained/com <
+deb https://updates.software-univention.de/4.4/maintained/com <
+deb https://updates.software-univention.de/4.4/unmaintained/c <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/etc/apt/sources.list.d/20_ucs-online-component.list	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:37:58.628969097 +0100
+[0m[36m@@ -12 +12 @@[0m
+[31m-		print updater.print_component_repositories()[0m
+[32m+		print(updater.print_component_repositories())[0m
+[36m@@ -14,3 +14,3 @@[0m
+[31m-		print '# The online repository is disabled and can be enabled with:'
+-		print '#   univention-config-registry set repository/online=true'
+-		print ''[0m
+[32m+		print('# The online repository is disabled and can be enabled with:')
++		print('#   univention-config-registry set repository/online=true')
++		print('')[0m
+[36m@@ -18 +18 @@[0m
+[31m-	print '# An error occurred during the repository check. The error message:'[0m
+[32m+	print('# An error occurred during the repository check. The error message:')[0m
+[36m@@ -20,7 +20,7 @@[0m
+[31m-		print '#   %s' % line
+-	print '#'
+-	print ''
+-	print '# After fixing this issue, you should rewrite this file with the following command:'
+-	print '#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list'
+-	print '#'
+-	print ''[0m
+[32m+		print('#   %s' % line)
++	print('#')
++	print('')
++	print('# After fixing this issue, you should rewrite this file with the following command:')
++	print('#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list')
++	print('#')
++	print('')[0m
+# ./univention-updater/conffiles/etc/apt/sources.list.d/15_ucs-online-version.list
+
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/etc/apt/sources.list.d/15_ucs-online-version.list	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:22.265846502 +0100
+[0m[36m@@ -12 +12 @@[0m
+[31m-		print updater.print_version_repositories()[0m
+[32m+		print(updater.print_version_repositories())[0m
+[36m@@ -14,3 +14,3 @@[0m
+[31m-		print '# The online repository is disabled and can be enabled with:'
+-		print '#   univention-config-registry set repository/online=true'
+-		print ''[0m
+[32m+		print('# The online repository is disabled and can be enabled with:')
++		print('#   univention-config-registry set repository/online=true')
++		print('')[0m
+[36m@@ -18 +18 @@[0m
+[31m-	print '# An error occurred during the repository check. The error message:'[0m
+[32m+	print('# An error occurred during the repository check. The error message:')[0m
+[36m@@ -20,7 +20,7 @@[0m
+[31m-		print '#   %s' % line
+-	print '#'
+-	print ''
+-	print '# After fixing this issue, you should rewrite this file with the following command:'
+-	print '#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list'
+-	print '#'
+-	print ''[0m
+[32m+		print('#   %s' % line)
++	print('#')
++	print('')
++	print('# After fixing this issue, you should rewrite this file with the following command:')
++	print('#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list')
++	print('#')
++	print('')[0m
+# ./univention-updater/conffiles/etc/cron.d/univention-updater-check
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/etc/cron.d/univention-updater-check	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:22.585858346 +0100
+[0m[36m@@ -12 +12 @@[0m
+[31m-print '%s%s   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 600 /usr/share/univention-updater/univention-updater-check %s' % (disabled, configRegistry.get('update/check/cron/entry', '5 * * * *'), debug)[0m
+[32m+print('%s%s   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 600 /usr/share/univention-updater/univention-updater-check %s' % (disabled, configRegistry.get('update/check/cron/entry', '5 * * * *'), debug))[0m
+[36m@@ -20 +20 @@[0m
+[31m-print '%s@reboot   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 30 /usr/share/univention-updater/univention-updater-check %s' % (disabled, debug)[0m
+[32m+print('%s@reboot   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 30 /usr/share/univention-updater/univention-updater-check %s' % (disabled, debug))[0m
+# ./univention-updater/conffiles/20_ucs-online-component.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/20_ucs-online-component.py	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:22.589858494 +0100
+[0m[36m@@ -61,0 +62 @@[0m
+[32m+[0m
+# ./univention-updater/conffiles/15_ucs-online-version.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-updater/conffiles/15_ucs-online-version.py	2020-03-12 10:06:28.938416858 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:22.589858494 +0100
+[0m[36m@@ -49,0 +50 @@[0m
+[32m+[0m
+# ./univention-sudo/conffiles/etc/sudoers.d/univention
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-sudo/conffiles/etc/sudoers.d/univention	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:22.925870930 +0100
+[0m[36m@@ -9 +9 @@[0m
+[31m-	print "%{} ALL=(ALL:ALL) ALL".format(da)[0m
+[32m+	print("%{} ALL=(ALL:ALL) ALL".format(da))[0m
+# ./univention-heimdal/conffiles/usr/share/univention-heimdal/check_cracklib.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-heimdal/conffiles/usr/share/univention-heimdal/check_cracklib.py	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:22.925870930 +0100
+[0m[36m@@ -69,0 +70 @@[0m
+[32m+[0m
+# ./univention-heimdal/conffiles/etc/logrotate.d/heimdal-kdc
+
+/var/log/heimdal-kdc.log {				      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/heimdal-database.log {				      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-heimdal/conffiles/etc/logrotate.d/heimdal-kdc	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:23.257883217 +0100
+[0m[36m@@ -8,4 +8,4 @@[0m
+[31m-print "/var/log/%s.log {" % name
+-for setting in settings.keys():
+-	print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/%s.log {" % name)
++for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])
++print("}")[0m
+[36m@@ -15,4 +15,4 @@[0m
+[31m-print "/var/log/%s.log {" % name
+-for setting in settings.keys():
+-	print "\t%s" % settings[setting]
+-print "}"[0m
+[32m+print("/var/log/%s.log {" % name)
++for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])
++print("}")[0m
+# ./univention-heimdal/conffiles/etc/heimdal-kdc/kdc.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-heimdal/conffiles/etc/heimdal-kdc/kdc.conf	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:26.129989465 +0100
+[0m[36m@@ -14 +14 @@[0m
+[31m-	print '\t\trealm = %s ' % configRegistry.get('kerberos/realm')[0m
+[32m+	print('\t\trealm = %s ' % configRegistry.get('kerberos/realm'))[0m
+[36m@@ -51 +51 @@[0m
+[31m-print 'enable-kerberos4 = %s' % configRegistry.get('kerberos/enable/kerberos4', 'no')[0m
+[32m+print('enable-kerberos4 = %s' % configRegistry.get('kerberos/enable/kerberos4', 'no'))[0m
+[36m@@ -62 +62 @@[0m
+[31m-print 'enable-524 = %s' % configRegistry.get('kerberos/enable/524', 'no')[0m
+[32m+print('enable-524 = %s' % configRegistry.get('kerberos/enable/524', 'no'))[0m
+[36m@@ -80 +80 @@[0m
+[31m-print 'enable-kaserver = %s' % configRegistry.get('kerberos/enable/kaserver', 'no')[0m
+[32m+print('enable-kaserver = %s' % configRegistry.get('kerberos/enable/kaserver', 'no'))[0m
+[36m@@ -116,3 +116,3 @@[0m
+[31m-	print '[password_quality]'
+-	print '\tpolicies = external-check'
+-	print '\texternal_program = /usr/share/univention-heimdal/check_cracklib.py'[0m
+[32m+	print('[password_quality]')
++	print('\tpolicies = external-check')
++	print('\texternal_program = /usr/share/univention-heimdal/check_cracklib.py')[0m
+[36m@@ -120,4 +119,0 @@[0m
+[31m-
+-# [kadmin]
+-# default_keys = list of strings
+-# use_v4_salt = boolean[0m
+# ./univention-heimdal/conffiles/etc/heimdal-kdc/kadmind.acl
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-heimdal/conffiles/etc/heimdal-kdc/kadmind.acl	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:26.458001594 +0100
+[0m[36m@@ -7 +7 @@[0m
+[31m-		print '%s all' % au.strip()[0m
+[32m+		print('%s all' % au.strip())[0m
+[36m@@ -9 +8,0 @@[0m
+[31m-[0m
+# ./univention-heimdal/conffiles/etc/init.d/heimdal-kdc
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-heimdal/conffiles/etc/init.d/heimdal-kdc	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:26.462001743 +0100
+[0m[36m@@ -140,0 +141 @@[0m
+[32m+[0m
+# ./univention-heimdal/conffiles/etc/default/heimdal-kdc
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-heimdal/conffiles/etc/default/heimdal-kdc	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:26.794014020 +0100
+[0m[36m@@ -10 +10 @@[0m
+[31m-	print "KPASSWDD_ENABLED=yes"[0m
+[32m+	print("KPASSWDD_ENABLED=yes")[0m
+[36m@@ -12 +12 @@[0m
+[31m-	print "KPASSWDD_ENABLED=no"[0m
+[32m+	print("KPASSWDD_ENABLED=no")[0m
+[36m@@ -14,11 +13,0 @@[0m
+[31m-KPASSWDD_PARAMS=""
+-
+-# kprop master?
+-MASTER_ENABLED=no
+-
+-# How about the kprop slave?
+-SLAVE_ENABLED=no
+-
+-# Add at least your master server name here when using iprop-replication
+-# otherwise it would fail silently.
+-SLAVE_PARAMS=""[0m
+# ./univention-heimdal/conffiles/etc/krb5.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-heimdal/conffiles/etc/krb5.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:27.162027627 +0100
+[0m[36m@@ -7 +7 @@[0m
+[31m-print '\tdefault_realm = %s' % kerberos_realm[0m
+[32m+print('\tdefault_realm = %s' % kerberos_realm)[0m
+[36m@@ -13 +13 @@[0m
+[31m-print '\tdefault_etypes = %s' % default_enctypes[0m
+[32m+print('\tdefault_etypes = %s' % default_enctypes)[0m
+[36m@@ -16 +16 @@[0m
+[31m-	print '\tdefault_tgs_etypes = %s' % default_tgs_etypes[0m
+[32m+	print('\tdefault_tgs_etypes = %s' % default_tgs_etypes)[0m
+[36m@@ -19 +19 @@[0m
+[31m-	print '\tdefault_as_etypes = %s' % default_as_etypes[0m
+[32m+	print('\tdefault_as_etypes = %s' % default_as_etypes)[0m
+[36m@@ -22,7 +22,7 @@[0m
+[31m-	print '\tallow_weak_crypto=true'
+-print '\tdns_lookup_kdc = %s' % configRegistry.get('kerberos/defaults/dns_lookup_kdc', 'true')
+-print '\tdns_lookup_realm = %s' % configRegistry.get('kerberos/defaults/dns_lookup_realm', 'false')
+-print '\tforwardable = %s' % configRegistry.get('kerberos/defaults/forwardable', 'true')
+-print '\tproxiable = %s' % configRegistry.get('kerberos/defaults/proxiable', 'true')
+-print '\tkdc_timesync = %s' % configRegistry.get('kerberos/defaults/kdc_timesync', '1')
+-print '\tdebug = %s' % configRegistry.get('kerberos/defaults/debug', 'false')[0m
+[32m+	print('\tallow_weak_crypto=true')
++print('\tdns_lookup_kdc = %s' % configRegistry.get('kerberos/defaults/dns_lookup_kdc', 'true'))
++print('\tdns_lookup_realm = %s' % configRegistry.get('kerberos/defaults/dns_lookup_realm', 'false'))
++print('\tforwardable = %s' % configRegistry.get('kerberos/defaults/forwardable', 'true'))
++print('\tproxiable = %s' % configRegistry.get('kerberos/defaults/proxiable', 'true'))
++print('\tkdc_timesync = %s' % configRegistry.get('kerberos/defaults/kdc_timesync', '1'))
++print('\tdebug = %s' % configRegistry.get('kerberos/defaults/debug', 'false'))[0m
+[36m@@ -31,6 +31,6 @@[0m
+[31m-print '\t# '
+-print '\t# The following libdefaults are for clients using the MIT Kerberos library'
+-print '\t# '
+-print '\tpermitted_enctypes = %s' % default_enctypes
+-print '\tdefault_tgs_enctypes = %s' % (default_tgs_etypes or permitted_enctypes)
+-print '\tdefault_tkt_enctypes = %s' % (default_as_etypes or permitted_enctypes)[0m
+[32m+print('\t# ')
++print('\t# The following libdefaults are for clients using the MIT Kerberos library')
++print('\t# ')
++print('\tpermitted_enctypes = %s' % default_enctypes)
++print('\tdefault_tgs_enctypes = %s' % (default_tgs_etypes or permitted_enctypes))
++print('\tdefault_tkt_enctypes = %s' % (default_as_etypes or permitted_enctypes))[0m
+[36m@@ -38 +38 @@[0m
+[31m-	print '\tignore_acceptor_hostname = true'[0m
+[32m+	print('\tignore_acceptor_hostname = true')[0m
+[36m@@ -40,2 +40,2 @@[0m
+[31m-	print '\trdns = false'
+-print ''[0m
+[32m+	print('\trdns = false')
++print('')[0m
+[36m@@ -52 +52 @@[0m
+[31m-	print '[domain_realm]'[0m
+[32m+	print('[domain_realm]')[0m
+[36m@@ -55 +55 @@[0m
+[31m-		print i[0m
+[32m+		print(i)[0m
+[36m@@ -60,3 +60,3 @@[0m
+[31m-print '[realms]'
+-print '%s = { ' % kerberos_realm
+-print '\tacl_file = /var/lib/heimdal-kdc/kadmind.acl'[0m
+[32m+print('[realms]')
++print('%s = { ' % kerberos_realm)
++print('\tacl_file = /var/lib/heimdal-kdc/kadmind.acl')[0m
+[36m@@ -64 +64 @@[0m
+[31m-	print '\tkdc = %s' % kerberos_kdc[0m
+[32m+	print('\tkdc = %s' % kerberos_kdc)[0m
+[36m@@ -66 +66 @@[0m
+[31m-	print '\tadmin_server = %s' % kerberos_adminserver[0m
+[32m+	print('\tadmin_server = %s' % kerberos_adminserver)[0m
+[36m@@ -68,2 +68,2 @@[0m
+[31m-	print '\tkpasswd_server = %s' % kerberos_kpasswdserver
+-print '}'[0m
+[32m+	print('\tkpasswd_server = %s' % kerberos_kpasswdserver)
++print('}')[0m
+[36m@@ -74 +74 @@[0m
+[31m-		print ''[0m
+[32m+		print('')[0m
+[36m@@ -76,6 +76,6 @@[0m
+[31m-		print '[realms]'
+-	print '%s = { ' % windows_domain
+-	print '\tkdc = %s' % (kerberos_kdc or "127.0.0.1:88")
+-	print '\tadmin_server = %s' % (kerberos_adminserver or "127.0.0.1:88")
+-	print '\tdefault_domain = %s' % configRegistry['domainname']
+-	print '}'[0m
+[32m+		print('[realms]')
++	print('%s = { ' % windows_domain)
++	print('\tkdc = %s' % (kerberos_kdc or "127.0.0.1:88"))
++	print('\tadmin_server = %s' % (kerberos_adminserver or "127.0.0.1:88"))
++	print('\tdefault_domain = %s' % configRegistry['domainname'])
++	print('}')[0m
+[36m@@ -83 +83 @@[0m
+[31m-print '''[kdc][0m
+[32m+print('''[kdc][0m
+[36m@@ -86 +86 @@[0m
+[31m-''' % {"ldap_base": configRegistry['ldap/base'], "kerberos_realm": kerberos_realm}[0m
+[32m+''' % {"ldap_base": configRegistry['ldap/base'], "kerberos_realm": kerberos_realm})[0m
+[36m@@ -88 +88 @@[0m
+[31m-print '[kadmin]'[0m
+[32m+print('[kadmin]')[0m
+[36m@@ -90,2 +90,2 @@[0m
+[31m-	print '\tdefault_keys = %s' % configRegistry.get('kerberos/kadmin/default/keys')
+-print '\tv4-realm = %s' % kerberos_realm[0m
+[32m+	print('\tdefault_keys = %s' % configRegistry.get('kerberos/kadmin/default/keys'))
++print('\tv4-realm = %s' % kerberos_realm)[0m
+[36m@@ -93 +93 @@[0m
+[31m-	print '\tafs-cell = %s' % configRegistry.get('kerberos/afscell')[0m
+[32m+	print('\tafs-cell = %s' % configRegistry.get('kerberos/afscell'))[0m
+[36m@@ -95 +95 @@[0m
+[31m-print '''database = {[0m
+[32m+print('''database = {[0m
+[36m@@ -100 +100 @@[0m
+[31m-			"kerberos_realm": kerberos_realm}[0m
+[32m+			"kerberos_realm": kerberos_realm})[0m
+[36m@@ -102,4 +101,0 @@[0m
+[31m-		log_file = /var/log/heimdal-database.log
+-		mkey_file = /var/heimdal/m-key
+-	}
+-}[0m
+# ./univention-bootsplash/conffiles/etc/systemd/system/getty@.service.d/nottyreset.conf
+
+
+
+## diff compared to orginal file
+
+# ./univention-bootsplash/conffiles/etc/plymouth/plymouthd.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-bootsplash/conffiles/etc/plymouth/plymouthd.conf	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:27.494039901 +0100
+[0m[36m@@ -4,0 +5 @@[0m
+[32m+[0m
+# ./univention-bootsplash/conffiles/bootsplash.py
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-bootsplash/conffiles/bootsplash.py	2020-03-12 10:06:28.930416615 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:27.498040048 +0100
+[0m[36m@@ -12,0 +13 @@[0m
+[32m+[0m
+# ./univention-system-activation/conffiles/usr/share/univention-system-activation/languages.json
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-activation/conffiles/usr/share/univention-system-activation/languages.json	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:27.850053062 +0100
+[0m[36m@@ -13 +13 @@[0m
+[31m-print(json.dumps([{'id':id, 'label':label} for id, label in locales]))[0m
+[32m+print((json.dumps([{'id':id, 'label':label} for id, label in locales])))[0m
+# ./univention-system-activation/conffiles/usr/share/univention-system-activation/entries.json
+
+  "appcenter_server": "appcenter.software-univention.de",     |	  "role": "domaincontroller_master",
+  "license_uuid": null, 				      |	  "appcenter_server": "appcenter.software-univention.de",
+  "role": "domaincontroller_master", 			      |	  "appliance_name": "",
+  "license_requested": null, 				      |	  "license_uuid": null,
+  "appliance_name": ""					      |	  "license_requested": null
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-activation/conffiles/usr/share/univention-system-activation/entries.json	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:28.214066517 +0100
+[0m[36m@@ -26 +26 @@[0m
+[31m-print json.dumps(data, indent=2)[0m
+[32m+print(json.dumps(data, indent=2))[0m
+# ./univention-system-activation/conffiles/usr/lib/univention-system-setup/appliance-hooks.d/96_enable_system_activation
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-activation/conffiles/usr/lib/univention-system-setup/appliance-hooks.d/96_enable_system_activation	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:28.218066665 +0100
+[0m[36m@@ -47,0 +48 @@[0m
+[32m+[0m
+# ./univention-system-activation/conffiles/etc/sudoers.d/univention-system-activation
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-activation/conffiles/etc/sudoers.d/univention-system-activation	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:28.222066813 +0100
+[0m[36m@@ -3,0 +4 @@[0m
+[32m+[0m
+# ./univention-system-activation/conffiles/etc/apache2/sites-available/univention-system-activation.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-activation/conffiles/etc/apache2/sites-available/univention-system-activation.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:28.222066813 +0100
+[0m[36m@@ -31,0 +32 @@[0m
+[32m+[0m
+# ./univention-pam/conffiles/etc/libnss-ldap.conf
+
+bindpw 53RpVvmKxKTRotmPaXYs				      |	bindpw b'53RpVvmKxKTRotmPaXYs'
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/libnss-ldap.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:29.202103033 +0100
+[0m[36m@@ -14 +14 @@[0m
+[31m-	print 'uri %s' % ' '.join(urilist)[0m
+[32m+	print('uri %s' % ' '.join(urilist))[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-	print 'rootbinddn %s' % configRegistry['ldap/hostdn']	## required for non-anonymous non-local bind
+-	print 'binddn %s' % configRegistry['ldap/hostdn']	## required dbus[0m
+[32m+	print('rootbinddn %s' % configRegistry['ldap/hostdn'])	## required for non-anonymous non-local bind
++	print('binddn %s' % configRegistry['ldap/hostdn'])	## required dbus[0m
+[36m@@ -21 +21 @@[0m
+[31m-		print 'bindpw %s' % (open('/etc/machine.secret', 'rb').read())[0m
+[32m+		print('bindpw %s' % (open('/etc/machine.secret', 'rb').read()))[0m
+[36m@@ -28 +28 @@[0m
+[31m-print 'tls_checkpeer %s' % configRegistry.get('nssldap/tls/checkpeer', 'no')[0m
+[32m+print('tls_checkpeer %s' % configRegistry.get('nssldap/tls/checkpeer', 'no'))[0m
+[36m@@ -31 +31 @@[0m
+[31m-	print 'bind_policy %s' % configRegistry.get('nssldap/bindpolicy')[0m
+[32m+	print('bind_policy %s' % configRegistry.get('nssldap/bindpolicy'))[0m
+[36m@@ -33 +33 @@[0m
+[31m-	print 'idle_timelimit %s' % configRegistry['nssldap/idle/timelimit'][0m
+[32m+	print('idle_timelimit %s' % configRegistry['nssldap/idle/timelimit'])[0m
+[36m@@ -35 +35 @@[0m
+[31m-	print 'timelimit %s' % configRegistry['nssldap/timelimit'][0m
+[32m+	print('timelimit %s' % configRegistry['nssldap/timelimit'])[0m
+[36m@@ -37 +37 @@[0m
+[31m-	print 'nss_initgroups_ignoreusers %s' % configRegistry.get("nssldap/nss_initgroups_ignoreusers/users", "root")[0m
+[32m+	print('nss_initgroups_ignoreusers %s' % configRegistry.get("nssldap/nss_initgroups_ignoreusers/users", "root"))[0m
+[36m@@ -39 +39 @@[0m
+[31m-	print 'nss_srv off'[0m
+[32m+	print('nss_srv off')[0m
+# ./univention-pam/conffiles/etc/nscd.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/nscd.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:29.582117075 +0100
+[0m[36m@@ -40 +40 @@[0m
+[31m-	print '\tdebug-level\t\t%s' % int(debuglevel)[0m
+[32m+	print('\tdebug-level\t\t%s' % int(debuglevel))[0m
+[36m@@ -42 +42 @@[0m
+[31m-	print '\tdebug-level\t\t0'[0m
+[32m+	print('\tdebug-level\t\t0')[0m
+[36m@@ -47 +47 @@[0m
+[31m-	print '\tlogfile\t\t\t%s' % logfile[0m
+[32m+	print('\tlogfile\t\t\t%s' % logfile)[0m
+[36m@@ -51 +51 @@[0m
+[31m-			print '\tlogfile\t\t\t/var/log/nscd.log'[0m
+[32m+			print('\tlogfile\t\t\t/var/log/nscd.log')[0m
+[36m@@ -53 +53 @@[0m
+[31m-			print '#\tlogfile\t\t\t/var/log/nscd.log'[0m
+[32m+			print('#\tlogfile\t\t\t/var/log/nscd.log')[0m
+[36m@@ -55 +55 @@[0m
+[31m-		print '#\tlogfile\t\t\t/var/log/nscd.log'[0m
+[32m+		print('#\tlogfile\t\t\t/var/log/nscd.log')[0m
+[36m@@ -61 +61 @@[0m
+[31m-		print '\tthreads\t\t\t%s' % int(threads)[0m
+[32m+		print('\tthreads\t\t\t%s' % int(threads))[0m
+[36m@@ -63 +63 @@[0m
+[31m-		print '#\tthreads\t\t\t5'[0m
+[32m+		print('#\tthreads\t\t\t5')[0m
+[36m@@ -65 +65 @@[0m
+[31m-	print '#\tthreads\t\t\t5'[0m
+[32m+	print('#\tthreads\t\t\t5')[0m
+[36m@@ -68 +68 @@[0m
+[31m-	print '\tparanoia\t\tyes'[0m
+[32m+	print('\tparanoia\t\tyes')[0m
+[36m@@ -74 +74 @@[0m
+[31m-		print '\trestart-interval\t%s' % int(interval)[0m
+[32m+		print('\trestart-interval\t%s' % int(interval))[0m
+[36m@@ -80 +80 @@[0m
+[31m-	print	# empty line[0m
+[32m+	print()	# empty line[0m
+[36m@@ -86,5 +86,5 @@[0m
+[31m-		print '\tenable-cache\t\t%s\t\tyes' % (dbtype, )
+-		print '\tpositive-time-to-live\t%s\t\t%s' % (dbtype, pttl)
+-		print '\tnegative-time-to-live\t%s\t\t%s' % ( dbtype, nttl )
+-		print '\tsuggested-size\t\t%s\t\t%s' % (dbtype, ssize)
+-		print '\tcheck-files\t\t%s\t\tyes' % (dbtype, )[0m
+[32m+		print('\tenable-cache\t\t%s\t\tyes' % (dbtype, ))
++		print('\tpositive-time-to-live\t%s\t\t%s' % (dbtype, pttl))
++		print('\tnegative-time-to-live\t%s\t\t%s' % ( dbtype, nttl ))
++		print('\tsuggested-size\t\t%s\t\t%s' % (dbtype, ssize))
++		print('\tcheck-files\t\t%s\t\tyes' % (dbtype, ))[0m
+[36m@@ -92 +92 @@[0m
+[31m-			print '\tpersistent\t\t%s\t\tyes' % (dbtype, )[0m
+[32m+			print('\tpersistent\t\t%s\t\tyes' % (dbtype, ))[0m
+[36m@@ -94 +94 @@[0m
+[31m-			print '\tmax-db-size\t\t%s\t\t%s' % ( dbtype, maxdb )[0m
+[32m+			print('\tmax-db-size\t\t%s\t\t%s' % ( dbtype, maxdb ))[0m
+[36m@@ -96 +96 @@[0m
+[31m-		print '\tenable-cache\t\t%s\t\tno' % (dbtype, )[0m
+[32m+		print('\tenable-cache\t\t%s\t\tno' % (dbtype, ))[0m
+# ./univention-pam/conffiles/etc/nsswitch.conf
+
+passwd:        compat ldap				      <
+group:         compat extrausers			      <
+shadow:        compat ldap				      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/nsswitch.conf	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:29.930129935 +0100
+[0m[36m@@ -30,3 +30,3 @@[0m
+[31m-print 'passwd:       ', nss_string
+-print 'group:        ', string.join(nss)
+-print 'shadow:       ', nss_string[0m
+[32m+print('passwd:       ', nss_string)
++print('group:        ', string.join(nss))
++print('shadow:       ', nss_string)[0m
+[36m@@ -34,10 +33,0 @@[0m
+[31m-
+-hosts:          files dns # special comment for libnss-mdns: mdns4 (Bug: #12240)
+-networks:       files
+-
+-protocols:      db files
+-services:       db files
+-ethers:         db files
+-rpc:            db files
+-
+-netgroup:       nis[0m
+# ./univention-pam/conffiles/etc/pam.d/other
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/other	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:30.286143087 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/rlogin
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/rlogin	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:30.622155500 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,6 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-session    optional   pam_lastlog.so
+-session    optional   pam_mail.so standard noenv
+-session    optional   pam_motd.so
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/chfn
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/chfn	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:30.958167914 +0100
+[0m[36m@@ -20 +20 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -22,2 +21,0 @@[0m
+[31m-@include common-account
+-@include common-session[0m
+# ./univention-pam/conffiles/etc/pam.d/gdm
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/gdm	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:31.302180620 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/screen
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/screen	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:31.646193326 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/sudo
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/sudo	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:31.986205883 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/kcheckpass
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/kcheckpass	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:32.334218734 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/common-auth-nowrite
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth-nowrite	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:33.342255953 +0100
+[0m[36m@@ -12,2 +12,2 @@[0m
+[31m-		print 'auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option
+-		print 'auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user'[0m
+[32m+		print('auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option)
++		print('auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user')[0m
+[36m@@ -15 +15 @@[0m
+[31m-		print 'auth	required	pam_tally.so %s' % tally_option[0m
+[32m+		print('auth	required	pam_tally.so %s' % tally_option)[0m
+[36m@@ -58,2 +58 @@[0m
+[31m-methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind', 'cache'],
+-	configRegistry['auth/methods'].split(' '))[0m
+[32m+methods=[x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']][0m
+[36m@@ -70 +69 @@[0m
+[31m-	print pam_section(pam_krb5, index, last)[0m
+[32m+	print(pam_section(pam_krb5, index, last))[0m
+[36m@@ -76 +75 @@[0m
+[31m-	print pam_section(pam_ldap, index, last)[0m
+[32m+	print(pam_section(pam_ldap, index, last))[0m
+[36m@@ -79 +78 @@[0m
+[31m-	print pam_section(pam_winbind, index, 1)[0m
+[32m+	print(pam_section(pam_winbind, index, 1))[0m
+[36m@@ -84 +83 @@[0m
+[31m-	print pam_cache	[0m
+[32m+	print(pam_cache)	[0m
+[36m@@ -90,2 +88,0 @@[0m
+[31m-
+-auth     required                           pam_env.so[0m
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/30univention-pam_local
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth.d/30univention-pam_local	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:33.682268505 +0100
+[0m[36m@@ -10,2 +10,2 @@[0m
+[31m-		print 'auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option
+-		print 'auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user'[0m
+[32m+		print('auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option)
++		print('auth	[default=die]	pam_runasroot.so program=/usr/lib/univention-pam/lock-user')[0m
+[36m@@ -13 +13 @@[0m
+[31m-		print 'auth	required	pam_tally.so %s' % tally_option[0m
+[32m+		print('auth	required	pam_tally.so %s' % tally_option)[0m
+[36m@@ -15 +14,0 @@[0m
+[31m-[0m
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/10univention-pam_header
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth.d/10univention-pam_header	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:33.686268653 +0100
+[0m[36m@@ -1,0 +2 @@[0m
+[32m+[0m
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/50univention-pam_general
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth.d/50univention-pam_general	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:34.046281943 +0100
+[0m[36m@@ -56,2 +56 @@[0m
+[31m-methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind', 'cache'],
+-	configRegistry['auth/methods'].split(' '))[0m
+[32m+methods=[x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']][0m
+[36m@@ -66,2 +65,2 @@[0m
+[31m-   	print '''# local unix authentication; do not cache passwords
+-auth     required                         pam_unix.so'''[0m
+[32m+   	print('''# local unix authentication; do not cache passwords
++auth     required                         pam_unix.so''')[0m
+[36m@@ -69,2 +68,2 @@[0m
+[31m-	print '''# local unix authentication; do not cache passwords
+-auth     sufficient                           pam_unix.so'''[0m
+[32m+	print('''# local unix authentication; do not cache passwords
++auth     sufficient                           pam_unix.so''')[0m
+[36m@@ -72 +71 @@[0m
+[31m-print '''[0m
+[32m+print('''[0m
+[36m@@ -76 +75 @@[0m
+[31m-# - is not aware of the user, proceed with the next service'''[0m
+[32m+# - is not aware of the user, proceed with the next service''')[0m
+[36m@@ -82 +81 @@[0m
+[31m-	print pam_section(pam_krb5, index, last)[0m
+[32m+	print(pam_section(pam_krb5, index, last))[0m
+[36m@@ -88 +87 @@[0m
+[31m-	print pam_section(pam_ldap, index, last)[0m
+[32m+	print(pam_section(pam_ldap, index, last))[0m
+[36m@@ -91 +90 @@[0m
+[31m-	print pam_section(pam_winbind, index, 1)[0m
+[32m+	print(pam_section(pam_winbind, index, 1))[0m
+[36m@@ -99 +98 @@[0m
+[31m-		print pam_cache_only[0m
+[32m+		print(pam_cache_only)[0m
+[36m@@ -101 +100 @@[0m
+[31m-		print pam_cache	[0m
+[32m+		print(pam_cache)	[0m
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/70univention-pam_env
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth.d/70univention-pam_env	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:34.050282090 +0100
+[0m[36m@@ -1,0 +2 @@[0m
+[32m+[0m
+# ./univention-pam/conffiles/etc/pam.d/kdm
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/kdm	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:34.398294935 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/ppp
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/ppp	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:34.754308075 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/sshd
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/sshd	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:35.758345125 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -27 +27 @@[0m
+[31m-      print 'session optional pam_motd.so motd=/etc/welcome.msg'[0m
+[32m+      print('session optional pam_motd.so motd=/etc/welcome.msg')[0m
+[36m@@ -29 +28,0 @@[0m
+[31m-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/common-password
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-password	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:36.126358704 +0100
+[0m[36m@@ -17 +17 @@[0m
+[31m-	print template % {[0m
+[32m+	print(template % {[0m
+[36m@@ -20 +20 @@[0m
+[31m-	}[0m
+[32m+	})[0m
+[36m@@ -22,6 +21,0 @@[0m
+[31m-# here's the fallback if no module succeeds
+-password	requisite	pam_deny.so
+-# prime the stack with a positive return value if there isn't one already;
+-# this avoids us returning an error just because nothing sets a success code
+-# since the modules above will each just jump around
+-password	required	pam_permit.so[0m
+# ./univention-pam/conffiles/etc/pam.d/common-session.d/10univention-pam_common
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-session.d/10univention-pam_common	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:37.122395448 +0100
+[0m[36m@@ -5 +5 @@[0m
+[31m-print '%ssession    optional   pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',)[0m
+[32m+print('%ssession    optional   pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',))[0m
+[36m@@ -7 +7 @@[0m
+[31m-methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind'], configRegistry['auth/methods'].split(' '))[0m
+[32m+methods=[x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind']][0m
+[36m@@ -9 +9 @@[0m
+[31m-	print 'session    optional   pam_winbind.so'[0m
+[32m+	print('session    optional   pam_winbind.so')[0m
+[36m@@ -11 +11 @@[0m
+[31m-	print 'session    optional   pam_krb5.so minimum_uid=%d' % (minimum_uid,)[0m
+[32m+	print('session    optional   pam_krb5.so minimum_uid=%d' % (minimum_uid,))[0m
+[36m@@ -20,3 +20,3 @@[0m
+[31m-		print 'session    %s   pam_runasroot.so program=/usr/sbin/univention-mount-homedir' % homeDirReq
+-	print 'session    required   pam_mkhomedir.so skel=/etc/skel umask=0066'
+-	print 'session    optional   pam_runasroot.so user program=/usr/bin/univention-skel'[0m
+[32m+		print('session    %s   pam_runasroot.so program=/usr/sbin/univention-mount-homedir' % homeDirReq)
++	print('session    required   pam_mkhomedir.so skel=/etc/skel umask=0066')
++	print('session    optional   pam_runasroot.so user program=/usr/bin/univention-skel')[0m
+[36m@@ -25,2 +25,2 @@[0m
+[31m-		print 'session    required   pam_runasroot.so program=/usr/share/univention-kde/univention-set-kdedirs'
+-		print 'session    required   pam_env.so readenv=0 user_readenv=1 user_envfile=.univention-environment'[0m
+[32m+		print('session    required   pam_runasroot.so program=/usr/share/univention-kde/univention-set-kdedirs')
++		print('session    required   pam_env.so readenv=0 user_readenv=1 user_envfile=.univention-environment')[0m
+[36m@@ -28 +27,0 @@[0m
+[31m-[0m
+# ./univention-pam/conffiles/etc/pam.d/login
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/login	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:37.466408136 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,5 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-session    optional   pam_lastlog.so
+-session    optional   pam_mail.so standard noenv
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/common-account
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-account	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:38.466445015 +0100
+[0m[36m@@ -5 +5 @@[0m
+[31m-	print 'account	required	pam_tally.so'[0m
+[32m+	print('account	required	pam_tally.so')[0m
+[36m@@ -33,2 +33 @@[0m
+[31m-methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind', 'cache'],
+-	configRegistry['auth/methods'].split(' '))[0m
+[32m+methods=[x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind', 'cache']][0m
+[36m@@ -38 +37 @@[0m
+[31m-	print pam_section(pam_krb5, index)[0m
+[32m+	print(pam_section(pam_krb5, index))[0m
+[36m@@ -41 +40 @@[0m
+[31m-	print pam_section(pam_ldap, index)[0m
+[32m+	print(pam_section(pam_ldap, index))[0m
+[36m@@ -44 +43 @@[0m
+[31m-	print pam_section(pam_winbind, index)[0m
+[32m+	print(pam_section(pam_winbind, index))[0m
+[36m@@ -47 +46 @@[0m
+[31m-	print pam_section(pam_cache, index)[0m
+[32m+	print(pam_section(pam_cache, index))[0m
+# ./univention-pam/conffiles/etc/pam.d/cron
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/cron	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:38.814457848 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/ftp
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/ftp	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:39.178471269 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/kscreensaver
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/kscreensaver	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:39.518483804 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/passwd
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/passwd	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:39.854496191 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/su
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/su	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:40.218509609 +0100
+[0m[36m@@ -20 +20 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -22,3 +21,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/kde
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/kde	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:40.558522141 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,3 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/pam.d/chsh
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/chsh	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:40.918535409 +0100
+[0m[36m@@ -20 +20 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -22,2 +21,0 @@[0m
+[31m-@include common-account
+-@include common-session[0m
+# ./univention-pam/conffiles/etc/pam.d/rsh
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam.d/rsh	2020-03-12 10:06:28.934416736 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:41.266548234 +0100
+[0m[36m@@ -19 +19 @@[0m
+[31m-	print ' '.join(line)[0m
+[32m+	print(' '.join(line))[0m
+[36m@@ -21,6 +20,0 @@[0m
+[31m-@include common-account
+-@include common-session
+-session    optional   pam_lastlog.so
+-session    optional   pam_mail.so standard noenv
+-session    optional   pam_motd.so
+-@include common-password[0m
+# ./univention-pam/conffiles/etc/security/access-kdm.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-kdm.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:41.634561794 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-sshd.conf
+
++:Domain Admins,DC Slave Hosts,Computers,DC Backup Hosts,Admi <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-sshd.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:42.006575503 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-gdm.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-gdm.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:42.370588913 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-cron.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-cron.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:42.742602617 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-other.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-other.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:43.130616911 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-su.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-su.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:43.482629876 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-chfn.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-chfn.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:43.842643136 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-kscreensaver.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-kscreensaver.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:44.202656394 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-kde.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-kde.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:44.566669798 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-passwd.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-passwd.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:44.918682760 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-ppp.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-ppp.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:45.278696014 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-kcheckpass.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-kcheckpass.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:45.650709710 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-rsh.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-rsh.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:46.010722963 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-ftp.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-ftp.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:46.366736067 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-chsh.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-chsh.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:46.734749612 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/limits.conf
+
+# <domain>        <type>   <item>   <value>		      <
+*                 hard     nofile   32768		      <
+@"Domain Users"   hard     nproc    1000		      <
+*                 soft     nofile   32768		      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/limits.conf	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:47.122763893 +0100
+[0m[36m@@ -22 +22 @@[0m
+[31m-for key in configRegistry.keys():[0m
+[32m+for key in list(configRegistry.keys()):[0m
+[36m@@ -41 +41 @@[0m
+[31m-			print '# Invalid variable "%s"\n# <name> must be "user" for "default" <scope>, not "%s"\n#' % (key, type, )[0m
+[32m+			print('# Invalid variable "%s"\n# <name> must be "user" for "default" <scope>, not "%s"\n#' % (key, type, ))[0m
+[36m@@ -44 +44 @@[0m
+[31m-		print '# Illegal variable "%s"\n# <scope> must be "user", "group" or "default", not "%s"\n#' % (key, type, )[0m
+[32m+		print('# Illegal variable "%s"\n# <scope> must be "user", "group" or "default", not "%s"\n#' % (key, type, ))[0m
+[36m@@ -47 +47 @@[0m
+[31m-		print '# Illegal variable "%s"\n# <type> must be "soft", "hard" or "-", not "%s"\n#' % (key, type,)[0m
+[32m+		print('# Illegal variable "%s"\n# <type> must be "soft", "hard" or "-", not "%s"\n#' % (key, type,))[0m
+[36m@@ -66,2 +66,2 @@[0m
+[31m-		print entry[i].ljust(lengths[i] + 2),
+-	print[0m
+[32m+		print(entry[i].ljust(lengths[i] + 2), end=' ')
++	print()[0m
+[36m@@ -69 +68,0 @@[0m
+[31m-# End of file[0m
+# ./univention-pam/conffiles/etc/security/access-sudo.conf
+
++::ALL							      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-sudo.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:47.486777287 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-screen.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-screen.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:47.858790977 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/access-login.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-login.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:48.238804958 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/security/pam_env.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/pam_env.conf	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:48.614818792 +0100
+[0m[36m@@ -78,3 +78,3 @@[0m
+[31m-	print 'KDEDIRS DEFAULT="/usr/share/univention-kde-profiles/default/.kde/"'
+-	print 'XDG_CONFIG_DIRS="/etc/xdg/:/usr/share/univention-kde-profiles/default/.config"'
+-	print 'XDG_DATA_DIRS="/usr/share:/usr/share/univention-kde-profiles/default/.local/share"'[0m
+[32m+	print('KDEDIRS DEFAULT="/usr/share/univention-kde-profiles/default/.kde/"')
++	print('XDG_CONFIG_DIRS="/etc/xdg/:/usr/share/univention-kde-profiles/default/.config"')
++	print('XDG_DATA_DIRS="/usr/share:/usr/share/univention-kde-profiles/default/.local/share"')[0m
+[36m@@ -82 +81,0 @@[0m
+[31m-[0m
+# ./univention-pam/conffiles/etc/security/access-rlogin.conf
+
++:Administrators,root,Domain Admins:ALL			      <
+-:ALL:ALL						      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/security/access-rlogin.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:48.970831889 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-for item in configRegistry.keys():[0m
+[32m+for item in list(configRegistry.keys()):[0m
+[36m@@ -17,2 +17,2 @@[0m
+[31m-print "+:" + ",".join(names.keys()) + ":ALL"
+-print "-:ALL:ALL"[0m
+[32m+print("+:" + ",".join(list(names.keys())) + ":ALL")
++print("-:ALL:ALL")[0m
+# ./univention-pam/conffiles/etc/pam_ldap.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/pam_ldap.conf	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:49.326844984 +0100
+[0m[36m@@ -14 +14 @@[0m
+[31m-	print 'uri %s' % ' '.join(urilist)[0m
+[32m+	print('uri %s' % ' '.join(urilist))[0m
+[36m@@ -17 +17 @@[0m
+[31m-	print 'rootbinddn %s' % configRegistry['ldap/hostdn']	## required for non-anonymous non-local bind[0m
+[32m+	print('rootbinddn %s' % configRegistry['ldap/hostdn'])	## required for non-anonymous non-local bind[0m
+[36m@@ -19,5 +18,0 @@[0m
+[31m-base @%@ldap/base@%@
+-ldap_version 3
+-scope sub
+-pam_password crypt
+-ssl start_tls[0m
+# ./univention-pam/conffiles/etc/cron.d/univention-pam
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-pam/conffiles/etc/cron.d/univention-pam	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:49.678857931 +0100
+[0m[36m@@ -14 +14 @@[0m
+[31m-	print '# /usr/lib/univention-pam/ldap-group-to-file.py is disabled via UCR variable nss/group/cachefile/invalidate_interval'[0m
+[32m+	print('# /usr/lib/univention-pam/ldap-group-to-file.py is disabled via UCR variable nss/group/cachefile/invalidate_interval')[0m
+[36m@@ -16 +16 @@[0m
+[31m-	print '%s%s   root   [ -x /usr/lib/univention-pam/ldap-group-to-file.py ] && /usr/sbin/jitter 1800 /usr/lib/univention-pam/ldap-group-to-file.py %s' % (disabled, interval, check_member)[0m
+[32m+	print('%s%s   root   [ -x /usr/lib/univention-pam/ldap-group-to-file.py ] && /usr/sbin/jitter 1800 /usr/lib/univention-pam/ldap-group-to-file.py %s' % (disabled, interval, check_member))[0m
+[36m@@ -18 +17,0 @@[0m
+[31m-[0m
+# ./univention-firewall/conffiles/etc/security/packetfilter.d/80_univention-firewall_policy.sh
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-firewall/conffiles/etc/security/packetfilter.d/80_univention-firewall_policy.sh	2020-03-12 10:05:43.961046791 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:50.046871467 +0100
+[0m[36m@@ -35,4 +35,4 @@[0m
+[31m-	print '# "REJECT" is no valid default policy - changing default policy to "DROP" and'
+-	print '# adding final "REJECT" rule in INPUT queue.'
+-	print 'iptables --wait -A INPUT -j REJECT'
+-	print 'ip6tables --wait -A INPUT -j REJECT'[0m
+[32m+	print('# "REJECT" is no valid default policy - changing default policy to "DROP" and')
++	print('# adding final "REJECT" rule in INPUT queue.')
++	print('iptables --wait -A INPUT -j REJECT')
++	print('ip6tables --wait -A INPUT -j REJECT')[0m
+[36m@@ -40,4 +40,4 @@[0m
+[31m-print 'iptables --wait -P INPUT %s' % policy
+-print 'iptables --wait -P OUTPUT ACCEPT'
+-print 'ip6tables --wait -P INPUT %s' % policy
+-print 'ip6tables --wait -P OUTPUT ACCEPT'[0m
+[32m+print('iptables --wait -P INPUT %s' % policy)
++print('iptables --wait -P OUTPUT ACCEPT')
++print('ip6tables --wait -P INPUT %s' % policy)
++print('ip6tables --wait -P OUTPUT ACCEPT')[0m
+# ./univention-firewall/conffiles/etc/security/packetfilter.d/20_docker.sh
+
+	iptables --wait -A INPUT -s 172.17.0.0/16 -p tcp --dp <
+	iptables --wait -A INPUT -s 172.16.0.0/16 -p tcp --dp <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-firewall/conffiles/etc/security/packetfilter.d/20_docker.sh	2020-03-12 10:05:43.961046791 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:50.426885441 +0100
+[0m[36m@@ -60,2 +60,2 @@[0m
+[31m-print '\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port)
+-print '\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Compose Apps' % (str(docker_compose_net.network), str(docker_compose_net.prefixlen), mysql_port)[0m
+[32m+print('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port))
++print('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Compose Apps' % (str(docker_compose_net.network), str(docker_compose_net.prefixlen), mysql_port))[0m
+[36m@@ -63,34 +62,0 @@[0m
+[31m-
+-	iptables --wait -A DOCKER-ISOLATION-STAGE-1 -j RETURN
+-	iptables --wait -A DOCKER-ISOLATION-STAGE-2 -j RETURN
+-	iptables --wait -A DOCKER-USER -j RETURN
+-	iptables --wait -I FORWARD -j DOCKER-ISOLATION-STAGE-1
+-	iptables --wait -I FORWARD -j DOCKER-USER
+-}
+-
+-nat_container_rule() {
+-	IP=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$1")
+-	NETID=$(docker inspect --format='{{range .NetworkSettings.Networks}}{{.NetworkID}}{{end}}' "$1")
+-	IF=$(docker network inspect $NETID --format='{{with index .Options "com.docker.network.bridge.name"}}{{.}}{{else}}{{.Id | printf "br-%.12s"}}{{end}}')
+-
+-	# convert "443/tcp -> 0.0.0.0:40001" to "443 tcp 0.0.0.0 40001"
+-	docker port "$1" | sed -re 's#[/>: -]+# #g' | \
+-		while read localport proto addr containerport ; do
+-			if [ "$addr" != "0.0.0.0" ] ; then
+-				iptables --wait -t nat -A DOCKER ! -i "$IF" -p "$proto" --destination "$addr/32" --dport "$containerport" -j DNAT --to-destination "$IP:$localport"
+-			else
+-				iptables --wait -t nat -A DOCKER ! -i "$IF" -p "$proto" --dport "$containerport" -j DNAT --to-destination "$IP:$localport"
+-			fi
+-			iptables --wait -t filter -A DOCKER -d "$IP/32" ! -i "$IF" -o "$IF" -p "$proto" --dport "$localport" -j ACCEPT
+-			iptables --wait -t nat -A POSTROUTING -s "$IP/32" -d "$IP/32" -p "$proto" --dport "$localport" -j MASQUERADE
+-		done
+-}
+-
+-if [ -x /usr/bin/docker ] && [ -z "$(ucr get docker/container/uuid)" ] && pidof dockerd >/dev/null; then
+-	# this is a docker host
+-	nat_core_rules
+-
+-	for CONT_ID in $(docker ps -q); do
+-		nat_container_rule "$CONT_ID"
+-	done
+-fi[0m
+# ./univention-firewall/conffiles/etc/security/packetfilter.d/10_univention-firewall_start.sh
+
+# univention-ldap-server[en]: LDAPS			      |	# univention-ldap-server[en]: LDAP
+iptables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT     |	iptables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT    |	ip6tables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT
+							      <
+# univention-nfs[en]: portmap				      <
+iptables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT     <
+# univention-nfs[en]: NFS related RPC daemons		      |	# univention-bind[en]: DNS server
+iptables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j ACC |	iptables --wait -A INPUT -p "tcp"  --dport 7777 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j AC |	ip6tables --wait -A INPUT -p "tcp"  --dport 7777 -j ACCEPT
+# univention-heimdal-common[en]: krsh			      |	# univention-directory-notifier[en]: Univention Directory Not
+iptables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT      |	iptables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT     |	ip6tables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT
+# univention-ldap-server[en]: LDAP			      |	# univention-nfs[en]: NFS related RPC daemons
+iptables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT     |	iptables --wait -A INPUT -p "udp"  --dport 32765:32769 -j ACC
+ip6tables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT    |	ip6tables --wait -A INPUT -p "udp"  --dport 32765:32769 -j AC
+# univention-heimdal-kdc[en]: kpasswd			      |	# univention-apache[en]: HTTP
+iptables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT      |	iptables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT     |	ip6tables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT
+							      >
+							      >	# univention-management-console-server[en]: UMC
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 6670 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 6670 -j ACCEPT
+							      >	# univention-heimdal-kdc[en]: kadmin
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT
+							      >
+iptables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT     |	iptables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT
+ip6tables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT    |	ip6tables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT
+# univention-nfs[en]: NFS related RPC daemons		      |	# univention-base-files[en]: SSH
+iptables --wait -A INPUT -p "udp"  --dport 32765:32769 -j ACC |	iptables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT
+ip6tables --wait -A INPUT -p "udp"  --dport 32765:32769 -j AC |	ip6tables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT
+							      >
+							      >	# univention-nagios-client[en]: Nagios NRPE
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 5666 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 5666 -j ACCEPT
+iptables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT	      |	iptables --wait -A INPUT -p "udp"  --dport 53 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT      |	ip6tables --wait -A INPUT -p "udp"  --dport 53 -j ACCEPT
+							      >
+							      >	# univention-nfs[en]: portmap
+							      >	iptables --wait -A INPUT -p "udp"  --dport 111 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "udp"  --dport 111 -j ACCEPT
+# univention-heimdal-kdc[en]: kpasswd			      |	# univention-bind[en]: DNS proxy
+iptables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT      |	iptables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT
+ip6tables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT     |	ip6tables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT
+# univention-apache[en]: HTTP				      |	# univention-heimdal-common[en]: krsh
+iptables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT	      |	iptables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT      |	ip6tables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT
+							      >
+							      >	# univention-nfs[en]: NFS related RPC daemons
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j ACC
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j AC
+# univention-bind[en]: DNS proxy			      <
+iptables --wait -A INPUT -p "udp"  --dport 53 -j ACCEPT	      <
+ip6tables --wait -A INPUT -p "udp"  --dport 53 -j ACCEPT      <
+							      <
+# univention-nfs[en]: NFS				      <
+iptables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT     <
+ip6tables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT    <
+							      <
+# univention-nagios-client[en]: Nagios NRPE		      <
+iptables --wait -A INPUT -p "tcp"  --dport 5666 -j ACCEPT     <
+ip6tables --wait -A INPUT -p "tcp"  --dport 5666 -j ACCEPT    <
+							      <
+# univention-management-console-server[en]: UMC		      |	# univention-heimdal-kdc[en]: kpasswd
+iptables --wait -A INPUT -p "tcp"  --dport 6670 -j ACCEPT     |	iptables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 6670 -j ACCEPT    |	ip6tables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT
+							      <
+# univention-base-files[en]: SSH			      <
+iptables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT	      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT      <
+							      <
+# univention-ldap-server[en]: LDAP			      <
+iptables --wait -A INPUT -p "tcp"  --dport 389 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 389 -j ACCEPT     <
+# univention-bind[en]: DNS server			      |	# univention-heimdal-kdc[en]: kpasswd
+iptables --wait -A INPUT -p "tcp"  --dport 7777 -j ACCEPT     |	iptables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 7777 -j ACCEPT    |	ip6tables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT
+# univention-directory-notifier[en]: Univention Directory Not |	# univention-ldap-server[en]: LDAPS
+iptables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT     |	iptables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT    |	ip6tables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT
+# univention-heimdal-kdc[en]: kadmin			      |	# univention-ldap-server[en]: LDAP
+iptables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT      |	iptables --wait -A INPUT -p "tcp"  --dport 389 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT     |	ip6tables --wait -A INPUT -p "tcp"  --dport 389 -j ACCEPT
+iptables --wait -A INPUT -p "udp"  --dport 111 -j ACCEPT      |	iptables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT
+ip6tables --wait -A INPUT -p "udp"  --dport 111 -j ACCEPT     |	ip6tables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT
+							      >
+							      >	# univention-nfs[en]: NFS
+							      >	iptables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-firewall/conffiles/etc/security/packetfilter.d/10_univention-firewall_start.sh	2020-03-12 10:05:43.961046791 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:50.838900592 +0100
+[0m[36m@@ -84 +84 @@[0m
+[31m-		print 'iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[32m+		print('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[36m@@ -89 +89 @@[0m
+[31m-			}[0m
+[32m+			})[0m
+[36m@@ -94 +94 @@[0m
+[31m-		print 'ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[32m+		print('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[36m@@ -99 +99 @@[0m
+[31m-			}[0m
+[32m+			})[0m
+[36m@@ -103,2 +103,2 @@[0m
+[31m-	print
+-	for key in [ x for x in configRegistry.keys() if x.startswith('%s/' % var) ]:[0m
+[32m+	print()
++	for key in [ x for x in list(configRegistry.keys()) if x.startswith('%s/' % var) ]:[0m
+[36m@@ -109 +109 @@[0m
+[31m-		print '# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key))[0m
+[32m+		print('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key)))[0m
+[36m@@ -119 +119 @@[0m
+[31m-	for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/package/') ]:[0m
+[32m+	for key in [ x for x in list(configRegistry.keys()) if x.startswith('security/packetfilter/package/') ]:[0m
+[36m@@ -126 +126 @@[0m
+[31m-for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/') ]:[0m
+[32m+for key in [ x for x in list(configRegistry.keys()) if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/') ]:[0m
+[36m@@ -133 +133 @@[0m
+[31m-for ucrkey in filterlist.values():[0m
+[32m+for ucrkey in list(filterlist.values()):[0m
+# ./univention-maintenance/conffiles/etc/logrotate.d/univention-maintenance
+
+/var/log/univention/system-stats.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-maintenance/conffiles/etc/logrotate.d/univention-maintenance	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:51.194913682 +0100
+[0m[36m@@ -9 +9 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name[0m
+[32m+print("/var/log/univention/%s.log {" % name)[0m
+[36m@@ -11,2 +11,2 @@[0m
+[31m-for setting in settings.keys():
+-        print "\t%s" % settings[setting][0m
+[32m+for setting in list(settings.keys()):
++        print("\t%s" % settings[setting])[0m
+[36m@@ -14 +13,0 @@[0m
+[31m-}[0m
+# ./univention-maintenance/conffiles/etc/cron.d/univention-system-stats
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-maintenance/conffiles/etc/cron.d/univention-system-stats	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:51.566927359 +0100
+[0m[36m@@ -5 +5 @@[0m
+[31m-print "# collect system stats"[0m
+[32m+print("# collect system stats")[0m
+[36m@@ -9,3 +9,3 @@[0m
+[31m-	print "SHELL=/bin/sh"
+-	print "PATH=/sbin:/bin:/usr/sbin:/usr/bin"
+-	print "%s root [ -x %s ] && %s >/dev/null" % (cron, file, file)[0m
+[32m+	print("SHELL=/bin/sh")
++	print("PATH=/sbin:/bin:/usr/sbin:/usr/bin")
++	print("%s root [ -x %s ] && %s >/dev/null" % (cron, file, file))[0m
+[36m@@ -13 +13 @@[0m
+[31m-	print "# not enabled via system/stats/cron or not one of those system roles:\n#%s" % roles[0m
+[32m+	print("# not enabled via system/stats/cron or not one of those system roles:\n#%s" % roles)[0m
+# ./univention-maintenance/conffiles/etc/cron.d/univention-mrtg
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-maintenance/conffiles/etc/cron.d/univention-mrtg	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:51.914940153 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-        print '@%@mrtg/cron@%@ root /usr/sbin/univention-mrtg'[0m
+[32m+        print('@%@mrtg/cron@%@ root /usr/sbin/univention-mrtg')[0m
+[36m@@ -10 +10 @@[0m
+[31m-        print '#* * * * * root /usr/sbin/univention-mrtg'[0m
+[32m+        print('#* * * * * root /usr/sbin/univention-mrtg')[0m
+[36m@@ -12 +11,0 @@[0m
+[31m-[0m
+# ./univention-quota/conffiles/etc/init.d/quotarpc
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-quota/conffiles/etc/init.d/quotarpc	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:51.918940300 +0100
+[0m[36m@@ -81,0 +82 @@[0m
+[32m+[0m
+# ./univention-quota/conffiles/etc/pam.d/common-session.d/20univention-quota_common
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-quota/conffiles/etc/pam.d/common-session.d/20univention-quota_common	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:52.302954416 +0100
+[0m[36m@@ -3 +3 @@[0m
+[31m-	print 'session	   optional   pam_runasroot.so program=/usr/sbin/univention-user-quota'[0m
+[32m+	print('session	   optional   pam_runasroot.so program=/usr/sbin/univention-user-quota')[0m
+# ./univention-quota/conffiles/etc/samba/smb.conf.d/81univention-quota_scripts
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-quota/conffiles/etc/samba/smb.conf.d/81univention-quota_scripts	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:52.670967943 +0100
+[0m[36m@@ -4 +4 @@[0m
+[31m-	print '\tset quota command =',  quota_command[0m
+[32m+	print('\tset quota command =',  quota_command)[0m
+# ./univention-home-mounter/conffiles/etc/cron.d/univention-home-mounter
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-home-mounter/conffiles/etc/cron.d/univention-home-mounter	2020-03-12 10:05:43.961046791 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:52.674968090 +0100
+[0m[36m@@ -7,0 +8 @@[0m
+[32m+[0m
+# ./univention-maintenance-mode/conffiles/univention-maintenance-mode-service
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-maintenance-mode/conffiles/univention-maintenance-mode-service	2020-03-12 10:05:43.965046914 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:52.674968090 +0100
+[0m[36m@@ -46,0 +47 @@[0m
+[32m+[0m
+# ./univention-system-setup/conffiles/usr/share/univention-management-console/modules/setup-certificate.xml
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-setup/conffiles/usr/share/univention-management-console/modules/setup-certificate.xml	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:53.050981910 +0100
+[0m[36m@@ -8 +8 @@[0m
+[31m-	print '''[0m
+[32m+	print('''[0m
+[36m@@ -12 +12 @@[0m
+[31m-	'''[0m
+[32m+	''')[0m
+[36m@@ -14 +13,0 @@[0m
+[31m-</umc>[0m
+# ./univention-system-setup/conffiles/etc/logrotate.d/univention-system-setup
+
+/var/log/univention/setup.log {				      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-setup/conffiles/etc/logrotate.d/univention-system-setup	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:53.406994993 +0100
+[0m[36m@@ -9 +9 @@[0m
+[31m-print "/var/log/univention/%s.log {" % name[0m
+[32m+print("/var/log/univention/%s.log {" % name)[0m
+[36m@@ -11,2 +11,2 @@[0m
+[31m-for setting in settings.keys():
+-	print "\t%s" % settings[setting][0m
+[32m+for setting in list(settings.keys()):
++	print("\t%s" % settings[setting])[0m
+[36m@@ -14 +13,0 @@[0m
+[31m-}[0m
+# ./univention-system-setup/conffiles/etc/motd.setup
+
+							      <
+############################################################# <
+							      <
+Welcome to Univention Corporate Server (UCS)!		      <
+							      <
+This system is not completely configured yet. To finalise the <
+of this system you need to login to the web-based Univention  <
+Console which can be reached with a web browser under the fol <
+							      <
+  https://192.168.122.227/				      <
+							      <
+The login at the Univention Management Console needs to be do <
+the user "root" and the password you entered during installat <
+							      <
+UMC uses numerous Javascript and CSS functions to display the <
+interface. Some of these features are unavailable in older br <
+following web browsers are supported:			      <
+ - Chrome as of version 37 or later			      <
+ - Firefox as of version 38 or later			      <
+ - Internet Explorer as of version 11 or later		      <
+ - Safari and Safari Mobile as of version 9		      <
+							      <
+############################################################# <
+							      <
+							      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-setup/conffiles/etc/motd.setup	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:53.851011309 +0100
+[0m[36m@@ -5 +5 @@[0m
+[31m-import urllib2[0m
+[32m+import urllib.request, urllib.error, urllib.parse[0m
+[36m@@ -71 +71 @@[0m
+[31m-		result = urllib2.urlopen(url)[0m
+[32m+		result = urllib.request.urlopen(url)[0m
+[36m@@ -74 +74 @@[0m
+[31m-	except urllib2.URLError:[0m
+[32m+	except urllib.error.URLError:[0m
+[36m@@ -112 +112 @@[0m
+[31m-print msg % {[0m
+[32m+print(msg % {[0m
+[36m@@ -114 +114 @@[0m
+[31m-}[0m
+[32m+})[0m
+# ./univention-system-setup/conffiles/etc/pam.d/common-session.d/20system-setup-login-message
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-setup/conffiles/etc/pam.d/common-session.d/20system-setup-login-message	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:54.227025125 +0100
+[0m[36m@@ -4 +4 @@[0m
+[31m-	print 'session optional pam_motd.so motd=/etc/motd.setup'[0m
+[32m+	print('session optional pam_motd.so motd=/etc/motd.setup')[0m
+# ./univention-system-setup/conffiles/etc/apache2/conf-available/univention-system-setup.conf
+
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-system-setup/conffiles/etc/apache2/conf-available/univention-system-setup.conf	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:54.587038352 +0100
+[0m[36m@@ -5 +5 @@[0m
+[31m-	print '''[0m
+[32m+	print('''[0m
+[36m@@ -12 +12 @@[0m
+[31m-	'''[0m
+[32m+	''')[0m
+# ./univention-app-appliance/conffiles/usr/share/univention-web/js/umc/hooks/appliance.json
+
+  "close_first_steps": null, 				      |	  "close_first_steps": null,
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-app-appliance/conffiles/usr/share/univention-web/js/umc/hooks/appliance.json	2020-03-12 10:05:43.953046547 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:54.959052020 +0100
+[0m[36m@@ -16 +16 @@[0m
+[31m-print json.dumps(data, indent=2)[0m
+[32m+print(json.dumps(data, indent=2))[0m
+# ./univention-ssl/conffiles/etc/logrotate.d/univention-ssl
+
+/var/log/univention/ssl-sync.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+
+
+## diff compared to orginal file
+
+[1m--- ./univention-ssl/conffiles/etc/logrotate.d/univention-ssl	2020-03-12 10:05:43.969047036 +0100
++++ /tmp/convert-target.py	2020-03-12 10:38:55.351066419 +0100
+[0m[36m@@ -13,4 +13,4 @@[0m
+[31m-	print "/var/log/univention/%s.log {" % name
+-	for setting in settings.keys():
+-		print "\t%s" % settings[setting]
+-	print "}"[0m
+[32m+	print("/var/log/univention/%s.log {" % name)
++	for setting in list(settings.keys()):
++		print("\t%s" % settings[setting])
++	print("}")[0m

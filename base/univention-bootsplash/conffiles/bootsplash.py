@@ -10,3 +10,4 @@ def postinst(baseConfig, changes):
 	else:
 		if new:
 			call(("plymouth-set-default-theme", "--rebuild-initrd", new))
+
