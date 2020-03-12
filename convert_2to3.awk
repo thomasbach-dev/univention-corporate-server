@@ -8,8 +8,8 @@ BEGIN {
 }
 END {
 	print converted > "/tmp/convert-target.py"
-	if (system("diff -u0 --color=always  " FILENAME " /tmp/convert-target.py") == 0) {
-		# replace original file...
+	if (system("diff -u0 --color=always  " FILENAME " /tmp/convert-target.py") != 0) {
+		# replace original file only if it has changed...
 		close(FILENAME) ; print converted > FILENAME
 	}
 
