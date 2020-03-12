@@ -7,21 +7,19 @@ BEGIN {
         "\n" "baseConfig = configRegistry"
 }
 END {
-	if(err != 0) {
-		exit err
-	}
-
 	print converted > "/tmp/convert-target.py"
 	if (system("diff -u0 --color=always  " FILENAME " /tmp/convert-target.py") == 0) {
-		close(FILENAME)
-		# system("cp -v '/tmp/convert-target.py' '" FILENAME "'")
+		# replace original file...
+		close(FILENAME) ; print converted > FILENAME
 	}
-	print converted > FILENAME
+
+	# exit...
+	exit err
 }
 # if start is 0 and we found a @!@-line: set start
 !start && /@!@/ { start = 1 ; converted = converted $0 ; next }
 # if start is set (and we still are within a code section) and there comes a @!@
-start && /@!@/ { 
+start && /@!@/ {
 	print code2 > "/tmp/convert-tmp.py"
 	system("2to3-2.7 --no-diffs -w /tmp/convert-tmp.py 2>/dev/null")
 	cmd = "cat /tmp/convert-tmp.py"
@@ -30,11 +28,14 @@ start && /@!@/ {
 	}
 	close(cmd)
 
-	print preamble "\n" code2 | "ssh testsystem 'cat - > /tmp/convert-py2.py'"
-	print preamble "\n" code3 | "ssh testsystem 'cat - > /tmp/convert-py3.py'"
+	print preamble "\n" code2 > "/tmp/convert-py2.py"
+	print preamble "\n" code3 > "/tmp/convert-py3.py"
 
-	err = err + system("ssh testsystem 'diff -y <(python2 /tmp/convert-py2.py 2>&1) <(python3 /tmp/convert-py3.py 2>&1)'")
-	converted = converted code3 "\n" $0
+	if (system("scp /tmp/convert[23].py  testsystem:/tmp/") == 0)
+	{ err = err + system("ssh testsystem 'diff -y <(python2 /tmp/convert-py2.py 2>&1) <(python3 /tmp/convert-py3.py 2>&1)'") }
+	else
+	{ error = 127 }
+	converted = converted code3 $0
 	# if (system("ssh testsystem python3 /tmp/convert-py2.py 2>/dev/null 1>/dev/null") != 0) {
 	# } else {
 	# 	converted = converted code2 "\n" $0
@@ -47,5 +48,5 @@ start && /@!@/ {
 # variable and increment the code line counter
 start { code2 = code2 "\n" $0 ; lines++ ; next }
 # everything else will be passed into the variable
-{ converted = converted "\n" $0 }
+{ converted = converted  $0 "\n"  }
 
