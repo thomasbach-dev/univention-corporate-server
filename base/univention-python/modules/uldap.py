@@ -275,13 +275,13 @@ class access(object):
 
 		self.__open(ca_certfile)
 
-	def __encode_pwd(self, pwd):
+	def __encode_pwd(self, pwd, encoding='UTF-8'):
 		if six.PY3:
 			return pwd
 		if isinstance(pwd, unicode):  # noqa: F821
-			return str(pwd)
-		else:
 			return pwd
+		else:
+			return pwd.decode(encoding)
 
 	@_fix_reconnect_handling
 	def bind(self, binddn, bindpw):
