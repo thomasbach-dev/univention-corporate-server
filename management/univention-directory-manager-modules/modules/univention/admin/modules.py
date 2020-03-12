@@ -272,7 +272,7 @@ def update_extended_options(lo, module, position):
 		module_filter = '(|(univentionUDMOptionModule=users/user)%s)' % (module_filter,)
 
 	# append UDM extended options
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
+	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=u'(&(objectClass=univentionUDMOption)%s)' % (module_filter,)):
 		oname = attrs['cn'][0].decode('UTF-8', 'replace')
 		shortdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationShortDescription;entry-%s', 'univentionUDMOptionShortDescription')
 		longdesc = _get_translation(lang, attrs, 'univentionUDMOptionTranslationLongDescription;entry-%s', 'univentionUDMOptionLongDescription')
@@ -380,7 +380,7 @@ def update_extended_attributes(lo, module, position):
 	if name(module) == 'settings/usertemplate':
 		module_filter = '(|(univentionUDMPropertyModule=users/user)%s)' % (module_filter,)
 
-	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter='(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
+	for dn, attrs in lo.search(base=position.getDomainConfigBase(), filter=u'(&(objectClass=univentionUDMProperty)%s(univentionUDMPropertyVersion=2))' % (module_filter,)):
 		# get CLI name
 		pname = attrs['univentionUDMPropertyCLIName'][0].decode('UTF-8', 'replace')
 		object_class = attrs.get('univentionUDMPropertyObjectClass', [])[0].decode('UTF-8', 'replace')
