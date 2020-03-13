@@ -1,15 +1,14 @@
 @%@UCRWARNING=# @%@
 
-session    required   pam_unix.so
-@!@from __future__ import print_function
+session    required   pam_unix.so@!@from __future__ import print_function
 
-print('%ssession    optional   pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',))
+print(('%ssession    optional   pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',)))
 minimum_uid = int(configRegistry.get('pam/krb5/minimum_uid', 1000))
 methods=[x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', 'ldap', 'winbind']]
 if 'winbind' in methods:
 	print('session    optional   pam_winbind.so')
 if 'krb5' in methods:
-	print('session    optional   pam_krb5.so minimum_uid=%d' % (minimum_uid,))
+	print(('session    optional   pam_krb5.so minimum_uid=%d' % (minimum_uid,)))
 @!@
 session    required   pam_limits.so
 @!@from __future__ import print_function
@@ -19,7 +18,7 @@ if configRegistry.is_true('homedir/create', True):
 		homeDirReq = "required"
 		if configRegistry.is_false('homedir/mount/required'):
 			homeDirReq = "optional"
-		print('session    %s   pam_runasroot.so program=/usr/sbin/univention-mount-homedir' % homeDirReq)
+		print(('session    %s   pam_runasroot.so program=/usr/sbin/univention-mount-homedir' % homeDirReq))
 	print('session    required   pam_mkhomedir.so skel=/etc/skel umask=0066')
 	print('session    optional   pam_runasroot.so user program=/usr/bin/univention-skel')
 

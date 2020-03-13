@@ -1,5 +1,4 @@
 @%@UCRWARNING=# @%@
-
 @!@from __future__ import print_function
 
 import univention.lib.ucrLogrotate
@@ -10,15 +9,15 @@ settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
 print("/var/log/univention/config-registry.replog {")
 for setting in list(settings.keys()):
-        print("\t%s" % settings[setting])
+        print(("\t%s" % settings[setting]))
 print("}")
 
 # dpkg-divert 
 name = "dpkg-divert"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
-print("/var/log/univention/%s.log {" % name)
+print(("/var/log/univention/%s.log {" % name))
 for setting in list(settings.keys()):
-	print("\t%s" % settings[setting])
+	print(("\t%s" % settings[setting]))
 print("}")
 @!@

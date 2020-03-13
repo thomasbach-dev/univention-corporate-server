@@ -8,7 +8,6 @@ set base_path    @%@repository/mirror/basepath@%@
 set nthreads     @%@repository/mirror/threads@%@
 
 set recreate_packages @%@repository/mirror/recreate_packages@%@
-
 @!@from __future__ import print_function
 
 import sys
@@ -29,12 +28,12 @@ try:
 			start = UCS_Version(start)
 		if end:
 			end = UCS_Version(end)
-		print(mirror.print_version_repositories(clean=True, dists=True, start=start, end=end))
-		print(mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True))
+		print((mirror.print_version_repositories(clean=True, dists=True, start=start, end=end)))
+		print((mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True)))
 except Exception:
 	print('# An error occurred during the repository check. The error message:')
 	for line in traceback.format_exc().splitlines():
-		print('#   %s' % line)
+		print(('#   %s' % line))
 	print('#')
 	print('')
 	print('# After fixing this issue, you should rewrite this file with the following command:')

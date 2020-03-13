@@ -1,7 +1,6 @@
 @%@UCRWARNING=# @%@
 
 127.0.0.1	localhost
-
 @!@from __future__ import print_function
 
 # Add IPv4 and IPv6 addresses of interfaces

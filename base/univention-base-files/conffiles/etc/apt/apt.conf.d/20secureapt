@@ -1,5 +1,4 @@
 @%@UCRWARNING=// @%@
-
 @!@from __future__ import print_function
 
 if configRegistry.is_true('update/secure_apt', False):

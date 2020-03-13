@@ -10,7 +10,6 @@
 # OpenSSH is to specify options with their default value where
 # possible, but leave them commented.  Uncommented options override the
 # default value.
-
 @!@from __future__ import print_function
 
 import sys
@@ -306,11 +305,11 @@ Subsystem	sftp	/usr/lib/openssh/sftp-server
 @!@from __future__ import print_function
 
 if configRegistry.get('sshd/MACs'):
-	print("MACs %(sshd/MACs)s" % configRegistry)
+	print(("MACs %(sshd/MACs)s" % configRegistry))
 if configRegistry.get('sshd/Ciphers'):
-	print("Ciphers %(sshd/Ciphers)s" % configRegistry)
+	print(("Ciphers %(sshd/Ciphers)s" % configRegistry))
 if configRegistry.get('sshd/KexAlgorithms'):
-	print("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry)
+	print(("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry))
 @!@
 
 # Start of additional configuration options defined via ucr 'sshd/config/.*'
@@ -324,5 +323,5 @@ config = [
 	if key.startswith(PREFIX)
 ]
 if config:
-	print('\n'.join(line.lstrip(DIGITS) for line in sorted(config)))
+	print(('\n'.join(line.lstrip(DIGITS) for line in sorted(config))))
 @!@

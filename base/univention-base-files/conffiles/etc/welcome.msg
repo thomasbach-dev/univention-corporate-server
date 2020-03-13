@@ -18,7 +18,7 @@ else:
 	menutitle="Univention Corporate Server"
 
 if configRegistry.get('version/version'):
-	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))
+	print(('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))))
 else:
 	print('Univention Thin Client')
 
@@ -39,10 +39,10 @@ if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontr
 			startsite = "%s (%s)" % (startsite, ip)
 
 	if configRegistry.get('server/role') == 'domaincontroller_master':
-		print('The UCS management system is available at https://' + startsite)
+		print(('The UCS management system is available at https://' + startsite))
 	else:
 		print('The UCS management system can be reached by following the link to the domain controller')
-		print('master at https://' + startsite + ' and selecting the')
+		print(('master at https://' + startsite + ' and selecting the'))
 		print('Univention Management Console.')
 
 	print()

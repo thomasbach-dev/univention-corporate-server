@@ -1,5 +1,4 @@
 @%@UCRWARNING=# @%@
-
 @!@from __future__ import print_function
 
 if configRegistry.is_true('auth/faillog', False):
@@ -36,15 +35,15 @@ methods=[x for x in configRegistry['auth/methods'].split(' ') if x in ['krb5', '
 index = len(methods)
 
 if 'krb5' in methods:
-	print(pam_section(pam_krb5, index))
+	print((pam_section(pam_krb5, index)))
 	index -= 1
 if 'ldap' in methods:
-	print(pam_section(pam_ldap, index))
+	print((pam_section(pam_ldap, index)))
 	index -= 1
 if 'winbind' in methods:
-	print(pam_section(pam_winbind, index))
+	print((pam_section(pam_winbind, index)))
 	index -= 1
 if 'cache' in methods:
-	print(pam_section(pam_cache, index))
+	print((pam_section(pam_cache, index)))
 	index -= 1
 @!@

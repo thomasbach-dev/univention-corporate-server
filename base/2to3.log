@@ -1,0 +1,3972 @@
+# ./univention-l10n-fr/conffiles/ucr-l10n-fr
+
+
+
+# ./univention-base-files/conffiles/etc/logrotate.d/rsyslog
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/auth.log					      |	Traceback (most recent call last):
+/var/log/cron.log					      |	  File "/tmp/convert-py3.py", line 9, in <module>
+/var/log/daemon.log					      |	    from univention.lib.ucrLogrotate import getLogrotateConfi
+/var/log/debug						      |	ImportError: No module named 'univention.lib.ucrLogrotate'
+/var/log/kern.log					      <
+/var/log/lpr.log					      <
+/var/log/mail.err					      <
+/var/log/mail.info					      <
+/var/log/mail.log					      <
+/var/log/mail.warn					      <
+/var/log/messages					      <
+/var/log/news.crit					      <
+/var/log/news.err					      <
+/var/log/news.notice					      <
+/var/log/user.log					      <
+{							      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+	delaycompress					      <
+	sharedscripts					      <
+	postrotate					      <
+		invoke-rc.d rsyslog rotate > /dev/null	      <
+	endscript					      <
+}							      <
+/var/log/syslog						      <
+{							      <
+	daily						      <
+	rotate 84					      <
+	create 640 root adm				      <
+	notifempty					      <
+	compress					      <
+	missingok					      <
+	delaycompress					      <
+	sharedscripts					      <
+	postrotate					      <
+		invoke-rc.d rsyslog rotate > /dev/null	      <
+	endscript					      <
+}							      <
+```
+[1m--- ./univention-base-files/conffiles/etc/logrotate.d/rsyslog	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:02.669029634 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -40 +39 @@[0m
+[31m-for (cat, (paths, settings)) in FILES.items():[0m
+[32m+for (cat, (paths, settings)) in list(FILES.items()):[0m
+[36m@@ -45 +44 @@[0m
+[31m-		print('\t%s' % (setting, ))[0m
+[32m+		print(('\t%s' % (setting, )))[0m
+
+
+# ./univention-base-files/conffiles/etc/logrotate.d/univention-config-registry-replog
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/univention/config-registry.replog {		      |	Traceback (most recent call last):
+	weekly						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+	rotate 12					      |	    import univention.lib.ucrLogrotate
+	create 640 root adm				      |	ImportError: No module named 'univention.lib.ucrLogrotate'
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/dpkg-divert.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+```
+[1m--- ./univention-base-files/conffiles/etc/logrotate.d/univention-config-registry-replog	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:05.769094026 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -13 +12 @@[0m
+[31m-        print("\t%s" % settings[setting])[0m
+[32m+        print(("\t%s" % settings[setting]))[0m
+[36m@@ -20 +19 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -22 +21 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+
+
+# ./univention-base-files/conffiles/etc/issue
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+							      >	Univention DC Master 4.4-3:
+							      >
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 41, in <module>
+    from builtins import str				      |	    from univention.config_registry.interfaces import Interfa
+ImportError: No module named builtins			      |	  File "/usr/lib/python3/dist-packages/univention/config_regi
+							      >	    from backend import ConfigRegistry
+							      >	ImportError: No module named 'backend'
+```
+[1m--- ./univention-base-files/conffiles/etc/issue	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:09.125163735 +0100
+[0m[36m@@ -21 +21 @@[0m
+[31m-	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))[0m
+[32m+	print(('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))))[0m
+[36m@@ -43 +43 @@[0m
+[31m-		print('The UCS management system is available at https://' + startsite)[0m
+[32m+		print(('The UCS management system is available at https://' + startsite))[0m
+[36m@@ -46 +46 @@[0m
+[31m-		print('master at https://' + startsite + ' and selecting the')[0m
+[32m+		print(('master at https://' + startsite + ' and selecting the'))[0m
+
+
+# ./univention-base-files/conffiles/etc/systemd/journald.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/systemd/journald.conf	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:30.877615558 +0100
+[0m[36m@@ -11,2 +11 @@[0m
+[31m-[Journal]
+-@!@from __future__ import print_function[0m
+[32m+[Journal]@!@from __future__ import print_function[0m
+[36m@@ -18 +17 @@[0m
+[31m-	print("Storage=%s" % (value, ))[0m
+[32m+	print(("Storage=%s" % (value, )))[0m
+[36m@@ -27 +26 @@[0m
+[31m-	print("SplitMode=%s" % (value, ))[0m
+[32m+	print(("SplitMode=%s" % (value, )))[0m
+[36m@@ -37 +36 @@[0m
+[31m-	print("SystemMaxUse=%s" % (value, ))[0m
+[32m+	print(("SystemMaxUse=%s" % (value, )))[0m
+[36m@@ -42 +41 @@[0m
+[31m-	print("SystemKeepFree=%s" % (value, ))[0m
+[32m+	print(("SystemKeepFree=%s" % (value, )))[0m
+[36m@@ -47 +46 @@[0m
+[31m-	print("SystemMaxFileSize=%s" % (value, ))[0m
+[32m+	print(("SystemMaxFileSize=%s" % (value, )))[0m
+[36m@@ -57 +56 @@[0m
+[31m-	print("MaxRetentionSec=%s" % (value, ))[0m
+[32m+	print(("MaxRetentionSec=%s" % (value, )))[0m
+[36m@@ -62 +61 @@[0m
+[31m-	print("MaxFileSec=%s" % (value, ))[0m
+[32m+	print(("MaxFileSec=%s" % (value, )))[0m
+
+
+# ./univention-base-files/conffiles/etc/logrotate.conf
+
+
+
+# ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/00header.py
+
+
+
+# ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/20utf8.py
+
+
+
+# ./univention-base-files/conffiles/etc/python2.6/sitecustomize.py.d/10apport.py
+
+
+
+# ./univention-base-files/conffiles/etc/apt/apt.conf.d/80proxy
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/apt/apt.conf.d/80proxy	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:34.121682940 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -8 +7 @@[0m
+[31m-	print('    %s' % (proto,))[0m
+[32m+	print(('    %s' % (proto,)))[0m
+[36m@@ -10 +9 @@[0m
+[31m-	print('        Proxy "%s";' % proxy)[0m
+[32m+	print(('        Proxy "%s";' % proxy))[0m
+
+
+# ./univention-base-files/conffiles/etc/apt/apt.conf.d/20secureapt
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/apt/apt.conf.d/20secureapt	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:37.701757301 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+
+
+# ./univention-base-files/conffiles/etc/bash.bashrc
+
+
+
+# ./univention-base-files/conffiles/etc/e2fsck.conf
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+[1m--- ./univention-base-files/conffiles/etc/e2fsck.conf	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:40.877823270 +0100
+[0m[36m@@ -1,2 +1 @@[0m
+[31m-@%@UCRWARNING=# @%@
+-@!@from future import standard_library[0m
+[32m+@%@UCRWARNING=# @%@@!@from future import standard_library[0m
+
+
+# ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/00header.py
+
+
+
+# ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/20utf8.py
+
+
+
+# ./univention-base-files/conffiles/etc/python2.7/sitecustomize.py.d/10apport.py
+
+
+
+# ./univention-base-files/conffiles/etc/ssh/ssh_config
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/ssh/ssh_config	2020-03-13 11:10:55.084872101 +0100
++++ /tmp/convert-target.py	2020-03-13 11:11:44.033888825 +0100
+[0m[36m@@ -45,2 +45 @@[0m
+[31m-    HashKnownHosts yes
+-@!@from __future__ import print_function[0m
+[32m+    HashKnownHosts yes@!@from __future__ import print_function[0m
+
+
+# ./univention-base-files/conffiles/etc/ssh/sshd_config
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 129			      |	  File "/tmp/convert-py3.py", line 129
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 129			      |	Port 22
+    'set twice: via sshd/ChallengeResponseAuthentication and  |	#AddressFamily any
+                                                              |	#ListenAddress 0.0.0.0
+SyntaxError: invalid syntax				      |	#ListenAddress ::
+							      >
+							      >	HostKey /etc/ssh/ssh_host_rsa_key
+							      >	HostKey /etc/ssh/ssh_host_ecdsa_key
+							      >	HostKey /etc/ssh/ssh_host_ed25519_key
+							      >
+							      >
+							      >	# Ciphers and keying
+							      >	#RekeyLimit default none
+							      >
+							      >	# Logging
+							      >	#SyslogFacility AUTH
+							      >	#LogLevel INFO
+							      >
+							      >	# Authentication:
+							      >
+							      >	LoginGraceTime 600
+							      >	PermitRootLogin yes
+							      >	#StrictModes yes
+							      >	#MaxAuthTries 6
+							      >	#MaxSessions 10
+							      >
+							      >	#PubkeyAuthentication yes
+							      >
+							      >	# Expect .ssh/authorized_keys2 to be disregarded by default i
+							      >	#AuthorizedKeysFile .ssh/authorized_keys .ssh/authorized_keys
+							      >
+							      >	#AuthorizedPrincipalsFile none
+							      >
+							      >	#AuthorizedKeysCommand none
+							      >	#AuthorizedKeysCommandUser nobody
+							      >
+							      >	# For this to work you will also need host keys in /etc/ssh/s
+							      >	#HostbasedAuthentication no
+							      >	# Change to yes if you don't trust ~/.ssh/known_hosts for
+							      >	# HostbasedAuthentication
+							      >	#IgnoreUserKnownHosts no
+							      >	# Don't read the user's ~/.rhosts and ~/.shosts files
+							      >	#IgnoreRhosts yes
+							      >
+							      >	# To disable tunneled clear text passwords, change to no here
+							      >	PasswordAuthentication no
+							      >	#PermitEmptyPasswords no
+							      >
+							      >	# Change to yes to enable challenge-response passwords (bewar
+							      >	# some PAM modules and threads)
+							      >	ChallengeResponseAuthentication yes
+							      >
+							      >	# Kerberos options
+							      >	#KerberosAuthentication no
+							      >	#KerberosOrLocalPasswd yes
+							      >	#KerberosTicketCleanup yes
+							      >	#KerberosGetAFSToken no
+							      >
+							      >	# GSSAPI options
+							      >	GSSAPIAuthentication yes
+							      >	#GSSAPICleanupCredentials yes
+							      >	#GSSAPIStrictAcceptorCheck yes
+							      >	GSSAPIKeyExchange yes
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 29			      |	  File "/tmp/convert-py3.py", line 29
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 29			      |	UsePAM yes
+    'set twice: via sshd/X11Forwarding and sshd/xforwarding', |
+                                                              |	#AllowAgentForwarding yes
+SyntaxError: invalid syntax				      |	#AllowTcpForwarding yes
+							      >	#GatewayPorts no
+							      >	X11Forwarding no
+							      >
+							      >	#PermitTTY yes
+							      >	PrintMotd no
+							      >	#TCPKeepAlive yes
+							      >	#PrintLastLog yes
+							      >
+							      >	#UsePrivilegeSeparation sandbox
+							      >	#PermitUserEnvironment no
+							      >	#Compression delayed
+							      >	#ClientAliveInterval 0
+							      >	#ClientAliveCountMax 3
+							      >	#UseDNS no
+							      >	#PidFile /var/run/sshd.pid
+							      >	#MaxStartups 10:30:100
+							      >	#PermitTunnel no
+							      >	#ChrootDirectory none
+							      >	#VersionAddendum none
+							      >
+							      >
+							      >	# Allow client to pass locale environment variables
+							      >	AcceptEnv LANG LC_*
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 9			      |	  File "/tmp/convert-py3.py", line 9
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 9			      |	  File "/tmp/convert-py3.py", line 9
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/ssh/sshd_config	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:07.582377943 +0100
+[0m[36m@@ -13 +12,0 @@[0m
+[31m-[0m
+[36m@@ -309 +308 @@[0m
+[31m-	print("MACs %(sshd/MACs)s" % configRegistry)[0m
+[32m+	print(("MACs %(sshd/MACs)s" % configRegistry))[0m
+[36m@@ -311 +310 @@[0m
+[31m-	print("Ciphers %(sshd/Ciphers)s" % configRegistry)[0m
+[32m+	print(("Ciphers %(sshd/Ciphers)s" % configRegistry))[0m
+[36m@@ -313 +312 @@[0m
+[31m-	print("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry)[0m
+[32m+	print(("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry))[0m
+[36m@@ -327 +326 @@[0m
+[31m-	print('\n'.join(line.lstrip(DIGITS) for line in sorted(config)))[0m
+[32m+	print(('\n'.join(line.lstrip(DIGITS) for line in sorted(config))))[0m
+
+
+# ./univention-base-files/conffiles/etc/resolv.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/resolv.conf	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:10.734443412 +0100
+[0m[36m@@ -3 +2,0 @@[0m
+[31m-[0m
+[36m@@ -9 +8 @@[0m
+[31m-	print('domain  %s' % configRegistry['domain/domainname'])[0m
+[32m+	print(('domain  %s' % configRegistry['domain/domainname']))[0m
+[36m@@ -12 +11 @@[0m
+[31m-	print('search %s' % configRegistry['domain/search'])[0m
+[32m+	print(('search %s' % configRegistry['domain/search']))[0m
+[36m@@ -16 +15 @@[0m
+[31m-	print('domain	'+configRegistry['domainname'])[0m
+[32m+	print(('domain	'+configRegistry['domainname']))[0m
+[36m@@ -19 +18 @@[0m
+[31m-	print('nameserver  '+configRegistry['nameserver1'])[0m
+[32m+	print(('nameserver  '+configRegistry['nameserver1']))[0m
+[36m@@ -21 +20 @@[0m
+[31m-	print('nameserver  '+configRegistry['nameserver2'])[0m
+[32m+	print(('nameserver  '+configRegistry['nameserver2']))[0m
+[36m@@ -23 +22 @@[0m
+[31m-	print('nameserver  '+configRegistry['nameserver3'])[0m
+[32m+	print(('nameserver  '+configRegistry['nameserver3']))[0m
+[36m@@ -26 +25 @@[0m
+[31m-	print('options timeout:%s' % configRegistry['nameserver/option/timeout'])[0m
+[32m+	print(('options timeout:%s' % configRegistry['nameserver/option/timeout']))[0m
+
+
+# ./univention-base-files/conffiles/etc/sysctl.d/local.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/sysctl.d/local.conf	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:13.982510876 +0100
+[0m[36m@@ -1,2 +1 @@[0m
+[31m-@%@UCRWARNING=# @%@
+-@!@from __future__ import print_function[0m
+[32m+@%@UCRWARNING=# @%@@!@from __future__ import print_function[0m
+[36m@@ -13 +12 @@[0m
+[31m-			print('net.ipv6.conf.%s.accept_ra = 0' % (iface,))[0m
+[32m+			print(('net.ipv6.conf.%s.accept_ra = 0' % (iface,)))[0m
+[36m@@ -16 +15 @@[0m
+[31m-	print('fs.inotify.max_user_instances=%s' % configRegistry.get('kernel/fs/inotify/max_user_instances'))[0m
+[32m+	print(('fs.inotify.max_user_instances=%s' % configRegistry.get('kernel/fs/inotify/max_user_instances')))[0m
+[36m@@ -18 +17 @@[0m
+[31m-	print('fs.inotify.max_user_watches=%s' % configRegistry.get('kernel/fs/inotify/max_user_watches'))[0m
+[32m+	print(('fs.inotify.max_user_watches=%s' % configRegistry.get('kernel/fs/inotify/max_user_watches')))[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print('fs.inotify.max_queued_events=%s' % configRegistry.get('kernel/fs/inotify/max_queued_events'))[0m
+[32m+	print(('fs.inotify.max_queued_events=%s' % configRegistry.get('kernel/fs/inotify/max_queued_events')))[0m
+
+
+# ./univention-base-files/conffiles/etc/modprobe.d/vmgfx.conf
+
+
+
+# ./univention-base-files/conffiles/etc/modprobe.d/univention-blacklist.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/modprobe.d/univention-blacklist.conf	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:17.530584571 +0100
+[0m[36m@@ -1,2 +1 @@[0m
+[31m-@%@UCRWARNING=# @%@
+-@!@from __future__ import print_function[0m
+[32m+@%@UCRWARNING=# @%@@!@from __future__ import print_function[0m
+[36m@@ -8 +7 @@[0m
+[31m-		print('blacklist %s' % i)[0m
+[32m+		print(('blacklist %s' % i))[0m
+
+
+# ./univention-base-files/conffiles/etc/welcome.msg
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+							      >	Univention DC Master 4.4-3:
+							      >
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 40, in <module>
+    from builtins import str				      |	    from univention.config_registry.interfaces import Interfa
+ImportError: No module named builtins			      |	  File "/usr/lib/python3/dist-packages/univention/config_regi
+							      >	    from backend import ConfigRegistry
+							      >	ImportError: No module named 'backend'
+```
+[1m--- ./univention-base-files/conffiles/etc/welcome.msg	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:20.926655109 +0100
+[0m[36m@@ -21 +21 @@[0m
+[31m-	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))[0m
+[32m+	print(('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))))[0m
+[36m@@ -42 +42 @@[0m
+[31m-		print('The UCS management system is available at https://' + startsite)[0m
+[32m+		print(('The UCS management system is available at https://' + startsite))[0m
+[36m@@ -45 +45 @@[0m
+[31m-		print('master at https://' + startsite + ' and selecting the')[0m
+[32m+		print(('master at https://' + startsite + ' and selecting the'))[0m
+
+
+# ./univention-base-files/conffiles/etc/locale.gen
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/locale.gen	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:24.270724566 +0100
+[0m[36m@@ -15 +14,0 @@[0m
+[31m-[0m
+[36m@@ -22 +21 @@[0m
+[31m-        print(dl.replace(':', ' '))[0m
+[32m+        print((dl.replace(':', ' ')))[0m
+[36m@@ -27 +26 @@[0m
+[31m-                        print(l.replace(':', ' '))[0m
+[32m+                        print((l.replace(':', ' ')))[0m
+
+
+# ./univention-base-files/conffiles/etc/hostname
+
+
+
+# ./univention-base-files/conffiles/etc/issue.net
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/issue.net	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:27.798797845 +0100
+[0m[36m@@ -20 +20 @@[0m
+[31m-	print('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel')))[0m
+[32m+	print(('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))))[0m
+
+
+# ./univention-base-files/conffiles/etc/init.d/nscd
+
+
+
+# ./univention-base-files/conffiles/etc/init.d/rpcbind
+
+
+
+# ./univention-base-files/conffiles/etc/init.d/networking
+
+
+
+# ./univention-base-files/conffiles/etc/init.d/rdate
+
+
+
+# ./univention-base-files/conffiles/etc/modules
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/modules	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:31.962884333 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+
+
+# ./univention-base-files/conffiles/etc/pam.d/common-session.d/20welcome-message-ssh
+
+
+
+# ./univention-base-files/conffiles/etc/default/ssh
+
+
+
+# ./univention-base-files/conffiles/etc/default/locale
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/default/locale	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:35.486957529 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -6 +5 @@[0m
+[31m-	print('LANG=%s' % configRegistry['locale/default'].split(':')[0])[0m
+[32m+	print(('LANG=%s' % configRegistry['locale/default'].split(':')[0]))[0m
+
+
+# ./univention-base-files/conffiles/etc/default/ntpdate
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+Traceback (most recent call last):			      <
+  File "/tmp/convert-py2.py", line 8, in <module>	      <
+    from builtins import range				      <
+ImportError: No module named builtins			      <
+```
+[1m--- ./univention-base-files/conffiles/etc/default/ntpdate	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:39.047031471 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print('NTPSERVERS="%s"' % ' '.join(servers))[0m
+[32m+	print(('NTPSERVERS="%s"' % ' '.join(servers)))[0m
+
+
+# ./univention-base-files/conffiles/etc/default/keyboard
+
+
+
+# ./univention-base-files/conffiles/etc/inputrc
+
+
+
+# ./univention-base-files/conffiles/etc/security/packetfilter.d/20_rsyslog.sh
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/security/packetfilter.d/20_rsyslog.sh	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:42.779108987 +0100
+[0m[36m@@ -30 +29,0 @@[0m
+[31m-[0m
+[36m@@ -36,2 +35,2 @@[0m
+[31m-		print("# rsyslog %s" % (typ,))
+-		print("iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port))[0m
+[32m+		print(("# rsyslog %s" % (typ,)))
++		print(("iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port)))[0m
+
+
+# ./univention-base-files/conffiles/etc/kernel-img.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/kernel-img.conf	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:12:47.067198050 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -5 +4 @@[0m
+[31m-print('do_initrd = %s' % configRegistry.get('kernel/do_initrd', 'yes'))[0m
+[32m+print(('do_initrd = %s' % configRegistry.get('kernel/do_initrd', 'yes')))[0m
+[36m@@ -7 +6 @@[0m
+[31m-print('do_bootfloppy = %s' % configRegistry.get('kernel/do_bootfloppy', 'no'))[0m
+[32m+print(('do_bootfloppy = %s' % configRegistry.get('kernel/do_bootfloppy', 'no')))[0m
+[36m@@ -9 +8 @@[0m
+[31m-print('silent_loader = %s' % configRegistry.get('kernel/silent_loader', 'yes'))[0m
+[32m+print(('silent_loader = %s' % configRegistry.get('kernel/silent_loader', 'yes')))[0m
+[36m@@ -11 +10 @@[0m
+[31m-print('clobber_modules = %s' % configRegistry.get('kernel/clobber_modules', 'yes'))[0m
+[32m+print(('clobber_modules = %s' % configRegistry.get('kernel/clobber_modules', 'yes')))[0m
+[36m@@ -14 +13 @@[0m
+[31m-	print('ramdisk = %s' % (configRegistry['kernel/ramdisk']))[0m
+[32m+	print(('ramdisk = %s' % (configRegistry['kernel/ramdisk'])))[0m
+[36m@@ -17 +16 @@[0m
+[31m-	print('postinst_hook = %s' % (configRegistry['kernel/postinst_hook']))[0m
+[32m+	print(('postinst_hook = %s' % (configRegistry['kernel/postinst_hook'])))[0m
+
+
+# ./univention-base-files/conffiles/etc/rsyslog.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 13			      |	  File "/tmp/convert-py3.py", line 13
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 13			      |	  File "/tmp/convert-py3.py", line 13
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+()							      |
+()							      |
+()							      |
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 12			      |	  File "/tmp/convert-py3.py", line 12
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 12			      |	  File "/tmp/convert-py3.py", line 12
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/rsyslog.conf	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:13:36.352221687 +0100
+[0m[36m@@ -14,2 +14 @@[0m
+[31m-#
+-@!@from __future__ import print_function[0m
+[32m+#@!@from __future__ import print_function[0m
+[36m@@ -17 +16 @@[0m
+[31m-print('$MaxMessageSize %s' % (configRegistry.get("syslog/maxmessagesize", '4k'),))[0m
+[32m+print(('$MaxMessageSize %s' % (configRegistry.get("syslog/maxmessagesize", '4k'),)))[0m
+[36m@@ -27,2 +26,2 @@[0m
+[31m-print('$SystemLogRateLimitInterval %s' % (configRegistry.get('syslog/limit/interval', '5'),))
+-print('$SystemLogRateLimitBurst %s' % (configRegistry.get('syslog/limit/burst', '200'),))[0m
+[32m+print(('$SystemLogRateLimitInterval %s' % (configRegistry.get('syslog/limit/interval', '5'),)))
++print(('$SystemLogRateLimitBurst %s' % (configRegistry.get('syslog/limit/burst', '200'),)))[0m
+[36m@@ -42 +41 @@[0m
+[31m-	print('# provides %s syslog reception' % (typ.upper(),))[0m
+[32m+	print(('# provides %s syslog reception' % (typ.upper(),)))[0m
+[36m@@ -46,2 +45,2 @@[0m
+[31m-	print('%s$ModLoad im%s' % (pfx, typ))
+-	print('%s$%sServerRun %s' % (pfx, cfg, port or 514))[0m
+[32m+	print(('%s$ModLoad im%s' % (pfx, typ)))
++	print(('%s$%sServerRun %s' % (pfx, cfg, port or 514)))[0m
+[36m@@ -61 +60 @@[0m
+[31m-print('$ActionFileDefaultTemplate %s' % (configRegistry.get('syslog/template/default', 'RSYSLOG_TraditionalFileFormat'),))[0m
+[32m+print(('$ActionFileDefaultTemplate %s' % (configRegistry.get('syslog/template/default', 'RSYSLOG_TraditionalFileFormat'),)))[0m
+[36m@@ -97 +96 @@[0m
+[31m-		print('%s	%s' % (selector, server))[0m
+[32m+		print(('%s	%s' % (selector, server)))[0m
+[36m@@ -101 +100 @@[0m
+[31m-				print('&	%s' % (fallback,))[0m
+[32m+				print(('&	%s' % (fallback,)))[0m
+[36m@@ -113 +112 @@[0m
+[31m-		print(template.strip())[0m
+[32m+		print((template.strip()))[0m
+[36m@@ -156 +155 @@[0m
+[31m-	print("%s			-/var/log/syslog" % (selector,))[0m
+[32m+	print(("%s			-/var/log/syslog" % (selector,)))[0m
+[36m@@ -168 +167 @@[0m
+[31m-		print("%s		%s" % (selector, target))[0m
+[32m+		print(("%s		%s" % (selector, target)))[0m
+
+
+# ./univention-base-files/conffiles/etc/hosts.d/90-ipv6defaults
+
+
+
+# ./univention-base-files/conffiles/etc/hosts.d/20-static
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/hosts.d/20-static	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:13:40.228302189 +0100
+[0m[36m@@ -7 +7 @@[0m
+[31m-		print("%s\t%s" % (key.split('/')[-1], value))[0m
+[32m+		print(("%s\t%s" % (key.split('/')[-1], value)))[0m
+
+
+# ./univention-base-files/conffiles/etc/hosts.d/00-base
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/hosts.d/00-base	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:13:43.932379121 +0100
+[0m[36m@@ -4 +3,0 @@[0m
+[31m-[0m
+
+
+# ./univention-base-files/conffiles/etc/networks
+
+
+
+# ./univention-base-files/conffiles/etc/network/interfaces.d/10-default
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+()							      |	Traceback (most recent call last):
+auto ens3						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+iface ens3 inet dhcp					      |	    from univention.config_registry.interfaces import Interfa
+							      >	  File "/usr/lib/python3/dist-packages/univention/config_regi
+							      >	    from backend import ConfigRegistry
+							      >	ImportError: No module named 'backend'
+```
+[1m--- ./univention-base-files/conffiles/etc/network/interfaces.d/10-default	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:13:47.912461784 +0100
+[0m[36m@@ -13 +13 @@[0m
+[31m-		print('auto %s' % (interface,))[0m
+[32m+		print(('auto %s' % (interface,)))[0m
+[36m@@ -29 +29 @@[0m
+[31m-				print('iface %s inet dhcp' % (iface.name,))[0m
+[32m+				print(('iface %s inet dhcp' % (iface.name,)))[0m
+[36m@@ -34 +34 @@[0m
+[31m-			print('iface %s inet manual' % (iface.name,))[0m
+[32m+			print(('iface %s inet manual' % (iface.name,)))[0m
+[36m@@ -36 +36 @@[0m
+[31m-			print('# ERROR: invalid IPv4 address for interface %s' % (name,))[0m
+[32m+			print(('# ERROR: invalid IPv4 address for interface %s' % (name,)))[0m
+[36m@@ -40,3 +40,3 @@[0m
+[31m-			print('iface %s inet static' % (iface.name,))
+-			print('\taddress %s' % (addr.ip,))
+-			print('\tnetmask %s' % (addr.netmask,))[0m
+[32m+			print(('iface %s inet static' % (iface.name,)))
++			print(('\taddress %s' % (addr.ip,)))
++			print(('\tnetmask %s' % (addr.netmask,)))[0m
+[36m@@ -44 +44 @@[0m
+[31m-				print('\tnetwork %s' % (iface.network,))[0m
+[32m+				print(('\tnetwork %s' % (iface.network,)))[0m
+[36m@@ -46 +46 @@[0m
+[31m-				print('\tbroadcast %s' % (iface.broadcast,))[0m
+[32m+				print(('\tbroadcast %s' % (iface.broadcast,)))[0m
+[36m@@ -48 +48 @@[0m
+[31m-				print('\tmtu %(mtu)s' % iface)[0m
+[32m+				print(('\tmtu %(mtu)s' % iface))[0m
+[36m@@ -52,2 +52,2 @@[0m
+[31m-					print('\tpointopoint %s' % (gateway,))
+-					print('\tgateway %s' % (gateway,))[0m
+[32m+					print(('\tpointopoint %s' % (gateway,)))
++					print(('\tgateway %s' % (gateway,)))[0m
+[36m@@ -56 +56 @@[0m
+[31m-					print('\tgateway %s' % (gateway,))[0m
+[32m+					print(('\tgateway %s' % (gateway,)))[0m
+[36m@@ -62 +62 @@[0m
+[31m-			print('\tup route add -%s dev %s' % (route, iface.name))[0m
+[32m+			print(('\tup route add -%s dev %s' % (route, iface.name)))[0m
+[36m@@ -65 +65 @@[0m
+[31m-			print('\t%s' % (value,))[0m
+[32m+			print(('\t%s' % (value,)))[0m
+[36m@@ -80,2 +80,2 @@[0m
+[31m-				print('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
+-					(iface.name, name))[0m
+[32m+				print(('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
++					(iface.name, name)))[0m
+[36m@@ -85,2 +85,2 @@[0m
+[31m-				print('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
+-					(iface.name, name))[0m
+[32m+				print(('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
++					(iface.name, name)))[0m
+[36m@@ -98 +98 @@[0m
+[31m-		print('iface %s inet6 static' % (iface.name,))[0m
+[32m+		print(('iface %s inet6 static' % (iface.name,)))[0m
+[36m@@ -101 +101 @@[0m
+[31m-			print('\tgateway %s' % (gateway, ))[0m
+[32m+			print(('\tgateway %s' % (gateway, )))[0m
+[36m@@ -109 +109 @@[0m
+[31m-			print('# %s' % (name,))[0m
+[32m+			print(('# %s' % (name,)))[0m
+[36m@@ -111,2 +111,2 @@[0m
+[31m-				print('\taddress %s' % (addr.ip,))
+-				print('\tnetmask %s' % (addr.prefixlen,))[0m
+[32m+				print(('\taddress %s' % (addr.ip,)))
++				print(('\tnetmask %s' % (addr.prefixlen,)))[0m
+[36m@@ -114,2 +114,2 @@[0m
+[31m-				print('\tup   ip -6 addr add %s dev %s' % (addr, iface.name))
+-				print('\tdown ip -6 addr del %s dev %s' % (addr, iface.name))[0m
+[32m+				print(('\tup   ip -6 addr add %s dev %s' % (addr, iface.name)))
++				print(('\tdown ip -6 addr del %s dev %s' % (addr, iface.name)))[0m
+[36m@@ -117 +117 @@[0m
+[31m-				print('\tmtu %(mtu)s' % iface)[0m
+[32m+				print(('\tmtu %(mtu)s' % iface))[0m
+[36m@@ -124,4 +124,4 @@[0m
+[31m-						print('\tup   ip -6 route add %s dev %s' % data)
+-						print('\tup   ip -6 route add default via %s dev %s' % data)
+-						print('\tdown ip -6 route del default via %s dev %s' % data)
+-						print('\tdown ip -6 route del %s dev %s' % data)[0m
+[32m+						print(('\tup   ip -6 route add %s dev %s' % data))
++						print(('\tup   ip -6 route add default via %s dev %s' % data))
++						print(('\tdown ip -6 route del default via %s dev %s' % data))
++						print(('\tdown ip -6 route del %s dev %s' % data))[0m
+[36m@@ -130 +130 @@[0m
+[31m-						print('\tgateway %s' % (gateway,))[0m
+[32m+						print(('\tgateway %s' % (gateway,)))[0m
+[36m@@ -135 +135 @@[0m
+[31m-				print('\t%s' % (value,))[0m
+[32m+				print(('\t%s' % (value,)))[0m
+
+
+# ./univention-base-files/conffiles/etc/network/interfaces.d/00-base
+
+
+
+# ./univention-base-files/conffiles/etc/cron.d/univention-config-registry-backup
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/cron.d/univention-config-registry-backup	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:13:51.648539380 +0100
+[0m[36m@@ -5 +4,0 @@[0m
+[31m-[0m
+[36m@@ -12 +11 @@[0m
+[31m-print('%s30 3     * * *   root            /usr/share/univention-config-registry/univention-config-registry-backup' % comment)[0m
+[32m+print(('%s30 3     * * *   root            /usr/share/univention-config-registry/univention-config-registry-backup' % comment))[0m
+
+
+# ./univention-base-files/conffiles/etc/cron.d/univention-ucr-cronjobs
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 23			      |	  File "/tmp/convert-py3.py", line 23
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 23			      |	PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin
+    print("E: This cron UCR key is not properly formatted: %s <
+                                                              <
+SyntaxError: invalid syntax				      <
+```
+[1m--- ./univention-base-files/conffiles/etc/cron.d/univention-ucr-cronjobs	2020-03-13 09:50:37.214094365 +0100
++++ /tmp/convert-target.py	2020-03-13 11:13:55.308615398 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+
+
+# ./univention-base-files/conffiles/etc/profile
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 9			      |	  File "/tmp/convert-py3.py", line 9
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 9			      |	  File "/tmp/convert-py3.py", line 9
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/profile	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:06.836854829 +0100
+[0m[36m@@ -27 +26,0 @@[0m
+[31m-[0m
+[36m@@ -31 +30 @@[0m
+[31m-	print('export http_proxy="%s"' % configRegistry['proxy/http'])[0m
+[32m+	print(('export http_proxy="%s"' % configRegistry['proxy/http']))[0m
+[36m@@ -33 +32 @@[0m
+[31m-		print('export https_proxy="%s"' % configRegistry['proxy/http'])[0m
+[32m+		print(('export https_proxy="%s"' % configRegistry['proxy/http']))[0m
+[36m@@ -36 +35 @@[0m
+[31m-	print('export https_proxy="%s"' % configRegistry['proxy/https'])[0m
+[32m+	print(('export https_proxy="%s"' % configRegistry['proxy/https']))[0m
+[36m@@ -41 +40 @@[0m
+[31m-	print('export no_proxy="%s"' % configRegistry['proxy/no_proxy'])[0m
+[32m+	print(('export no_proxy="%s"' % configRegistry['proxy/no_proxy']))[0m
+[36m@@ -44 +43 @@[0m
+[31m-	print('export LANG="%s"' % configRegistry['locale/default'].split(":")[0])[0m
+[32m+	print(('export LANG="%s"' % configRegistry['locale/default'].split(":")[0]))[0m
+[36m@@ -63 +62 @@[0m
+[31m-	print('umask %s' % configRegistry['umask'])[0m
+[32m+	print(('umask %s' % configRegistry['umask']))[0m
+
+
+# ./univention-base-files/conffiles/etc/ntp.conf
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+Traceback (most recent call last):			      |	ntpsigndsocket /var/lib/samba/ntp_signd
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	restrict default mssntp noquery
+    from builtins import range				      |	restrict 127.0.0.1
+ImportError: No module named builtins			      |	restrict ::1
+							      >	tinker panic 0
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 12			      |	  File "/tmp/convert-py3.py", line 12
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 12			      |	  File "/tmp/convert-py3.py", line 12
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/ntp.conf	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:17.881084208 +0100
+[0m[36m@@ -16 +15,0 @@[0m
+[31m-[0m
+[36m@@ -28 +27 @@[0m
+[31m-				print("server %s" % ts)[0m
+[32m+				print(("server %s" % ts))[0m
+[36m@@ -31 +30 @@[0m
+[31m-			print("server %s" % ts)[0m
+[32m+			print(("server %s" % ts))[0m
+[36m@@ -46 +45 @@[0m
+[31m-print('tinker panic %s' % configRegistry.get('ntp/tinker/panic', '0'))[0m
+[32m+print(('tinker panic %s' % configRegistry.get('ntp/tinker/panic', '0')))[0m
+
+
+# ./univention-base-files/conffiles/etc/lsb-release
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-base-files/conffiles/etc/lsb-release	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:21.777165127 +0100
+[0m[36m@@ -4,2 +4 @@[0m
+[31m-DISTRIB_RELEASE="@%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@"
+-@!@from __future__ import print_function[0m
+[32m+DISTRIB_RELEASE="@%@version/version@%@-@%@version/patchlevel@%@ errata@%@version/erratalevel@%@"@!@from __future__ import print_function[0m
+[36m@@ -9 +8 @@[0m
+[31m-	print('DISTRIB_CODENAME="%s"' % release)[0m
+[32m+	print(('DISTRIB_CODENAME="%s"' % release))[0m
+[36m@@ -11 +10 @@[0m
+[31m-	print('DISTRIB_CODENAME=%s' % release)[0m
+[32m+	print(('DISTRIB_CODENAME=%s' % release))[0m
+
+
+# ./univention-base-files/conffiles/xkbKeyboard.py
+
+
+
+# ./univention-base-files/conffiles/boot/boot.msg
+
+
+
+# ./univention-base-files/conffiles/interfaces.py
+
+
+
+# ./univention-base-files/conffiles/autostart.py
+
+
+
+# ./univention-debmirror/conffiles/etc/apache2/sites-available/univention-repository.conf
+
+
+
+# ./univention-printclient/conffiles/etc/cups/client.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-printclient/conffiles/etc/cups/client.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:25.573243968 +0100
+[0m[36m@@ -41,2 +41 @@[0m
+[31m-#ServerName myhost.domain.com
+-@!@from __future__ import print_function[0m
+[32m+#ServerName myhost.domain.com@!@from __future__ import print_function[0m
+[36m@@ -45 +44 @@[0m
+[31m-	print('ServerName %s' % configRegistry['cups/server'])[0m
+[32m+	print(('ServerName %s' % configRegistry['cups/server']))[0m
+[36m@@ -47 +46 @@[0m
+[31m-	print('ServerName %s' % configRegistry['ldap/server/name'])[0m
+[32m+	print(('ServerName %s' % configRegistry['ldap/server/name']))[0m
+
+
+# ./univention-network-manager/conffiles/etc/dhcp/dhclient.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 13			      |	  File "/tmp/convert-py3.py", line 13
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 13			      |	  File "/tmp/convert-py3.py", line 13
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 9			      |	  File "/tmp/convert-py3.py", line 9
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 9			      |	  File "/tmp/convert-py3.py", line 9
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+Traceback (most recent call last):			      |	lease {
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  interface "ens3";
+    from builtins import str				      |	  fixed-address 169.254.9.87;
+ImportError: No module named builtins			      |	  option subnet-mask 255.255.0.0;
+							      >	  option broadcast-address 169.254.255.255;
+							      >	  expire 4 2020/3/13 12:14:44;
+							      >	}
+							      >	include "/etc/dhcp/dhclient.conf.local";
+```
+[1m--- ./univention-network-manager/conffiles/etc/dhcp/dhclient.conf	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:44.625639665 +0100
+[0m[36m@@ -17 +16,0 @@[0m
+[31m-[0m
+[36m@@ -21 +20 @@[0m
+[31m-    print('send host-name "%s";' % configRegistry.get('hostname', ''))[0m
+[32m+    print(('send host-name "%s";' % configRegistry.get('hostname', '')))[0m
+[36m@@ -23 +22 @@[0m
+[31m-        print('send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('dhclient/options/ddns/zone', None)))[0m
+[32m+        print(('send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('dhclient/options/ddns/zone', None))))[0m
+[36m@@ -25 +24 @@[0m
+[31m-        print('send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('domainname', '')))[0m
+[32m+        print(('send fqdn.fqdn "%s.%s";' % (configRegistry.get('hostname', ''), configRegistry.get('domainname', ''))))[0m
+[36m@@ -44,2 +43,2 @@[0m
+[31m-print('timeout %s;' % configRegistry.get( 'dhclient/options/timeout', '30' ))
+-print('retry %s;' % configRegistry.get( 'dhclient/options/retry', '60' ))[0m
+[32m+print(('timeout %s;' % configRegistry.get( 'dhclient/options/timeout', '30' )))
++print(('retry %s;' % configRegistry.get( 'dhclient/options/retry', '60' )))[0m
+[36m@@ -97,2 +96,2 @@[0m
+[31m-			print('  interface "%s";' % (iface))
+-			print('  fixed-address %s;' % current_addr)[0m
+[32m+			print(('  interface "%s";' % (iface)))
++			print(('  fixed-address %s;' % current_addr))[0m
+[36m@@ -102 +101 @@[0m
+[31m-			print('  expire %d %d/%d/%d %s:%s:%s;' % (d.weekday(), d.year, d.month, d.day, str(d.hour).zfill(2), str(d.minute).zfill(2), str(d.second).zfill(2)))[0m
+[32m+			print(('  expire %d %d/%d/%d %s:%s:%s;' % (d.weekday(), d.year, d.month, d.day, str(d.hour).zfill(2), str(d.minute).zfill(2), str(d.second).zfill(2))))[0m
+[36m@@ -107 +106 @@[0m
+[31m-	print('include "%s";' % LOCAL)[0m
+[32m+	print(('include "%s";' % LOCAL))[0m
+
+
+# ./univention-network-manager/conffiles/etc/default/ifplugd
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+INTERFACES="ens3"					      |	Traceback (most recent call last):
+							      >	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.config_registry.interfaces import Interfa
+							      >	  File "/usr/lib/python3/dist-packages/univention/config_regi
+							      >	    from backend import ConfigRegistry
+							      >	ImportError: No module named 'backend'
+```
+[1m--- ./univention-network-manager/conffiles/etc/default/ifplugd	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:48.825726895 +0100
+[0m[36m@@ -1,2 +1 @@[0m
+[31m-@%@UCRWARNING=# @%@
+-@!@from __future__ import print_function[0m
+[32m+@%@UCRWARNING=# @%@@!@from __future__ import print_function[0m
+[36m@@ -8 +7 @@[0m
+[31m-print('INTERFACES="%s"' % (' '.join(managed),))[0m
+[32m+print(('INTERFACES="%s"' % (' '.join(managed),)))[0m
+
+
+# ./univention-server/conffiles/etc/logrotate.d/univention-server-password-change
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/univention/server_password_change.log {	      |	Traceback (most recent call last):
+	weekly						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+	rotate 12					      |	    import univention.lib.ucrLogrotate
+	create 640 root adm				      |	ImportError: No module named 'univention.lib.ucrLogrotate'
+	compress					      <
+	missingok					      <
+	notifempty					      <
+```
+[1m--- ./univention-server/conffiles/etc/logrotate.d/univention-server-password-change	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:52.761808643 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -10 +9 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -13 +12 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+
+
+# ./univention-server/conffiles/etc/cron.d/univention-server-member
+
+
+
+# ./univention-server/conffiles/etc/cron.d/univention-server-master
+
+
+
+# ./univention-server/conffiles/etc/cron.d/univention-server-backup
+
+
+
+# ./univention-server/conffiles/etc/cron.d/univention-server-slave
+
+
+
+# ./univention-initrd/conffiles/usr/share/initramfs-tools/init
+
+
+
+# ./univention-initrd/conffiles/etc/initramfs-tools/initramfs.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-initrd/conffiles/etc/initramfs-tools/initramfs.conf	2020-03-13 09:50:37.214094365 +0100
++++ /tmp/convert-target.py	2020-03-13 11:14:56.685890141 +0100
+[0m[36m@@ -21 +20,0 @@[0m
+[31m-[0m
+
+
+# ./univention-grub/conffiles/grub-update.py
+
+
+
+# ./univention-grub/conffiles/etc/default/grub
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 11			      |	  File "/tmp/convert-py3.py", line 11
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 11			      |	  File "/tmp/convert-py3.py", line 11
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-grub/conffiles/etc/default/grub	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:15:33.258649705 +0100
+[0m[36m@@ -6 +5,0 @@[0m
+[31m-[0m
+[36m@@ -11 +10 @@[0m
+[31m-print('GRUB_DEFAULT=%s' % (quote(default),))[0m
+[32m+print(('GRUB_DEFAULT=%s' % (quote(default),)))[0m
+[36m@@ -13 +12 @@[0m
+[31m-print('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',))[0m
+[32m+print(('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',)))[0m
+[36m@@ -30 +29 @@[0m
+[31m-print('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions)[0m
+[32m+print(('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions))[0m
+[36m@@ -46 +45 @@[0m
+[31m-	print('GRUB_TERMINAL="%s"' % (terminal,))[0m
+[32m+	print(('GRUB_TERMINAL="%s"' % (terminal,)))[0m
+[36m@@ -55 +54 @@[0m
+[31m-	print('GRUB_SERIAL_COMMAND="%s"' % (serial,))[0m
+[32m+	print(('GRUB_SERIAL_COMMAND="%s"' % (serial,)))[0m
+[36m@@ -78 +77 @@[0m
+[31m-	print('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"])[0m
+[32m+	print(('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"]))[0m
+[36m@@ -80 +79 @@[0m
+[31m-	print('GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"])[0m
+[32m+	print(('GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"]))[0m
+[36m@@ -82 +81 @@[0m
+[31m-	print('GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"])[0m
+[32m+	print(('GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"]))[0m
+[36m@@ -84 +83 @@[0m
+[31m-	print('GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"])[0m
+[32m+	print(('GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"]))[0m
+[36m@@ -86 +85 @@[0m
+[31m-	print('GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"])[0m
+[32m+	print(('GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"]))[0m
+
+
+# ./univention-doc/conffiles/etc/apache2/sites-available/univention-doc.conf
+
+
+
+# ./univention-passwd-store/conffiles/etc/pam.d/common-auth.d/40univention-passwd-store
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+
+
+# ./univention-passwd-store/conffiles/etc/pam.d/common-session.d/90univention-passwd-store
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+
+
+# ./univention-updater/conffiles/apt-mirror.py
+
+
+
+# ./univention-updater/conffiles/etc/logrotate.d/univention-updater
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/univention/updater.log {			      |	Traceback (most recent call last):
+	weekly						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+	rotate 12					      |	    import univention.lib.ucrLogrotate
+	create 640 root adm				      |	ImportError: No module named 'univention.lib.ucrLogrotate'
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/actualise.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/repository.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/univention/errata-updates.log {		      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+```
+[1m--- ./univention-updater/conffiles/etc/logrotate.d/univention-updater	2020-03-13 10:41:39.596312765 +0100
++++ /tmp/convert-target.py	2020-03-13 11:15:44.954892617 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -9 +8 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -11 +10 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+[36m@@ -16 +15 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -18 +17 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+[36m@@ -23 +22 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -25 +24 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+[36m@@ -30 +29 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -32 +31 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+
+
+# ./univention-updater/conffiles/etc/apt/apt.conf.d/55user_agent
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-updater/conffiles/etc/apt/apt.conf.d/55user_agent	2020-03-13 10:41:39.596312765 +0100
++++ /tmp/convert-target.py	2020-03-13 11:15:49.070978101 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -14 +13 @@[0m
+[31m-print('''[0m
+[32m+print(('''[0m
+[36m@@ -21 +20 @@[0m
+[31m-}; ''' % user_agent)[0m
+[32m+}; ''' % user_agent))[0m
+
+
+# ./univention-updater/conffiles/etc/apt/mirror.list
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+# The mirror mode is disabled and can be enabled with:	      |	Traceback (most recent call last):
+#   univention-config-registry set repository/mirror=true     |	  File "/tmp/convert-py3.py", line 11, in <module>
+							      |	    from univention.updater.ucs_version import UCS_Version
+							      >	ImportError: No module named 'univention.updater'
+```
+[1m--- ./univention-updater/conffiles/etc/apt/mirror.list	2020-03-13 10:41:39.596312765 +0100
++++ /tmp/convert-target.py	2020-03-13 11:15:53.015060013 +0100
+[0m[36m@@ -11 +10,0 @@[0m
+[31m-[0m
+[36m@@ -32,2 +31,2 @@[0m
+[31m-		print(mirror.print_version_repositories(clean=True, dists=True, start=start, end=end))
+-		print(mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True))[0m
+[32m+		print((mirror.print_version_repositories(clean=True, dists=True, start=start, end=end)))
++		print((mirror.print_component_repositories(clean=True, start=start, end=end, for_mirror_list=True)))[0m
+[36m@@ -37 +36 @@[0m
+[31m-		print('#   %s' % line)[0m
+[32m+		print(('#   %s' % line))[0m
+
+
+# ./univention-updater/conffiles/etc/apt/sources.list.d/20_ucs-online-component.list
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+deb https://updates.software-univention.de/4.4/maintained/com |	Traceback (most recent call last):
+deb https://updates.software-univention.de/4.4/maintained/com |	  File "/tmp/convert-py3.py", line 11, in <module>
+deb https://updates.software-univention.de/4.4/unmaintained/c |	    from univention.updater.tools import UniventionUpdater
+							      >	ImportError: No module named 'univention.updater'
+```
+[1m--- ./univention-updater/conffiles/etc/apt/sources.list.d/20_ucs-online-component.list	2020-03-13 10:41:39.596312765 +0100
++++ /tmp/convert-target.py	2020-03-13 11:15:59.887202735 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -13 +12 @@[0m
+[31m-		print(updater.print_component_repositories())[0m
+[32m+		print((updater.print_component_repositories()))[0m
+[36m@@ -21 +20 @@[0m
+[31m-		print('#   %s' % line)[0m
+[32m+		print(('#   %s' % line))[0m
+
+
+# ./univention-updater/conffiles/etc/apt/sources.list.d/15_ucs-online-version.list
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+deb https://updates.software-univention.de/4.0/maintained/ 4. |	Traceback (most recent call last):
+deb https://updates.software-univention.de/4.0/maintained/ 4. |	  File "/tmp/convert-py3.py", line 11, in <module>
+deb https://updates.software-univention.de/4.0/unmaintained/  |	    from univention.updater.tools import UniventionUpdater
+deb https://updates.software-univention.de/4.0/unmaintained/  |	ImportError: No module named 'univention.updater'
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/maintained/ 4. <
+deb https://updates.software-univention.de/4.0/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/maintained/ 4. <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.1/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/maintained/ 4. <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.2/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/maintained/ 4. <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.3/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/maintained/ 4. <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+deb https://updates.software-univention.de/4.4/unmaintained/  <
+```
+[1m--- ./univention-updater/conffiles/etc/apt/sources.list.d/15_ucs-online-version.list	2020-03-13 10:41:39.596312765 +0100
++++ /tmp/convert-target.py	2020-03-13 11:16:49.948242404 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -13 +12 @@[0m
+[31m-		print(updater.print_version_repositories())[0m
+[32m+		print((updater.print_version_repositories()))[0m
+[36m@@ -21 +20 @@[0m
+[31m-		print('#   %s' % line)[0m
+[32m+		print(('#   %s' % line))[0m
+
+
+# ./univention-updater/conffiles/etc/cron.d/univention-updater-check
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-updater/conffiles/etc/cron.d/univention-updater-check	2020-03-13 10:41:39.596312765 +0100
++++ /tmp/convert-target.py	2020-03-13 11:16:54.536337687 +0100
+[0m[36m@@ -4 +3,0 @@[0m
+[31m-[0m
+[36m@@ -13 +12 @@[0m
+[31m-print('%s%s   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 600 /usr/share/univention-updater/univention-updater-check %s' % (disabled, configRegistry.get('update/check/cron/entry', '5 * * * *'), debug))[0m
+[32m+print(('%s%s   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 600 /usr/share/univention-updater/univention-updater-check %s' % (disabled, configRegistry.get('update/check/cron/entry', '5 * * * *'), debug)))[0m
+[36m@@ -21 +20 @@[0m
+[31m-print('%s@reboot   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 30 /usr/share/univention-updater/univention-updater-check %s' % (disabled, debug))[0m
+[32m+print(('%s@reboot   root   [ -x /usr/share/univention-updater/univention-updater-check ] && /usr/sbin/jitter 30 /usr/share/univention-updater/univention-updater-check %s' % (disabled, debug)))[0m
+
+
+# ./univention-updater/conffiles/20_ucs-online-component.py
+
+
+
+# ./univention-updater/conffiles/15_ucs-online-version.py
+
+
+
+# ./univention-sudo/conffiles/etc/sudoers.d/univention
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-sudo/conffiles/etc/sudoers.d/univention	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:16:59.000430397 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-# Allow members of group "Domain Admins" to execute any command
+-@!@from __future__ import print_function[0m
+[32m+# Allow members of group "Domain Admins" to execute any command@!@from __future__ import print_function[0m
+[36m@@ -10 +9 @@[0m
+[31m-	print("%{} ALL=(ALL:ALL) ALL".format(da))[0m
+[32m+	print(("%{} ALL=(ALL:ALL) ALL".format(da)))[0m
+
+
+# ./univention-heimdal/conffiles/usr/share/univention-heimdal/check_cracklib.py
+
+
+
+# ./univention-heimdal/conffiles/etc/logrotate.d/heimdal-kdc
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/heimdal-kdc.log {				      |	Traceback (most recent call last):
+	weekly						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+	rotate 12					      |	    import univention.lib.ucrLogrotate
+	create 640 root adm				      |	ImportError: No module named 'univention.lib.ucrLogrotate'
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+/var/log/heimdal-database.log {				      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+```
+[1m--- ./univention-heimdal/conffiles/etc/logrotate.d/heimdal-kdc	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:17:03.924532659 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -9 +8 @@[0m
+[31m-print("/var/log/%s.log {" % name)[0m
+[32m+print(("/var/log/%s.log {" % name))[0m
+[36m@@ -11 +10 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+[36m@@ -16 +15 @@[0m
+[31m-print("/var/log/%s.log {" % name)[0m
+[32m+print(("/var/log/%s.log {" % name))[0m
+[36m@@ -18 +17 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+
+
+# ./univention-heimdal/conffiles/etc/heimdal-kdc/kdc.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-heimdal/conffiles/etc/heimdal-kdc/kdc.conf	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:17:42.721338377 +0100
+[0m[36m@@ -11,2 +11 @@[0m
+[31m-		dbname = ldap:@%@ldap/base@%@
+-@!@from __future__ import print_function[0m
+[32m+		dbname = ldap:@%@ldap/base@%@@!@from __future__ import print_function[0m
+[36m@@ -15 +14 @@[0m
+[31m-	print('\t\trealm = %s ' % configRegistry.get('kerberos/realm'))[0m
+[32m+	print(('\t\trealm = %s ' % configRegistry.get('kerberos/realm')))[0m
+[36m@@ -53 +52 @@[0m
+[31m-print('enable-kerberos4 = %s' % configRegistry.get('kerberos/enable/kerberos4', 'no'))[0m
+[32m+print(('enable-kerberos4 = %s' % configRegistry.get('kerberos/enable/kerberos4', 'no')))[0m
+[36m@@ -65 +64 @@[0m
+[31m-print('enable-524 = %s' % configRegistry.get('kerberos/enable/524', 'no'))[0m
+[32m+print(('enable-524 = %s' % configRegistry.get('kerberos/enable/524', 'no')))[0m
+[36m@@ -84 +83 @@[0m
+[31m-print('enable-kaserver = %s' % configRegistry.get('kerberos/enable/kaserver', 'no'))[0m
+[32m+print(('enable-kaserver = %s' % configRegistry.get('kerberos/enable/kaserver', 'no')))[0m
+
+
+# ./univention-heimdal/conffiles/etc/heimdal-kdc/kadmind.acl
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-heimdal/conffiles/etc/heimdal-kdc/kadmind.acl	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:17:46.321413141 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -8 +7 @@[0m
+[31m-		print('%s all' % au.strip())[0m
+[32m+		print(('%s all' % au.strip()))[0m
+
+
+# ./univention-heimdal/conffiles/etc/init.d/heimdal-kdc
+
+
+
+# ./univention-heimdal/conffiles/etc/default/heimdal-kdc
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-heimdal/conffiles/etc/default/heimdal-kdc	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:17:49.837486162 +0100
+[0m[36m@@ -7,2 +7 @@[0m
+[31m-# the kpasswdd?
+-@!@from __future__ import print_function[0m
+[32m+# the kpasswdd?@!@from __future__ import print_function[0m
+
+
+# ./univention-heimdal/conffiles/etc/krb5.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-heimdal/conffiles/etc/krb5.conf	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:17:53.237556772 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-[libdefaults]
+-@!@from __future__ import print_function[0m
+[32m+[libdefaults]@!@from __future__ import print_function[0m
+[36m@@ -8 +7 @@[0m
+[31m-print('\tdefault_realm = %s' % kerberos_realm)[0m
+[32m+print(('\tdefault_realm = %s' % kerberos_realm))[0m
+[36m@@ -14 +13 @@[0m
+[31m-print('\tdefault_etypes = %s' % default_enctypes)[0m
+[32m+print(('\tdefault_etypes = %s' % default_enctypes))[0m
+[36m@@ -17 +16 @@[0m
+[31m-	print('\tdefault_tgs_etypes = %s' % default_tgs_etypes)[0m
+[32m+	print(('\tdefault_tgs_etypes = %s' % default_tgs_etypes))[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print('\tdefault_as_etypes = %s' % default_as_etypes)[0m
+[32m+	print(('\tdefault_as_etypes = %s' % default_as_etypes))[0m
+[36m@@ -24,6 +23,6 @@[0m
+[31m-print('\tdns_lookup_kdc = %s' % configRegistry.get('kerberos/defaults/dns_lookup_kdc', 'true'))
+-print('\tdns_lookup_realm = %s' % configRegistry.get('kerberos/defaults/dns_lookup_realm', 'false'))
+-print('\tforwardable = %s' % configRegistry.get('kerberos/defaults/forwardable', 'true'))
+-print('\tproxiable = %s' % configRegistry.get('kerberos/defaults/proxiable', 'true'))
+-print('\tkdc_timesync = %s' % configRegistry.get('kerberos/defaults/kdc_timesync', '1'))
+-print('\tdebug = %s' % configRegistry.get('kerberos/defaults/debug', 'false'))[0m
+[32m+print(('\tdns_lookup_kdc = %s' % configRegistry.get('kerberos/defaults/dns_lookup_kdc', 'true')))
++print(('\tdns_lookup_realm = %s' % configRegistry.get('kerberos/defaults/dns_lookup_realm', 'false')))
++print(('\tforwardable = %s' % configRegistry.get('kerberos/defaults/forwardable', 'true')))
++print(('\tproxiable = %s' % configRegistry.get('kerberos/defaults/proxiable', 'true')))
++print(('\tkdc_timesync = %s' % configRegistry.get('kerberos/defaults/kdc_timesync', '1')))
++print(('\tdebug = %s' % configRegistry.get('kerberos/defaults/debug', 'false')))[0m
+[36m@@ -35,3 +34,3 @@[0m
+[31m-print('\tpermitted_enctypes = %s' % default_enctypes)
+-print('\tdefault_tgs_enctypes = %s' % (default_tgs_etypes or permitted_enctypes))
+-print('\tdefault_tkt_enctypes = %s' % (default_as_etypes or permitted_enctypes))[0m
+[32m+print(('\tpermitted_enctypes = %s' % default_enctypes))
++print(('\tdefault_tgs_enctypes = %s' % (default_tgs_etypes or permitted_enctypes)))
++print(('\tdefault_tkt_enctypes = %s' % (default_as_etypes or permitted_enctypes)))[0m
+[36m@@ -62 +61 @@[0m
+[31m-print('%s = { ' % kerberos_realm)[0m
+[32m+print(('%s = { ' % kerberos_realm))[0m
+[36m@@ -65 +64 @@[0m
+[31m-	print('\tkdc = %s' % kerberos_kdc)[0m
+[32m+	print(('\tkdc = %s' % kerberos_kdc))[0m
+[36m@@ -67 +66 @@[0m
+[31m-	print('\tadmin_server = %s' % kerberos_adminserver)[0m
+[32m+	print(('\tadmin_server = %s' % kerberos_adminserver))[0m
+[36m@@ -69 +68 @@[0m
+[31m-	print('\tkpasswd_server = %s' % kerberos_kpasswdserver)[0m
+[32m+	print(('\tkpasswd_server = %s' % kerberos_kpasswdserver))[0m
+[36m@@ -78,4 +77,4 @@[0m
+[31m-	print('%s = { ' % windows_domain)
+-	print('\tkdc = %s' % (kerberos_kdc or "127.0.0.1:88"))
+-	print('\tadmin_server = %s' % (kerberos_adminserver or "127.0.0.1:88"))
+-	print('\tdefault_domain = %s' % configRegistry['domainname'])[0m
+[32m+	print(('%s = { ' % windows_domain))
++	print(('\tkdc = %s' % (kerberos_kdc or "127.0.0.1:88")))
++	print(('\tadmin_server = %s' % (kerberos_adminserver or "127.0.0.1:88")))
++	print(('\tdefault_domain = %s' % configRegistry['domainname']))[0m
+[36m@@ -84 +83 @@[0m
+[31m-print('''[kdc][0m
+[32m+print(('''[kdc][0m
+[36m@@ -87 +86 @@[0m
+[31m-''' % {"ldap_base": configRegistry['ldap/base'], "kerberos_realm": kerberos_realm})[0m
+[32m+''' % {"ldap_base": configRegistry['ldap/base'], "kerberos_realm": kerberos_realm}))[0m
+[36m@@ -91,2 +90,2 @@[0m
+[31m-	print('\tdefault_keys = %s' % configRegistry.get('kerberos/kadmin/default/keys'))
+-print('\tv4-realm = %s' % kerberos_realm)[0m
+[32m+	print(('\tdefault_keys = %s' % configRegistry.get('kerberos/kadmin/default/keys')))
++print(('\tv4-realm = %s' % kerberos_realm))[0m
+[36m@@ -94 +93 @@[0m
+[31m-	print('\tafs-cell = %s' % configRegistry.get('kerberos/afscell'))[0m
+[32m+	print(('\tafs-cell = %s' % configRegistry.get('kerberos/afscell')))[0m
+[36m@@ -96 +95 @@[0m
+[31m-print('''database = {[0m
+[32m+print(('''database = {[0m
+[36m@@ -101 +100 @@[0m
+[31m-			"kerberos_realm": kerberos_realm})[0m
+[32m+			"kerberos_realm": kerberos_realm}))[0m
+
+
+# ./univention-bootsplash/conffiles/etc/systemd/system/getty@.service.d/nottyreset.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-bootsplash/conffiles/etc/systemd/system/getty@.service.d/nottyreset.conf	2020-03-13 10:41:39.584312514 +0100
++++ /tmp/convert-target.py	2020-03-13 11:17:56.669628048 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+
+
+# ./univention-bootsplash/conffiles/etc/plymouth/plymouthd.conf
+
+
+
+# ./univention-bootsplash/conffiles/bootsplash.py
+
+
+
+# ./univention-system-activation/conffiles/usr/share/univention-system-activation/languages.json
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+[{"id": "en-US", "label": "English"}, {"id": "de-DE", "label" |	[{"label": "English", "id": "en-US"}, {"label": "Deutsch", "i
+```
+[1m--- ./univention-system-activation/conffiles/usr/share/univention-system-activation/languages.json	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:00.021697661 +0100
+[0m[36m@@ -14 +14 @@[0m
+[31m-print(json.dumps([{'id':id, 'label':label} for id, label in locales]))[0m
+[32m+print((json.dumps([{'id':id, 'label':label} for id, label in locales])))[0m
+
+
+# ./univention-system-activation/conffiles/usr/share/univention-system-activation/entries.json
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+  "appcenter_server": "appcenter.software-univention.de",     |	  "appliance_name": "",
+  "license_uuid": null, 				      |	  "license_uuid": null,
+  "role": "domaincontroller_master", 			      |	  "appcenter_server": "appcenter.software-univention.de",
+  "license_requested": null, 				      |	  "license_requested": null,
+  "appliance_name": ""					      |	  "role": "domaincontroller_master"
+```
+[1m--- ./univention-system-activation/conffiles/usr/share/univention-system-activation/entries.json	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:03.509770100 +0100
+[0m[36m@@ -27 +27 @@[0m
+[31m-print(json.dumps(data, indent=2))[0m
+[32m+print((json.dumps(data, indent=2)))[0m
+
+
+# ./univention-system-activation/conffiles/usr/lib/univention-system-setup/appliance-hooks.d/96_enable_system_activation
+
+
+
+# ./univention-system-activation/conffiles/etc/sudoers.d/univention-system-activation
+
+
+
+# ./univention-system-activation/conffiles/etc/apache2/sites-available/univention-system-activation.conf
+
+
+
+# ./univention-pam/conffiles/etc/libnss-ldap.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+bindpw 53RpVvmKxKTRotmPaXYs				      |	bindpw b'53RpVvmKxKTRotmPaXYs'
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+         ^						      |	          ^
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/libnss-ldap.conf	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:13.537978359 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -15 +14 @@[0m
+[31m-	print('uri %s' % ' '.join(urilist))[0m
+[32m+	print(('uri %s' % ' '.join(urilist)))[0m
+[36m@@ -18,2 +17,2 @@[0m
+[31m-	print('rootbinddn %s' % configRegistry['ldap/hostdn'])	## required for non-anonymous non-local bind
+-	print('binddn %s' % configRegistry['ldap/hostdn'])	## required dbus[0m
+[32m+	print(('rootbinddn %s' % configRegistry['ldap/hostdn']))	## required for non-anonymous non-local bind
++	print(('binddn %s' % configRegistry['ldap/hostdn']))	## required dbus[0m
+[36m@@ -22 +21 @@[0m
+[31m-		print('bindpw %s' % (open('/etc/machine.secret', 'rb').read()))[0m
+[32m+		print(('bindpw %s' % (open('/etc/machine.secret', 'rb').read())))[0m
+[36m@@ -30 +29 @@[0m
+[31m-print('tls_checkpeer %s' % configRegistry.get('nssldap/tls/checkpeer', 'no'))[0m
+[32m+print(('tls_checkpeer %s' % configRegistry.get('nssldap/tls/checkpeer', 'no')))[0m
+[36m@@ -33 +32 @@[0m
+[31m-	print('bind_policy %s' % configRegistry.get('nssldap/bindpolicy'))[0m
+[32m+	print(('bind_policy %s' % configRegistry.get('nssldap/bindpolicy')))[0m
+[36m@@ -35 +34 @@[0m
+[31m-	print('idle_timelimit %s' % configRegistry['nssldap/idle/timelimit'])[0m
+[32m+	print(('idle_timelimit %s' % configRegistry['nssldap/idle/timelimit']))[0m
+[36m@@ -37 +36 @@[0m
+[31m-	print('timelimit %s' % configRegistry['nssldap/timelimit'])[0m
+[32m+	print(('timelimit %s' % configRegistry['nssldap/timelimit']))[0m
+[36m@@ -39 +38 @@[0m
+[31m-	print('nss_initgroups_ignoreusers %s' % configRegistry.get("nssldap/nss_initgroups_ignoreusers/users", "root"))[0m
+[32m+	print(('nss_initgroups_ignoreusers %s' % configRegistry.get("nssldap/nss_initgroups_ignoreusers/users", "root")))[0m
+
+
+# ./univention-pam/conffiles/etc/nscd.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+()							      |
+()							      |
+()							      |
+```
+[1m--- ./univention-pam/conffiles/etc/nscd.conf	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:16.886047890 +0100
+[0m[36m@@ -35,2 +35 @@[0m
+[31m-#	stat-user		somebody
+-@!@from __future__ import print_function[0m
+[32m+#	stat-user		somebody@!@from __future__ import print_function[0m
+[36m@@ -41 +40 @@[0m
+[31m-	print('\tdebug-level\t\t%s' % int(debuglevel))[0m
+[32m+	print(('\tdebug-level\t\t%s' % int(debuglevel)))[0m
+[36m@@ -48 +47 @@[0m
+[31m-	print('\tlogfile\t\t\t%s' % logfile)[0m
+[32m+	print(('\tlogfile\t\t\t%s' % logfile))[0m
+[36m@@ -62 +61 @@[0m
+[31m-		print('\tthreads\t\t\t%s' % int(threads))[0m
+[32m+		print(('\tthreads\t\t\t%s' % int(threads)))[0m
+[36m@@ -75 +74 @@[0m
+[31m-		print('\trestart-interval\t%s' % int(interval))[0m
+[32m+		print(('\trestart-interval\t%s' % int(interval)))[0m
+[36m@@ -87,5 +86,5 @@[0m
+[31m-		print('\tenable-cache\t\t%s\t\tyes' % (dbtype, ))
+-		print('\tpositive-time-to-live\t%s\t\t%s' % (dbtype, pttl))
+-		print('\tnegative-time-to-live\t%s\t\t%s' % ( dbtype, nttl ))
+-		print('\tsuggested-size\t\t%s\t\t%s' % (dbtype, ssize))
+-		print('\tcheck-files\t\t%s\t\tyes' % (dbtype, ))[0m
+[32m+		print(('\tenable-cache\t\t%s\t\tyes' % (dbtype, )))
++		print(('\tpositive-time-to-live\t%s\t\t%s' % (dbtype, pttl)))
++		print(('\tnegative-time-to-live\t%s\t\t%s' % ( dbtype, nttl )))
++		print(('\tsuggested-size\t\t%s\t\t%s' % (dbtype, ssize)))
++		print(('\tcheck-files\t\t%s\t\tyes' % (dbtype, )))[0m
+[36m@@ -93 +92 @@[0m
+[31m-			print('\tpersistent\t\t%s\t\tyes' % (dbtype, ))[0m
+[32m+			print(('\tpersistent\t\t%s\t\tyes' % (dbtype, )))[0m
+[36m@@ -95 +94 @@[0m
+[31m-			print('\tmax-db-size\t\t%s\t\t%s' % ( dbtype, maxdb ))[0m
+[32m+			print(('\tmax-db-size\t\t%s\t\t%s' % ( dbtype, maxdb )))[0m
+[36m@@ -97 +96 @@[0m
+[31m-		print('\tenable-cache\t\t%s\t\tno' % (dbtype, ))[0m
+[32m+		print(('\tenable-cache\t\t%s\t\tno' % (dbtype, )))[0m
+
+
+# ./univention-pam/conffiles/etc/nsswitch.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+('passwd:       ', 'compat ldap')			      |	Traceback (most recent call last):
+('group:        ', 'compat extrausers')			      |	  File "/tmp/convert-py3.py", line 22, in <module>
+('shadow:       ', 'compat ldap')			      |	    nss_string = string.join(nss)
+							      >	AttributeError: module 'string' has no attribute 'join'
+```
+[1m--- ./univention-pam/conffiles/etc/nsswitch.conf	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:20.158115842 +0100
+[0m[36m@@ -8 +7,0 @@[0m
+[31m-[0m
+[36m@@ -31,3 +30,3 @@[0m
+[31m-print('passwd:       ', nss_string)
+-print('group:        ', string.join(nss))
+-print('shadow:       ', nss_string)[0m
+[32m+print(('passwd:       ', nss_string))
++print(('group:        ', string.join(nss)))
++print(('shadow:       ', nss_string))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/other
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/other	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:23.378182714 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/rlogin
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/rlogin	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:26.634250333 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/chfn
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/chfn	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:29.954319282 +0100
+[0m[36m@@ -4,2 +4 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -21 +20 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/gdm
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/gdm	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:33.118384991 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/screen
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/screen	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:37.438474707 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/sudo
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/sudo	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:40.906546729 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/kcheckpass
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/kcheckpass	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:44.154614182 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-auth-nowrite
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 10			      |	  File "/tmp/convert-py3.py", line 10
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 10			      |	  File "/tmp/convert-py3.py", line 10
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+Traceback (most recent call last):			      |
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	auth	sufficient			pam_krb5.so use_first
+    from builtins import str				      |
+ImportError: No module named builtins			      |	auth 	sufficient 			pam_ldap.so use_first
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth-nowrite	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:18:55.852316568 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-auth     requisite                          pam_nologin.so
+-@!@from __future__ import print_function[0m
+[32m+auth     requisite                          pam_nologin.so@!@from __future__ import print_function[0m
+[36m@@ -13 +12 @@[0m
+[31m-		print('auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option)[0m
+[32m+		print(('auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option))[0m
+[36m@@ -16 +15 @@[0m
+[31m-		print('auth	required	pam_tally.so %s' % tally_option)[0m
+[32m+		print(('auth	required	pam_tally.so %s' % tally_option))[0m
+[36m@@ -72 +71 @@[0m
+[31m-	print(pam_section(pam_krb5, index, last))[0m
+[32m+	print((pam_section(pam_krb5, index, last)))[0m
+[36m@@ -78 +77 @@[0m
+[31m-	print(pam_section(pam_ldap, index, last))[0m
+[32m+	print((pam_section(pam_ldap, index, last)))[0m
+[36m@@ -81 +80 @@[0m
+[31m-	print(pam_section(pam_winbind, index, 1))[0m
+[32m+	print((pam_section(pam_winbind, index, 1)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/30univention-pam_local
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth.d/30univention-pam_local	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:19:00.549094658 +0100
+[0m[36m@@ -1,2 +1 @@[0m
+[31m-auth     requisite                          pam_nologin.so
+-@!@from __future__ import print_function[0m
+[32m+auth     requisite                          pam_nologin.so@!@from __future__ import print_function[0m
+[36m@@ -11 +10 @@[0m
+[31m-		print('auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option)[0m
+[32m+		print(('auth	[success=1 user_unknown=1 default=bad]	pam_tally.so %s' % tally_option))[0m
+[36m@@ -14 +13 @@[0m
+[31m-		print('auth	required	pam_tally.so %s' % tally_option)[0m
+[32m+		print(('auth	required	pam_tally.so %s' % tally_option))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/10univention-pam_header
+
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/50univention-pam_general
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+Traceback (most recent call last):			      |	# local unix authentication; do not cache passwords
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	auth     sufficient                           pam_unix.so
+    from builtins import str				      |
+ImportError: No module named builtins			      |	# remote authentication; if a service
+							      >	# - fails, we will fall back to cache authentication
+							      >	# - is successful, cache the password
+							      >	# - is not aware of the user, proceed with the next service
+							      >
+							      >	auth     [success=done new_authtok_reqd=ok          user_unkn
+							      >
+							      >	auth     [success=done new_authtok_reqd=ok          user_unkn
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-auth.d/50univention-pam_general	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:19:05.561919208 +0100
+[0m[36m@@ -83 +83 @@[0m
+[31m-	print(pam_section(pam_krb5, index, last))[0m
+[32m+	print((pam_section(pam_krb5, index, last)))[0m
+[36m@@ -89 +89 @@[0m
+[31m-	print(pam_section(pam_ldap, index, last))[0m
+[32m+	print((pam_section(pam_ldap, index, last)))[0m
+[36m@@ -92 +92 @@[0m
+[31m-	print(pam_section(pam_winbind, index, 1))[0m
+[32m+	print((pam_section(pam_winbind, index, 1)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-auth.d/70univention-pam_env
+
+
+
+# ./univention-pam/conffiles/etc/pam.d/kdm
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/kdm	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:19:10.766768950 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/ppp
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/ppp	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:19:16.243656128 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/sshd
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/sshd	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:19:32.366226983 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-password
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-password	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:19:38.515191734 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-password	requisite	pam_cracklib.so
+-@!@from __future__ import print_function[0m
+[32m+password	requisite	pam_cracklib.so@!@from __future__ import print_function[0m
+[36m@@ -18 +17 @@[0m
+[31m-	print(template % {[0m
+[32m+	print((template % {[0m
+[36m@@ -21 +20 @@[0m
+[31m-	})[0m
+[32m+	}))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-session.d/10univention-pam_common
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8			      |	  File "/tmp/convert-py3.py", line 8
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-session.d/10univention-pam_common	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:19:55.161761005 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-session    required   pam_unix.so
+-@!@from __future__ import print_function[0m
+[32m+session    required   pam_unix.so@!@from __future__ import print_function[0m
+[36m@@ -6 +5 @@[0m
+[31m-print('%ssession    optional   pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',))[0m
+[32m+print(('%ssession    optional   pam_systemd.so' % ('' if configRegistry.is_true('pam/session/systemd') else '#',)))[0m
+[36m@@ -12 +11 @@[0m
+[31m-	print('session    optional   pam_krb5.so minimum_uid=%d' % (minimum_uid,))[0m
+[32m+	print(('session    optional   pam_krb5.so minimum_uid=%d' % (minimum_uid,)))[0m
+[36m@@ -22 +21 @@[0m
+[31m-		print('session    %s   pam_runasroot.so program=/usr/sbin/univention-mount-homedir' % homeDirReq)[0m
+[32m+		print(('session    %s   pam_runasroot.so program=/usr/sbin/univention-mount-homedir' % homeDirReq))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/login
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/login	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:00.066506383 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/common-account
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 10			      |	  File "/tmp/convert-py3.py", line 10
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 10			      |	  File "/tmp/convert-py3.py", line 10
+```
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/common-account	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:12.028302480 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -39 +38 @@[0m
+[31m-	print(pam_section(pam_krb5, index))[0m
+[32m+	print((pam_section(pam_krb5, index)))[0m
+[36m@@ -42 +41 @@[0m
+[31m-	print(pam_section(pam_ldap, index))[0m
+[32m+	print((pam_section(pam_ldap, index)))[0m
+[36m@@ -45 +44 @@[0m
+[31m-	print(pam_section(pam_winbind, index))[0m
+[32m+	print((pam_section(pam_winbind, index)))[0m
+[36m@@ -48 +47 @@[0m
+[31m-	print(pam_section(pam_cache, index))[0m
+[32m+	print((pam_section(pam_cache, index)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/cron
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/cron	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:16.160915924 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/ftp
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/ftp	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:21.061638770 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/kscreensaver
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/kscreensaver	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:24.954209352 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth-nowrite
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth-nowrite@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/passwd
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/passwd	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:28.946791349 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/su
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/su	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:32.855357934 +0100
+[0m[36m@@ -4,2 +4 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -21 +20 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/kde
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/kde	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:36.799926598 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/chsh
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/chsh	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:40.876511010 +0100
+[0m[36m@@ -4,2 +4 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -21 +20 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/pam.d/rsh
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam.d/rsh	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:44.865079584 +0100
+[0m[36m@@ -3,2 +3 @@[0m
+[31m-@include common-auth
+-@!@from __future__ import print_function[0m
+[32m+@include common-auth@!@from __future__ import print_function[0m
+[36m@@ -20 +19 @@[0m
+[31m-	print(' '.join(line))[0m
+[32m+	print((' '.join(line)))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-kdm.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-kdm.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:48.877648399 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-sshd.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Domain Admins,DC Slave Hosts,Computers,DC Backup Hosts,Admi |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-sshd.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:52.834206169 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-gdm.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-gdm.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:20:57.110805629 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-cron.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-cron.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:01.399403197 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-other.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-other.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:06.340087269 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-su.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-su.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:10.928718451 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-chfn.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-chfn.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:15.477340184 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-kscreensaver.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-kscreensaver.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:19.945947254 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-kde.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-kde.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:24.298534975 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-passwd.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-passwd.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:28.783136903 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-ppp.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-ppp.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:33.435757506 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-kcheckpass.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-kcheckpass.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:38.032366830 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-rsh.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-rsh.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:42.472951849 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-ftp.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-ftp.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:46.913533408 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-chsh.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-chsh.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:51.386115629 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/limits.conf
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 58			      |	  File "/tmp/convert-py3.py", line 58
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 58			      |	Traceback (most recent call last):
+    print(entry[i].ljust(lengths[i] + 2), end=' ')	      |	  File "/tmp/convert-py3.py", line 10, in <module>
+                                             ^		      |	    from univention.lib.misc import custom_username, custom_g
+SyntaxError: invalid syntax				      |	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/limits.conf	2020-03-13 09:50:37.222094587 +0100
++++ /tmp/convert-target.py	2020-03-13 11:21:55.806687678 +0100
+[0m[36m@@ -16 +15,0 @@[0m
+[31m-[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-sudo.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++::ALL							      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-sudo.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:00.539296355 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-screen.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-screen.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:05.035871151 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-login.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-login.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:09.424428799 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/security/pam_env.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/security/pam_env.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:13.840986765 +0100
+[0m[36m@@ -75 +74,0 @@[0m
+[31m-[0m
+
+
+# ./univention-pam/conffiles/etc/security/access-rlogin.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
++:Administrators,root,Domain Admins:ALL			      |	Traceback (most recent call last):
+-:ALL:ALL						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+							      >	    from univention.lib.misc import custom_username, custom_g
+							      >	ImportError: No module named 'univention.lib.misc'
+```
+[1m--- ./univention-pam/conffiles/etc/security/access-rlogin.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:18.321549479 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -18 +17 @@[0m
+[31m-print("+:" + ",".join(list(names.keys())) + ":ALL")[0m
+[32m+print(("+:" + ",".join(list(names.keys())) + ":ALL"))[0m
+
+
+# ./univention-pam/conffiles/etc/pam_ldap.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/pam_ldap.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:22.758103409 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -15 +14 @@[0m
+[31m-	print('uri %s' % ' '.join(urilist))[0m
+[32m+	print(('uri %s' % ' '.join(urilist)))[0m
+[36m@@ -18 +17 @@[0m
+[31m-	print('rootbinddn %s' % configRegistry['ldap/hostdn'])	## required for non-anonymous non-local bind[0m
+[32m+	print(('rootbinddn %s' % configRegistry['ldap/hostdn']))	## required for non-anonymous non-local bind[0m
+
+
+# ./univention-pam/conffiles/etc/cron.d/univention-pam
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-pam/conffiles/etc/cron.d/univention-pam	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:27.282665005 +0100
+[0m[36m@@ -4 +3,0 @@[0m
+[31m-[0m
+[36m@@ -17 +16 @@[0m
+[31m-	print('%s%s   root   [ -x /usr/lib/univention-pam/ldap-group-to-file.py ] && /usr/sbin/jitter 1800 /usr/lib/univention-pam/ldap-group-to-file.py %s' % (disabled, interval, check_member))[0m
+[32m+	print(('%s%s   root   [ -x /usr/lib/univention-pam/ldap-group-to-file.py ] && /usr/sbin/jitter 1800 /usr/lib/univention-pam/ldap-group-to-file.py %s' % (disabled, interval, check_member)))[0m
+
+
+# ./univention-firewall/conffiles/etc/security/packetfilter.d/80_univention-firewall_policy.sh
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-firewall/conffiles/etc/security/packetfilter.d/80_univention-firewall_policy.sh	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:31.855229190 +0100
+[0m[36m@@ -31,2 +31 @@[0m
+[31m-# set default policy for incoming traffic
+-@!@from __future__ import print_function[0m
+[32m+# set default policy for incoming traffic@!@from __future__ import print_function[0m
+[36m@@ -41 +40 @@[0m
+[31m-print('iptables --wait -P INPUT %s' % policy)[0m
+[32m+print(('iptables --wait -P INPUT %s' % policy))[0m
+[36m@@ -43 +42 @@[0m
+[31m-print('ip6tables --wait -P INPUT %s' % policy)[0m
+[32m+print(('ip6tables --wait -P INPUT %s' % policy))[0m
+
+
+# ./univention-firewall/conffiles/etc/security/packetfilter.d/20_docker.sh
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 10, in <module>
+    from builtins import str				      |	    import ipaddr
+ImportError: No module named builtins			      |	ImportError: No module named 'ipaddr'
+```
+[1m--- ./univention-firewall/conffiles/etc/security/packetfilter.d/20_docker.sh	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:36.143755268 +0100
+[0m[36m@@ -54 +53,0 @@[0m
+[31m-[0m
+[36m@@ -62,2 +61,2 @@[0m
+[31m-print('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port))
+-print('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Compose Apps' % (str(docker_compose_net.network), str(docker_compose_net.prefixlen), mysql_port))[0m
+[32m+print(('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port)))
++print(('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Compose Apps' % (str(docker_compose_net.network), str(docker_compose_net.prefixlen), mysql_port)))[0m
+
+
+# ./univention-firewall/conffiles/etc/security/packetfilter.d/10_univention-firewall_start.sh
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+()							      |
+# univention-ldap-server[en]: LDAPS			      <
+iptables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT     <
+ip6tables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT    <
+()							      <
+# univention-nfs[en]: portmap				      <
+iptables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT     <
+()							      <
+# univention-nfs[en]: NFS related RPC daemons		      <
+iptables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j ACC <
+ip6tables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j AC <
+()							      <
+# univention-heimdal-common[en]: krsh			      <
+iptables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT     <
+()							      <
+# univention-heimdal-kdc[en]: kerberos			      <
+iptables --wait -A INPUT -p "tcp"  --dport 88 -j ACCEPT	      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 88 -j ACCEPT      <
+()							      <
+# univention-ldap-server[en]: LDAP			      <
+iptables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT     <
+ip6tables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT    <
+()							      <
+# univention-heimdal-kdc[en]: kpasswd			      <
+iptables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT     <
+()							      <
+# univention-heimdal-kdc[en]: kerberos			      <
+iptables --wait -A INPUT -p "udp"  --dport 88 -j ACCEPT	      <
+ip6tables --wait -A INPUT -p "udp"  --dport 88 -j ACCEPT      <
+()							      <
+# univention-nfs[en]: NFS				      <
+iptables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT     <
+ip6tables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT    <
+()							      <
+# univention-nfs[en]: NFS related RPC daemons		      <
+iptables --wait -A INPUT -p "udp"  --dport 32765:32769 -j ACC <
+ip6tables --wait -A INPUT -p "udp"  --dport 32765:32769 -j AC <
+()							      <
+# univention-bind[en]: DNS proxy			      <
+iptables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT	      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT      <
+()							      <
+()							      |
+# univention-heimdal-kdc[en]: kpasswd			      <
+iptables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT     <
+()							      <
+# univention-apache[en]: HTTP				      <
+iptables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT	      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT      <
+()							      <
+# univention-apache[en]: HTTPS				      <
+iptables --wait -A INPUT -p "tcp"  --dport 443 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 443 -j ACCEPT     <
+()							      <
+()							      |
+# univention-nfs[en]: NFS				      |	# univention-heimdal-kdc[en]: kerberos
+iptables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT     |	iptables --wait -A INPUT -p "tcp"  --dport 88 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT    |	ip6tables --wait -A INPUT -p "tcp"  --dport 88 -j ACCEPT
+()							      |
+							      >	# univention-heimdal-kdc[en]: kadmin
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT
+							      >
+							      >	# univention-heimdal-common[en]: krsh
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 544 -j ACCEPT
+							      >
+()							      |
+# univention-ldap-server[en]: LDAPS			      <
+iptables --wait -A INPUT -p "tcp"  --dport 636 -j ACCEPT      <
+ip6tables --wait -A INPUT -p "tcp"  --dport 636 -j ACCEPT     <
+()							      <
+()							      |
+# univention-base-files[en]: SSH			      |	# univention-nfs[en]: NFS
+iptables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT	      |	iptables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT      |	ip6tables --wait -A INPUT -p "tcp"  --dport 2049 -j ACCEPT
+()							      |
+							      >	# univention-ldap-server[en]: LDAP
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 7389 -j ACCEPT
+							      >
+							      >	# univention-apache[en]: HTTP
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 80 -j ACCEPT
+							      >
+							      >	# univention-saml[en]: memcached
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 11212 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 11212 -j ACCEPT
+							      >
+							      >	# univention-nfs[en]: portmap
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 111 -j ACCEPT
+							      >
+()							      |
+							      >	# univention-directory-notifier[en]: Univention Directory Not
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT
+							      >
+()							      |
+							      >	# univention-heimdal-kdc[en]: kpasswd
+							      >	iptables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "udp"  --dport 464 -j ACCEPT
+							      >
+							      >	# univention-heimdal-kdc[en]: kerberos
+							      >	iptables --wait -A INPUT -p "udp"  --dport 88 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "udp"  --dport 88 -j ACCEPT
+							      >
+							      >	# univention-bind[en]: DNS proxy
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 53 -j ACCEPT
+							      >
+							      >	# univention-base-files[en]: SSH
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 22 -j ACCEPT
+							      >
+()							      |
+# univention-directory-notifier[en]: Univention Directory Not |	# univention-nfs[en]: NFS related RPC daemons
+iptables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT     |	iptables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j ACC
+ip6tables --wait -A INPUT -p "tcp"  --dport 6669 -j ACCEPT    |	ip6tables --wait -A INPUT -p "tcp"  --dport 32765:32769 -j AC
+()							      |
+# univention-heimdal-kdc[en]: kadmin			      |	# univention-apache[en]: HTTPS
+iptables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT      |	iptables --wait -A INPUT -p "tcp"  --dport 443 -j ACCEPT
+ip6tables --wait -A INPUT -p "tcp"  --dport 749 -j ACCEPT     |	ip6tables --wait -A INPUT -p "tcp"  --dport 443 -j ACCEPT
+()							      |
+							      >	# univention-heimdal-kdc[en]: kpasswd
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 464 -j ACCEPT
+							      >
+							      >	# univention-ldap-server[en]: LDAPS
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 7636 -j ACCEPT
+							      >
+							      >	# univention-ldap-server[en]: LDAPS
+							      >	iptables --wait -A INPUT -p "tcp"  --dport 636 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "tcp"  --dport 636 -j ACCEPT
+							      >
+							      >	# univention-nfs[en]: NFS related RPC daemons
+							      >	iptables --wait -A INPUT -p "udp"  --dport 32765:32769 -j ACC
+							      >	ip6tables --wait -A INPUT -p "udp"  --dport 32765:32769 -j AC
+							      >
+							      >	# univention-nfs[en]: NFS
+							      >	iptables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT
+							      >	ip6tables --wait -A INPUT -p "udp"  --dport 2049 -j ACCEPT
+							      >
+()							      <
+# univention-saml[en]: memcached			      <
+iptables --wait -A INPUT -p "tcp"  --dport 11212 -j ACCEPT    <
+ip6tables --wait -A INPUT -p "tcp"  --dport 11212 -j ACCEPT   <
+```
+[1m--- ./univention-firewall/conffiles/etc/security/packetfilter.d/10_univention-firewall_start.sh	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:40.576295919 +0100
+[0m[36m@@ -60 +59,0 @@[0m
+[31m-[0m
+[36m@@ -85 +84 @@[0m
+[31m-		print('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[32m+		print(('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[36m@@ -90 +89 @@[0m
+[31m-			})[0m
+[32m+			}))[0m
+[36m@@ -95 +94 @@[0m
+[31m-		print('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[32m+		print(('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {[0m
+[36m@@ -100 +99 @@[0m
+[31m-			})[0m
+[32m+			}))[0m
+[36m@@ -110 +109 @@[0m
+[31m-		print('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key)))[0m
+[32m+		print(('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key))))[0m
+
+
+# ./univention-maintenance/conffiles/etc/logrotate.d/univention-maintenance
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/univention/system-stats.log {			      |	Traceback (most recent call last):
+	weekly						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+	rotate 12					      |	    import univention.lib.ucrLogrotate
+	create 640 root adm				      |	ImportError: No module named 'univention.lib.ucrLogrotate'
+	compress					      <
+	missingok					      <
+	notifempty					      <
+```
+[1m--- ./univention-maintenance/conffiles/etc/logrotate.d/univention-maintenance	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:45.012833975 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -10 +9 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -13 +12 @@[0m
+[31m-        print("\t%s" % settings[setting])[0m
+[32m+        print(("\t%s" % settings[setting]))[0m
+
+
+# ./univention-maintenance/conffiles/etc/cron.d/univention-system-stats
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-maintenance/conffiles/etc/cron.d/univention-system-stats	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:49.477372275 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -12 +11 @@[0m
+[31m-	print("%s root [ -x %s ] && %s >/dev/null" % (cron, file, file))[0m
+[32m+	print(("%s root [ -x %s ] && %s >/dev/null" % (cron, file, file)))[0m
+[36m@@ -14 +13 @@[0m
+[31m-	print("# not enabled via system/stats/cron or not one of those system roles:\n#%s" % roles)[0m
+[32m+	print(("# not enabled via system/stats/cron or not one of those system roles:\n#%s" % roles))[0m
+
+
+# ./univention-maintenance/conffiles/etc/cron.d/univention-mrtg
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-maintenance/conffiles/etc/cron.d/univention-mrtg	2020-03-13 10:41:39.588312597 +0100
++++ /tmp/convert-target.py	2020-03-13 11:22:53.793889807 +0100
+[0m[36m@@ -5,2 +5 @@[0m
+[31m-# Create mrtg statistics
+-@!@from __future__ import print_function[0m
+[32m+# Create mrtg statistics@!@from __future__ import print_function[0m
+
+
+# ./univention-quota/conffiles/etc/init.d/quotarpc
+
+
+
+# ./univention-quota/conffiles/etc/pam.d/common-session.d/20univention-quota_common
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+
+
+# ./univention-quota/conffiles/etc/samba/smb.conf.d/81univention-quota_scripts
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-quota/conffiles/etc/samba/smb.conf.d/81univention-quota_scripts	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:23:02.306902073 +0100
+[0m[36m@@ -5 +5 @@[0m
+[31m-	print('\tset quota command =',  quota_command)[0m
+[32m+	print(('\tset quota command =',  quota_command))[0m
+
+
+# ./univention-home-mounter/conffiles/etc/cron.d/univention-home-mounter
+
+
+
+# ./univention-maintenance-mode/conffiles/univention-maintenance-mode-service
+
+
+
+# ./univention-system-setup/conffiles/usr/share/univention-management-console/modules/setup-certificate.xml
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-system-setup/conffiles/usr/share/univention-management-console/modules/setup-certificate.xml	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:23:06.315374900 +0100
+[0m[36m@@ -5,2 +5 @@[0m
+[31m-	-->
+-@!@from __future__ import print_function[0m
+[32m+	-->@!@from __future__ import print_function[0m
+
+
+# ./univention-system-setup/conffiles/etc/logrotate.d/univention-system-setup
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/univention/setup.log {				      |	Traceback (most recent call last):
+	weekly						      |	  File "/tmp/convert-py3.py", line 9, in <module>
+	rotate 12					      |	    import univention.lib.ucrLogrotate
+	create 640 root adm				      |	ImportError: No module named 'univention.lib.ucrLogrotate'
+	compress					      <
+	missingok					      <
+	notifempty					      <
+```
+[1m--- ./univention-system-setup/conffiles/etc/logrotate.d/univention-system-setup	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:23:10.179828457 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -10 +9 @@[0m
+[31m-print("/var/log/univention/%s.log {" % name)[0m
+[32m+print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -13 +12 @@[0m
+[31m-	print("\t%s" % settings[setting])[0m
+[32m+	print(("\t%s" % settings[setting]))[0m
+
+
+# ./univention-system-setup/conffiles/etc/motd.setup
+
+Difference when running the converted script with python2
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+```
+
+Difference between python2 output and python3 output
+```diff
+  File "/tmp/convert-py2.py", line 8, in <module>	      |	  File "/tmp/convert-py3.py", line 8, in <module>
+ImportError: No module named future			      |	ImportError: No module named 'future'
+```
+[1m--- ./univention-system-setup/conffiles/etc/motd.setup	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:23:13.984272796 +0100
+[0m[36m@@ -115 +115 @@[0m
+[31m-print(msg % {[0m
+[32m+print((msg % {[0m
+[36m@@ -117 +117 @@[0m
+[31m-})[0m
+[32m+}))[0m
+
+
+# ./univention-system-setup/conffiles/etc/pam.d/common-session.d/20system-setup-login-message
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+
+
+# ./univention-system-setup/conffiles/etc/apache2/conf-available/univention-system-setup.conf
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+```
+[1m--- ./univention-system-setup/conffiles/etc/apache2/conf-available/univention-system-setup.conf	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:23:21.369129173 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+
+
+# ./univention-app-appliance/conffiles/usr/share/univention-web/js/umc/hooks/appliance.json
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+  "close_first_steps": null, 				      |	  "close_first_steps": null,
+```
+[1m--- ./univention-app-appliance/conffiles/usr/share/univention-web/js/umc/hooks/appliance.json	2020-03-13 10:41:39.580312430 +0100
++++ /tmp/convert-target.py	2020-03-13 11:23:25.057553930 +0100
+[0m[36m@@ -17 +17 @@[0m
+[31m-print(json.dumps(data, indent=2))[0m
+[32m+print((json.dumps(data, indent=2)))[0m
+
+
+# ./univention-ssl/conffiles/etc/logrotate.d/univention-ssl
+
+Difference when running the converted script with python2
+```diff
+```
+
+Difference between python2 output and python3 output
+```diff
+/var/log/univention/ssl-sync.log {			      <
+	weekly						      <
+	rotate 12					      <
+	create 640 root adm				      <
+	compress					      <
+	missingok					      <
+	notifempty					      <
+}							      <
+```
+[1m--- ./univention-ssl/conffiles/etc/logrotate.d/univention-ssl	2020-03-13 10:41:39.592312682 +0100
++++ /tmp/convert-target.py	2020-03-13 11:23:28.713973029 +0100
+[0m[36m@@ -2 +1,0 @@[0m
+[31m-[0m
+[36m@@ -14 +13 @@[0m
+[31m-	print("/var/log/univention/%s.log {" % name)[0m
+[32m+	print(("/var/log/univention/%s.log {" % name))[0m
+[36m@@ -16 +15 @@[0m
+[31m-		print("\t%s" % settings[setting])[0m
+[32m+		print(("\t%s" % settings[setting]))[0m
+
+
