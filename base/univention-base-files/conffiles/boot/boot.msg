@@ -4,4 +4,3 @@ Welcome to Univention Corporate Server!
 * To boot with the installation time kernel, select "Linux.install".
 This defaults to "Linux", but can be overridden via univention-config-registry.
 
-

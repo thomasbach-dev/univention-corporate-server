@@ -75,4 +75,3 @@ def postinst(ucr, changes):
 	_common(ucr, changes, 'ifup')
 
 # vim:set sw=4 ts=4 noet:
-

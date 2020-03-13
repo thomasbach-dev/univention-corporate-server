@@ -57,8 +57,8 @@ ip6tables --wait -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 # accept all ICMPv6 messages
 ip6tables --wait -A INPUT -p icmpv6 -j ACCEPT
 
-@!@from __future__ import print_function
 
+@!@
 def print_packetfilter(key, value):
 	items = key.split('/')
 	addrv6 = items[-1]
@@ -81,32 +81,32 @@ def print_packetfilter(key, value):
 	if addrv4 is not None:
 		if addrv4:
 			addrv4 = '-d ' + ''.join([ x for x in addrv4 if x in set('0123456789.')])
-		print(('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print 'iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv4,
 			'port': items[-2],
 			'action': value,
-			}))
+			}
 
 	if addrv6 is not None:
 		if addrv6:
 			addrv6 = '-d ' + ''.join([ x for x in addrv6 if x in set('abcdefABCDEF0123456789:.')])
-		print(('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print 'ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv6,
 			'port': items[-2],
 			'action': value,
-			}))
+			}
 
 
 def print_descriptions(var):
-	print()
-	for key in [ x for x in list(configRegistry.keys()) if x.startswith('%s/' % var) ]:
+	print
+	for key in [ x for x in configRegistry.keys() if x.startswith('%s/' % var) ]:
 		items = key.split('/')
 		pkg = 'user'
 		if key.startswith('security/packetfilter/package/'):
 			pkg = items[3]
-		print(('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key))))
+		print '# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key))
 
 
 filterlist = {}
@@ -116,21 +116,21 @@ rePort = re.compile('^\d+(:\d+)?$')
 
 # get package settings
 if configRegistry.is_true('security/packetfilter/use_packages', True):
-	for key in [ x for x in list(configRegistry.keys()) if x.startswith('security/packetfilter/package/') ]:
+	for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/package/') ]:
 		items = key.split('/')
 		# check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
 		if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:
 			filterlist[ '/'.join(items[-3:]) ] = key
 
 # get user settings
-for key in [ x for x in list(configRegistry.keys()) if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/') ]:
+for key in [ x for x in configRegistry.keys() if x.startswith('security/packetfilter/') and not x.startswith('security/packetfilter/package/') ]:
 	items = key.split('/')
 	# check if UCR variable is valid: security/packetfilter/package/univention-samba/tcp/139/all=ACCEPT
 	if items[-3] in ['tcp', 'udp'] and rePort.search(items[-2]) is not None:
 		filterlist[ '/'.join(items[-3:]) ] = key
 
 # print values
-for ucrkey in list(filterlist.values()):
+for ucrkey in filterlist.values():
 	print_descriptions(ucrkey)
 	print_packetfilter(ucrkey, configRegistry[ucrkey])
 

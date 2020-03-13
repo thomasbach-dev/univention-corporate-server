@@ -44,4 +44,3 @@ ucr commit /etc/apache2/sites-available/univention-proxy.conf /etc/apache2/sites
 systemctl reload apache2.service
 
 exit 0
-

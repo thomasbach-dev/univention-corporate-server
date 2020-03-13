@@ -1,5 +1,4 @@
-@!@from __future__ import print_function
-
+@!@
 import json
 
 def get_ucr_entry(ucrKey, key=None, defaultValue=None):
@@ -14,5 +13,5 @@ ucr_vars = [
 ]
 data = dict([get_ucr_entry(*i) for i in ucr_vars])
 
-print((json.dumps(data, indent=2)))
+print json.dumps(data, indent=2)
 @!@

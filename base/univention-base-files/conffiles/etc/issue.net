@@ -1,5 +1,4 @@
-@!@from __future__ import print_function
-
+@!@
 
 if configRegistry.get('server/role') == 'fatclient':
 	menutitle="Univention Managed Client"
@@ -17,7 +16,8 @@ else:
 	menutitle="Univention Corporate Server"
 
 if configRegistry.get('version/version'):
-	print(('%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))))
+	print  '%s %s-%s:' % (menutitle, configRegistry.get('version/version'), configRegistry.get('version/patchlevel'))
 else:
-	print(menutitle)
+	print menutitle
 @!@
+

@@ -1,8 +1,8 @@
 @%@UCRWARNING=# @%@
-@!@from __future__ import print_function
 
+@!@
 if configRegistry['kernel/modules']:
 	modules=configRegistry['kernel/modules'].split(';')
 	for mod in modules:
-		print(mod)
+		print mod
 @!@
