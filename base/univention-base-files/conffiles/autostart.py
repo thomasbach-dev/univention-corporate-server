@@ -83,4 +83,3 @@ def handler(configRegistry, changes):
 
 
 # vim:set sw=4 ts=4 noet:
-

@@ -12,16 +12,16 @@
 # "dpkg-reconfigure locales" to manipulate this file. You can manually
 # change this file without affecting the use of debconf, however, since it
 # does read in your changes.
-@!@from __future__ import print_function
 
+@!@
 dl=None
 # Generate at least the default locale.
 if configRegistry.get('locale/default'):
         dl = configRegistry.get('locale/default')
-        print((dl.replace(':', ' ')))
+        print dl.replace(':', ' ')
 # Now generate all other locales, but don't repeat the default.
 if configRegistry.get('locale'):
         for l in configRegistry['locale'].split(' '):
                 if dl is None or l != dl:
-                        print((l.replace(':', ' ')))
+                        print l.replace(':', ' ')
 @!@

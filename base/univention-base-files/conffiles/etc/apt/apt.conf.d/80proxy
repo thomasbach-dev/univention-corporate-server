@@ -1,15 +1,15 @@
 @%@UCRWARNING=// @%@
-@!@from __future__ import print_function
 
+@!@
 def print_proxy(proxy, proto):
-	print('Acquire')
-	print('{')
-	print(('    %s' % (proto,)))
-	print('    {')
-	print(('        Proxy "%s";' % proxy))
-	print('    }')
-	print('}')
-	print()
+	print 'Acquire'
+	print '{'
+	print '    %s' % (proto,)
+	print '    {'
+	print '        Proxy "%s";' % proxy
+	print '    }'
+	print '}'
+	print
 
 proxy = configRegistry.get('proxy/http', None)
 if proxy:
