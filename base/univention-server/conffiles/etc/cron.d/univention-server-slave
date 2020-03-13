@@ -1,4 +1,5 @@
 @%@UCRWARNING=# @%@
 
+
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 @%@server/password/cron@%@	root	/usr/sbin/jitter 600 /usr/lib/univention-server/server_password_change

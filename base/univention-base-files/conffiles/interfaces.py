@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 #
 # Univention Configuration Registry
 """config registry module for the network interfaces."""

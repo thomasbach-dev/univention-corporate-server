@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 #
 # Univention Configuration Registry
 #  config registry module  to trigger udev on changes in /etc/default/keyboard

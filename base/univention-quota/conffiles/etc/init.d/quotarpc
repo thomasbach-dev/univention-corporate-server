@@ -1,5 +1,6 @@
 #!/bin/sh
 
+
 ### BEGIN INIT INFO
 # Provides:          quotarpc
 # Short-Description: Starts rpc process for remote quota handling
