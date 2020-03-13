@@ -67,3 +67,4 @@ except:
 	import traceback
 	print traceback.format_exc().replace('\n', ' ')  # heimdal-kdc / kpasswd only displays the first line as error message.
 	sys.exit(1)
+

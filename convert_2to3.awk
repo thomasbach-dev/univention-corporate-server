@@ -29,7 +29,7 @@ END {
 start && /@!@/ {
 	if (code2 != "") {
 		print code2 > "/tmp/convert-tmp.py" ; close("/tmp/convert-tmp.py")
-		system("2to3-2.7 --no-diffs -w /tmp/convert-tmp.py 2>/dev/null")
+		system("futurize --no-diffs -w /tmp/convert-tmp.py 2>/dev/null")
 		cmd = "cat /tmp/convert-tmp.py"
 		while ((cmd | getline result) > 0) {
 			code3 = code3 result "\n"

@@ -59,3 +59,4 @@ def postinst(baseConfig, changes):
         else:
             if os.path.exists('%s.old' % FILE_NAME):
                 os.remove('%s.old' % FILE_NAME)
+

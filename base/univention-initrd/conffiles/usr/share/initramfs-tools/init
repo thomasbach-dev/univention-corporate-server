@@ -329,3 +329,4 @@ elif command -v run-init >/dev/null 2>&1; then
 fi
 echo "Something went badly wrong in the initramfs."
 panic "Please file a bug on initramfs-tools."
+

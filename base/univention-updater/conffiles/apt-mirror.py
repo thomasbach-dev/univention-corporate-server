@@ -50,3 +50,4 @@ def postinst(baseConfig, changes):
                 shutil.copyfile('%s.old' % FILE_NAME, '%s' % FILE_NAME)
         if os.path.exists('%s.old' % FILE_NAME):
             os.remove('%s.old' % FILE_NAME)
+

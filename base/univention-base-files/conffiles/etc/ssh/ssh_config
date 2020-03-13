@@ -43,8 +43,8 @@ Host *
 #   PermitLocalCommand no
     SendEnv LANG LC_*
     HashKnownHosts yes
-@!@
+@!@from __future__ import print_function
+
 if configRegistry.get( 'auth/methods', '' ).find( 'krb5' ) >= 0:
-   print '    GSSAPIAuthentication yes'
+   print('    GSSAPIAuthentication yes')
 @!@
-    GSSAPIDelegateCredentials no

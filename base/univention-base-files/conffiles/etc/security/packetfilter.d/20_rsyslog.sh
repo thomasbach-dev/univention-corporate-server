@@ -28,10 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-@!@
+@!@from __future__ import print_function
+
 for (typ, proto) in [('udp', 'udp'), ('tcp', 'tcp'), ('relp', 'tcp')]:
 	port = configRegistry.get('syslog/input/%s' % (typ,))
 	if port:
-		print "# rsyslog %s" % (typ,)
-		print "iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port)
+		print("# rsyslog %s" % (typ,))
+		print("iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port))
 @!@
