@@ -1,5 +1,4 @@
 @%@UCRWARNING=# @%@
-
 @!@from __future__ import print_function
 
 from univention.lib.ucrLogrotate import getLogrotateConfig
@@ -37,12 +36,12 @@ for (cat, (paths, settings)) in list(FILES.items()):
 		settings.update(custom)
 FILES[None] = (other_logfiles, other_settings)
 
-for (cat, (paths, settings)) in FILES.items():
+for (cat, (paths, settings)) in list(FILES.items()):
 	for path in sorted(paths):
 		print(path)
 	print('{')
 	for setting in list(settings.values()):
-		print('\t%s' % (setting, ))
+		print(('\t%s' % (setting, )))
 	print("""\
 	delaycompress
 	sharedscripts

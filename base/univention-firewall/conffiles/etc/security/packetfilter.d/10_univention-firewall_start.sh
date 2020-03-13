@@ -57,7 +57,6 @@ ip6tables --wait -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
 # accept all ICMPv6 messages
 ip6tables --wait -A INPUT -p icmpv6 -j ACCEPT
 
-
 @!@from __future__ import print_function
 
 def print_packetfilter(key, value):
@@ -82,22 +81,22 @@ def print_packetfilter(key, value):
 	if addrv4 is not None:
 		if addrv4:
 			addrv4 = '-d ' + ''.join([ x for x in addrv4 if x in set('0123456789.')])
-		print('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print(('iptables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv4,
 			'port': items[-2],
 			'action': value,
-			})
+			}))
 
 	if addrv6 is not None:
 		if addrv6:
 			addrv6 = '-d ' + ''.join([ x for x in addrv6 if x in set('abcdefABCDEF0123456789:.')])
-		print('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
+		print(('ip6tables --wait -A INPUT -p "%(protocol)s" %(addr_args)s --dport %(port)s -j %(action)s' % {
 			'protocol': items[-3],
 			'addr_args': addrv6,
 			'port': items[-2],
 			'action': value,
-			})
+			}))
 
 
 def print_descriptions(var):
@@ -107,7 +106,7 @@ def print_descriptions(var):
 		pkg = 'user'
 		if key.startswith('security/packetfilter/package/'):
 			pkg = items[3]
-		print('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key)))
+		print(('# %s[%s]: %s' % (pkg, items[-1], configRegistry.get(key))))
 
 
 filterlist = {}

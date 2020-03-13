@@ -1,7 +1,6 @@
 @%@UCRWARNING=# @%@
-
 @!@from __future__ import print_function
 
 if configRegistry.get('locale/default'):
-	print('LANG=%s' % configRegistry['locale/default'].split(':')[0])
+	print(('LANG=%s' % configRegistry['locale/default'].split(':')[0]))
 @!@

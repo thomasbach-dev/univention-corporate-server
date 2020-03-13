@@ -4,8 +4,7 @@
 KDC_ENABLED=yes
 KDC_PARAMS="--config-file=/etc/heimdal-kdc/kdc.conf"
 
-# the kpasswdd?
-@!@from __future__ import print_function
+# the kpasswdd?@!@from __future__ import print_function
 
 if configRegistry.get('server/role') == 'domaincontroller_master':
 	print("KPASSWDD_ENABLED=yes")

@@ -3,14 +3,13 @@
 # update-grub is automatically run through a Univention Configuration
 # Registry module upon modification
 export LANG=C
-
 @!@from __future__ import print_function
 
 from pipes import quote
 default = configRegistry.get('grub/default', '0')
-print('GRUB_DEFAULT=%s' % (quote(default),))
+print(('GRUB_DEFAULT=%s' % (quote(default),)))
 savedefault = configRegistry.is_true('grub/savedefault', False)
-print('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',))
+print(('GRUB_SAVEDEFAULT=%s' % ('true' if savedefault else 'false',)))
 @!@
 GRUB_TIMEOUT=@%@grub/timeout@%@
 GRUB_DISTRIBUTOR=Univention
@@ -27,7 +26,7 @@ rootdelay= configRegistry.get('grub/rootdelay', '5')
 defoptions += ' rootdelay=%s' % rootdelay
 
 defoptions += ' %s' % configRegistry.get('grub/bootsplash', 'splash')
-print('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions)
+print(('GRUB_CMDLINE_LINUX_DEFAULT="%s"' % defoptions))
 @!@
 
 GRUB_CMDLINE_LINUX="@%@grub/append@%@"
@@ -43,7 +42,7 @@ GRUB_CMDLINE_XEN="@%@grub/xenhopt@%@"
 
 terminal = configRegistry.get('grub/terminal')
 if terminal:
-	print('GRUB_TERMINAL="%s"' % (terminal,))
+	print(('GRUB_TERMINAL="%s"' % (terminal,)))
 else:
 	print('#GRUB_TERMINAL="console"')
 @!@
@@ -52,7 +51,7 @@ else:
 
 serial = configRegistry.get('grub/serialcommand')
 if serial:
-	print('GRUB_SERIAL_COMMAND="%s"' % (serial,))
+	print(('GRUB_SERIAL_COMMAND="%s"' % (serial,)))
 else:
 	print('#GRUB_SERIAL_COMMAND="serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1"')
 @!@
@@ -75,13 +74,13 @@ GRUB_GFXPAYLOAD_LINUX=@%@grub/gfxpayload@%@
 @!@from __future__ import print_function
 
 if configRegistry.get('grub/backgroundimage', ''):
-	print('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"])
+	print(('GRUB_BACKGROUND="%s"' % configRegistry["grub/backgroundimage"]))
 if configRegistry.get('grub/color/normal', ''):
-	print('GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"])
+	print(('GRUB_COLOR_NORMAL="%s"' % configRegistry["grub/color/normal"]))
 if configRegistry.get('grub/color/highlight', ''):
-	print('GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"])
+	print(('GRUB_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/color/highlight"]))
 if configRegistry.get('grub/menu/color/normal', ''):
-	print('GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"])
+	print(('GRUB_MENU_COLOR_NORMAL="%s"' % configRegistry["grub/menu/color/normal"]))
 if configRegistry.get('grub/menu/color/highlight', ''):
-	print('GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"])
+	print(('GRUB_MENU_COLOR_HIGHLIGHT="%s"' % configRegistry["grub/menu/color/highlight"]))
 @!@

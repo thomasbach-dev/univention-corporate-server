@@ -24,24 +24,23 @@ if [ "$PS1" ]; then
     fi
   fi
 fi
-
 @!@from __future__ import print_function
 
 if configRegistry.get('proxy/http'):
-	print('export http_proxy="%s"' % configRegistry['proxy/http'])
+	print(('export http_proxy="%s"' % configRegistry['proxy/http']))
 	if not configRegistry.get('proxy/https'):
-		print('export https_proxy="%s"' % configRegistry['proxy/http'])
+		print(('export https_proxy="%s"' % configRegistry['proxy/http']))
 
 if configRegistry.get('proxy/https'):
-	print('export https_proxy="%s"' % configRegistry['proxy/https'])
+	print(('export https_proxy="%s"' % configRegistry['proxy/https']))
 
 print('export PATH PS1')
 
 if configRegistry.get('proxy/no_proxy'):
-	print('export no_proxy="%s"' % configRegistry['proxy/no_proxy'])
+	print(('export no_proxy="%s"' % configRegistry['proxy/no_proxy']))
 
 if configRegistry.get('locale/default'):
-	print('export LANG="%s"' % configRegistry['locale/default'].split(":")[0])
+	print(('export LANG="%s"' % configRegistry['locale/default'].split(":")[0]))
 @!@
 
 if [ -e "$HOME/.univention-environment" ]; then
@@ -60,7 +59,7 @@ fi
 @!@from __future__ import print_function
 
 if configRegistry.get('umask'):
-	print('umask %s' % configRegistry['umask'])
+	print(('umask %s' % configRegistry['umask']))
 else:
 	print('umask 022')
 @!@
