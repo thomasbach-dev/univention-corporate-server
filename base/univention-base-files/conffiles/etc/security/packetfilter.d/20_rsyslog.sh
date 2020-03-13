@@ -1,4 +1,5 @@
 #!/bin/sh
+
 @%@UCRWARNING=# @%@
 #
 # Copyright 2016-2019 Univention GmbH
@@ -27,11 +28,10 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-
 @!@
 for (typ, proto) in [('udp', 'udp'), ('tcp', 'tcp'), ('relp', 'tcp')]:
 	port = configRegistry.get('syslog/input/%s' % (typ,))
 	if port:
-		print "# rsyslog %s" % (typ,)
-		print "iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port)
+		print("# rsyslog %s" % (typ,))
+		print("iptables --wait -A INPUT -p %s --dport %s -j ACCEPT" % (proto, port))
 @!@
