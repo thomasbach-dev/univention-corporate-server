@@ -1,5 +1,5 @@
 BEGIN {
-	printf("# %s\n", ARGV[1])
+	printf("## %s\n", ARGV[1])
 	print FILENAME
     preamble = "# -*- coding: utf-8 -*-"                                    \
         "\n" "import univention.config_registry"                            \
@@ -11,15 +11,17 @@ BEGIN {
 END {
 	print converted > "/tmp/convert-target.py"
 
-	print ""
-	print ""
-	print "## diff compared to orginal file"
-	print ""
-	if (system("diff -u0 --color=always  " FILENAME " /tmp/convert-target.py") != 0) {
+    print "### Code changes"
+    print "[source,diff]"
+    print "-------------"
+	if (system("diff -u0 " FILENAME " /tmp/convert-target.py") != 0) {
 		# replace original file only if it has changed...
 		close(FILENAME) ; print converted > FILENAME
 	}
+    print "-------------"
 
+    print("")
+    print("")
 	# exit...
 	exit err
 }
@@ -41,7 +43,21 @@ start && /@!@/ {
 
 
 		if (system("scp -q /tmp/convert-py[23].py  testsystem:/tmp/") == 0)
-		{ err = err + system("ssh -q testsystem 'diff -y --suppress-common-lines <(python2 /tmp/convert-py2.py ) <(python3 /tmp/convert-py3.py )'") }
+		{
+            print "### Difference when running the converted script with python2"
+            print "[source,diff]"
+            print "-------------"
+            if (system("ssh -q testsystem 'diff -y --suppress-common-lines <(python2 /tmp/convert-py2.py 2>&1) <(python2 /tmp/convert-py3.py 2>&1)'") != 0)
+            { err = err + 1 }
+            print "-------------"
+            print ""
+            print "### Difference between python2 output and python3 output"
+            print "[source,diff]"
+            print "-------------"
+            if (system("ssh -q testsystem 'diff -y --suppress-common-lines <(python2 /tmp/convert-py2.py 2>&1) <(python3 /tmp/convert-py3.py 2>&1)'") != 0)
+            { err = err + 1 }
+            print "-------------"
+        }
 		else
 		{ err = 127 }
 
@@ -63,5 +79,6 @@ start && /@!@/ {
 start { code2 = code2 "\n" $0 ; lines++ ; next }
 # everything else will be passed into the variable
 
-{ converted = converted $0 "\n" }
+NR==1 { converted = $0 ; next }
+{ converted = converted "\n" $0 }
 
