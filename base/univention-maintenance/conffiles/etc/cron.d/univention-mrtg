@@ -3,10 +3,10 @@
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
 # Create mrtg statistics
-@!@
-if configRegistry.get('mrtg/cron'):
-        print '@%@mrtg/cron@%@ root /usr/sbin/univention-mrtg'
-else:
-        print '#* * * * * root /usr/sbin/univention-mrtg'
-@!@
+@!@from __future__ import print_function
 
+if configRegistry.get('mrtg/cron'):
+        print('@%@mrtg/cron@%@ root /usr/sbin/univention-mrtg')
+else:
+        print('#* * * * * root /usr/sbin/univention-mrtg')
+@!@

@@ -1,7 +1,8 @@
 @%@UCRWARNING=# @%@
 
 @include common-auth
-@!@
+@!@from __future__ import print_function
+
 scope = "sshd"
 accessfileFlag = "auth/%s/restrict" % (scope,)
 if configRegistry.is_true(accessfileFlag, False):
@@ -16,14 +17,14 @@ if configRegistry.is_true(accessfileFlag, False):
 	maxent = configRegistry.get('pamaccess/maxent', False)
 	if maxent:
 		line.append('maxent=%s' % (maxent,))
-	print ' '.join(line)
+	print(' '.join(line))
 @!@
 @include common-account
 @include common-session
 session    optional   pam_mail.so standard noenv
-@!@
+@!@from __future__ import print_function
+
 if not configRegistry.is_true('system/setup/showloginmessage', False): # The welcome message in appliance mode has precedence
    if configRegistry.is_true('sshd/motd', True):
-      print 'session optional pam_motd.so motd=/etc/welcome.msg'
+      print('session optional pam_motd.so motd=/etc/welcome.msg')
 @!@
-@include common-password

@@ -9,3 +9,4 @@ XKBVARIANT="@%@xorg/keyboard/options/XkbVariant@%@"
 XKBOPTIONS="@%@xorg/keyboard/options/XkbOptions@%@"
 
 BACKSPACE="guess"
+

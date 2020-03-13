@@ -1,6 +1,7 @@
 @%@UCRWARNING=# @%@
 
-@!@
+@!@from __future__ import print_function
+
 
 try:
 	import univention.lib.ucrLogrotate
@@ -10,8 +11,8 @@ else:
 	name = "ssl-sync"
 	settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 
-	print "/var/log/univention/%s.log {" % name
-	for setting in settings.keys():
-		print "\t%s" % settings[setting]
-	print "}"
+	print("/var/log/univention/%s.log {" % name)
+	for setting in list(settings.keys()):
+		print("\t%s" % settings[setting])
+	print("}")
 @!@

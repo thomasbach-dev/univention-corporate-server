@@ -1,7 +1,8 @@
 @%@UCRWARNING=# @%@
 
 @include common-auth
-@!@
+@!@from __future__ import print_function
+
 scope = "login"
 accessfileFlag = "auth/%s/restrict" % (scope,)
 if configRegistry.is_true(accessfileFlag, False):
@@ -16,10 +17,5 @@ if configRegistry.is_true(accessfileFlag, False):
 	maxent = configRegistry.get('pamaccess/maxent', False)
 	if maxent:
 		line.append('maxent=%s' % (maxent,))
-	print ' '.join(line)
+	print(' '.join(line))
 @!@
-@include common-account
-@include common-session
-session    optional   pam_lastlog.so
-session    optional   pam_mail.so standard noenv
-@include common-password

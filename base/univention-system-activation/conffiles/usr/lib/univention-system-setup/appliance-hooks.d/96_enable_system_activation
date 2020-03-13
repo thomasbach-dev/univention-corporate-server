@@ -45,3 +45,4 @@ elif has_activated_license; then
 	/usr/sbin/univention-system-activation allow-root
 fi
 exit 0
+
