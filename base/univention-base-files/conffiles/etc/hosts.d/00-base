@@ -1,8 +1,8 @@
 @%@UCRWARNING=# @%@
 
 
-127.0.0.1	localhost
-@!@
+
+127.0.0.1	localhost@!@
 # Add IPv4 and IPv6 addresses of interfaces
 # May be overridden by .../hosts
 import re

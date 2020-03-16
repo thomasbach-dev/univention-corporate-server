@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 #
 """config registry module for autostart handling."""
 #
