@@ -1,8 +1,8 @@
 @%@UCRWARNING=# @%@
 
 
-auth       sufficient pam_rootok.so
-@include common-auth@!@
+
+auth       sufficient pam_rootok.so@include common-auth@!@
 scope = "su"
 accessfileFlag = "auth/%s/restrict" % (scope,)
 if configRegistry.is_true(accessfileFlag, False):
@@ -17,5 +17,5 @@ if configRegistry.is_true(accessfileFlag, False):
 	maxent = configRegistry.get('pamaccess/maxent', False)
 	if maxent:
 		line.append('maxent=%s' % (maxent,))
-	print(' '.join(line))
+	print((' '.join(line)))
 @!@

@@ -1,8 +1,8 @@
 @%@UCRWARNING=# @%@
 
 
-PATH=/usr/sbin:/usr/bin:/sbin:/bin
 
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
 # Create mrtg statistics@!@
 if configRegistry.get('mrtg/cron'):
         print('@%@mrtg/cron@%@ root /usr/sbin/univention-mrtg')
