@@ -1,7 +1,5 @@
 #!/bin/sh
 
-
-
 @%@UCRWARNING=# @%@
 
 echo "Loading, please wait..."

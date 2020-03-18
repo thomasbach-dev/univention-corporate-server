@@ -1,6 +1,4 @@
 # install the apport exception handler if available
-
-
 try:
     import apport_python_hook
 except ImportError:

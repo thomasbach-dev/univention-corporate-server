@@ -1,7 +1,5 @@
 @%@UCRWARNING=# @%@
 
-
-
 # This is the ssh client system-wide configuration file.  See
 # ssh_config(5) for more information.  This file provides defaults for
 # users, and the values can be changed in per-user configuration files
@@ -43,7 +41,10 @@ Host *
 #   Tunnel no
 #   TunnelDevice any:any
 #   PermitLocalCommand no
-    SendEnv LANG LC_*    HashKnownHosts yes@!@
-if configRegistry.get( 'auth/methods', '' ).find( 'krb5' ) >= 0:
-   print('    GSSAPIAuthentication yes')
+    SendEnv LANG LC_*
+    HashKnownHosts yes
 @!@
+if configRegistry.get( 'auth/methods', '' ).find( 'krb5' ) >= 0:
+   print '    GSSAPIAuthentication yes'
+@!@
+    GSSAPIDelegateCredentials no
