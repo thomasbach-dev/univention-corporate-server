@@ -1,6 +1,4 @@
 #!/bin/sh
-
-
 @%@UCRWARNING=# @%@
 #
 # Copyright 2004-2020 Univention GmbH
@@ -29,16 +27,18 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
-# set default policy for incoming traffic@!@
+
+# set default policy for incoming traffic
+@!@
 policy = configRegistry.get('security/packetfilter/defaultpolicy','ACCEPT').upper()
 if policy == 'REJECT':
-	print('# "REJECT" is no valid default policy - changing default policy to "DROP" and')
-	print('# adding final "REJECT" rule in INPUT queue.')
-	print('iptables --wait -A INPUT -j REJECT')
-	print('ip6tables --wait -A INPUT -j REJECT')
+	print '# "REJECT" is no valid default policy - changing default policy to "DROP" and'
+	print '# adding final "REJECT" rule in INPUT queue.'
+	print 'iptables --wait -A INPUT -j REJECT'
+	print 'ip6tables --wait -A INPUT -j REJECT'
 	policy = 'DROP'
-print(('iptables --wait -P INPUT %s' % policy))
-print('iptables --wait -P OUTPUT ACCEPT')
-print(('ip6tables --wait -P INPUT %s' % policy))
-print('ip6tables --wait -P OUTPUT ACCEPT')
+print 'iptables --wait -P INPUT %s' % policy
+print 'iptables --wait -P OUTPUT ACCEPT'
+print 'ip6tables --wait -P INPUT %s' % policy
+print 'ip6tables --wait -P OUTPUT ACCEPT'
 @!@
