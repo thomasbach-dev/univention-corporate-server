@@ -30,7 +30,7 @@ END {
     exit err
 }
 # if start is 0 and we found a @!@-line: set start
-!start && /@!@/ { start = 1 ; converted = converted $0 ; next }
+!start && /@!@/ { start = 1 ; converted = converted "\n" $0 ; next }
 # if start is set (and we still are within a code section) and there comes a @!@
 start && /@!@/ {
 	if (code2 != "") {
