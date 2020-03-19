@@ -53,12 +53,12 @@ nat_core_rules() {
 	done
 
 @!@
-import ipaddr
-docker0_net = ipaddr.IPv4Network(configRegistry.get('docker/daemon/default/opts/bip', '172.17.42.1/16'))
-docker_compose_net = ipaddr.IPv4Network(configRegistry.get('appcenter/docker/compose/network', '172.16.1.1/16'))
+import ipaddress
+docker0_net = ipaddress.IPv4Network(configRegistry.get('docker/daemon/default/opts/bip', u'172.17.0.0/16'))
+docker_compose_net = ipaddress.IPv4Network(configRegistry.get('appcenter/docker/compose/network', u'172.16.0.0/16'))
 mysql_port = configRegistry.get('mysql/config/mysqld/port', '3306')
-print '\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net.network), str(docker0_net.prefixlen), mysql_port)
-print '\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Compose Apps' % (str(docker_compose_net.network), str(docker_compose_net.prefixlen), mysql_port)
+print('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Apps' % (str(docker0_net), str(docker0_net.prefixlen), mysql_port))
+print('\tiptables --wait -A INPUT -s %s/%s -p tcp --dport %s -j ACCEPT  # allow MySQL for Docker Compose Apps' % (str(docker_compose_net), str(docker_compose_net.prefixlen), mysql_port))
 @!@
 
 	iptables --wait -A DOCKER-ISOLATION-STAGE-1 -j RETURN
