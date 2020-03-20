@@ -131,8 +131,8 @@ print('# some PAM modules and threads)')
 if configRegistry.get('sshd/challengeresponse'):
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
 	if configRegistry.get('sshd/ChallengeResponseAuthentication'):
-		print('WARNING: The value for ChallengeResponseAuthentication is ' \
-			  'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse', file=sys.stderr)
+		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is ' \
+			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse')
 else:
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
 print('')
