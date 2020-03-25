@@ -110,13 +110,13 @@ from __future__ import absolute_import
 import re
 import sys
 import locale
-import urlparse
 import traceback
 
 import six
 import ldap
 import ldap.sasl
 from notifier import signals
+from six.moves.urllib_parse import urlparse
 
 from univention.lib.i18n import Locale, Translation, I18N_Error
 
