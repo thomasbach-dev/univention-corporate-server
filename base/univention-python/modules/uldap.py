@@ -176,16 +176,16 @@ def getMachineConnection(start_tls=2, decode_ignorelist=[], ldap_master=True, se
 		# Connect to ldap/server/name
 		port = int(ucr.get('ldap/server/port', '7389'))
 		servers = [ucr.get('ldap/server/name')]
-		servers += ucr.get('ldap/server/addition','').split()
+		servers += ucr.get('ldap/server/addition', '').split()
 		if random_server:
 			random.shuffle(servers)
 		for server in servers:
 			try:
 				return access(host=server, port=port, base=ucr['ldap/base'], binddn=ucr['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist, reconnect=reconnect)
-			#LDAP server down, try next server
 			except ldap.SERVER_DOWN as exc:
-				pass
-		raise exc
+				# LDAP server down, try next server
+				exception = exc
+		raise exception
 
 
 def _fix_reconnect_handling(func):
