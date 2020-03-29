@@ -1233,7 +1233,7 @@ class IA5string(string):
 	Syntax for string from International Alphabet 5 (printable |ASCII|)
 
 	>>> IA5string.parse(''' !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~''')
-	' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
+	u' !\"#$%&\\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\\\]^_`abcdefghijklmnopqrstuvwxyz{|}~'
 	>>> IA5string.parse('öäüÖÄÜß€') #doctest: +IGNORE_EXCEPTION_DETAIL
 	Traceback (most recent call last):
 		...
@@ -1242,10 +1242,11 @@ class IA5string(string):
 
 	@classmethod
 	def parse(self, text):
+		# type: (Any) -> str
 		try:
 			if isinstance(text, bytes):
 				text = text.decode('UTF-8')
-			text = text.encode('ASCII')
+			text.encode('ASCII')
 		except UnicodeEncodeError:
 			raise univention.admin.uexceptions.valueError(_("Field must only contain ASCII characters!"))
 		return text
