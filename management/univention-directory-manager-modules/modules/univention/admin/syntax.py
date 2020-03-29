@@ -1245,7 +1245,7 @@ class IA5string(string):
 		try:
 			if isinstance(text, bytes):
 				text = text.decode('UTF-8')
-			text.encode('ascii')
+			text = text.encode('ASCII')
 		except UnicodeEncodeError:
 			raise univention.admin.uexceptions.valueError(_("Field must only contain ASCII characters!"))
 		return text
