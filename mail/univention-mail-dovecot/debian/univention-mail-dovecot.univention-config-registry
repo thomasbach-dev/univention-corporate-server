@@ -55,6 +55,7 @@ Variables: mail/dovecot/process/lock_method
 Variables: mail/dovecot/internal/sharedfolders
 Variables: mail/dovecot/mailbox/share_keywords
 Variables: mail/dovecot/location/separate_index
+Variables: mail/dovecot/location/mailbox_format
 
 Type: file
 File: etc/dovecot/conf.d/10-master.conf

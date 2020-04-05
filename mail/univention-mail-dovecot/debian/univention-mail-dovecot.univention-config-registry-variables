@@ -234,6 +234,12 @@ Description[en]=Store index files separately from mail files on local disk. Yiel
 Type=bool
 Categories=service-mail
 
+[mail/dovecote/location/mailbox_format]
+Description[de]=Bestimmt das genutzte Mailbox Format. Bei "sdbox" oder "mdbox" wird Dovecot's eigenes performantes Format single-dbox oder multi-dbox verwendet. Standard ist "Maildir".
+Description[en]=Defines the used mailbox format. With "sdbox" or "mdbox" Dovecot's  high-performance format single-dbox or multi-dbox will be used. Defaults to "Maildir".
+Type=str
+Categories=service-mail
+
 [mail/dovecot/logging/ldap_debug_level]
 Description[de]=Debug-Level der LDAP-Bibliotheksaufrufe. Standard ist 0.
 Description[en]=LDAP library debug level. Defaults to 0.
