@@ -40,7 +40,7 @@ case "$1" in
 			:
 		else
 			if test -x /etc/init.d/samba; then
-				invoke-rc.d --query samba ## check policy-rc.d
+				invoke-rc.d --query samba status ## check policy-rc.d
 				rc=$?
 				if [ "$rc" -eq 104 ] || [ "$rc" -eq 100 ]; then
 					/etc/init.d/samba restart
