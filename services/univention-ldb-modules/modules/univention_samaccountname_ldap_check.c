@@ -110,6 +110,7 @@ static char* read_pwd_from_file(char *filename)
 		return NULL;
 	if (fgets(line, 1024, fp) == NULL)
 		return NULL;
+	fclose(fp);
 
 	len = strlen(line);
 	if (line[len-1] == '\n')
@@ -286,18 +287,23 @@ static int univention_samaccountname_ldap_check_add(struct ldb_module *module, s
 
 		if( ! WIFEXITED(status) ) {
 			ldb_debug(ldb, LDB_DEBUG_ERROR, "%s: Cannot determine return status of ucs-school-create_windows_computer: %s (%d)\n", ldb_module_get_name(module), strerror(errno_wait), errno_wait);
+			close(fd[0]);   // close reading end
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 		} else if( WEXITSTATUS(status) == 2 ) {
 			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: ldb_add of machine object is disabled\n"), ldb_module_get_name(module));
+			close(fd[0]);   // close reading end
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 		} else if( WEXITSTATUS(status) == 3 ) {
 			ldb_debug(ldb, LDB_DEBUG_TRACE, ("%s: ldb_add of machine object ignored in dummy mode\n"), ldb_module_get_name(module));
+			close(fd[0]);   // close reading end
 			return LDB_SUCCESS;
 		} else if( WEXITSTATUS(status) == 4 ) {
 			ldb_debug(ldb, LDB_DEBUG_ERROR, "%s: LDB_ERR_ENTRY_ALREADY_EXISTS\n", ldb_module_get_name(module));
+			close(fd[0]);   // close reading end
 			return LDB_ERR_ENTRY_ALREADY_EXISTS;
 		} else if( WEXITSTATUS(status) ) {
 			ldb_debug(ldb, LDB_DEBUG_ERROR, ("%s: unknown error code from ucs-school-create_windows_computer: %d\n"), ldb_module_get_name(module), WEXITSTATUS(status));
+			close(fd[0]);   // close reading end
 			return LDB_ERR_UNWILLING_TO_PERFORM;
 		}
 
