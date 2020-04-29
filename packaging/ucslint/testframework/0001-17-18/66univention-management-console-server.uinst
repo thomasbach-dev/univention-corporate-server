@@ -1,0 +1,4 @@
+#!/bin/sh
+VERSION=1
+
+exit 0

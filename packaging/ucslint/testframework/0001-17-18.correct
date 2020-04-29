@@ -1,0 +1,5 @@
+E:0001-13: 66univention-management-console-server.uinst: join script does not use joinscripthelper.lib
+E:0001-16: 66univention-management-console-server.uinst: join script does not use joinscript api (possible clear text passwords)
+W:0001-17: 66univention-management-console-server.uinst: Unjoin script seems not to be called in any postrm file
+W:0001-18: 66univention-management-console-server.uinst: Unjoin script seems not to be copied in any prerm file
+W:0001-6: 66univention-management-console-server.uinst: join script is not mentioned in debian/rules or *.install files
