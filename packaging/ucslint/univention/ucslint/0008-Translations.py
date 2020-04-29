@@ -29,6 +29,7 @@
 
 from __future__ import absolute_import
 import univention.ucslint.base as uub
+from univention.ucslint.python import _or, MATCHED_LENIENT as MATCHED_STRING, python_files
 import re
 from io import open
 
@@ -36,41 +37,10 @@ from io import open
 # 2) check if all translation strings are translated in de.po file
 
 
-def _or(*disjunct: str, name: str = None) -> str:
-	return r'(?%s%s)' % (
-		':' if name is None else f'P<{name}>',
-		'|'.join(disjunct),
-	)
-
-
 RE_FUZZY = re.compile(r'\n#.*?fuzzy')
 RE_EMPTY = re.compile(r'msgstr ""\n\n', re.DOTALL)
 RE_CHARSET = re.compile(r'"Content-Type: text/plain; charset=(.*?)\\n"', re.DOTALL)
-ESCAPE_RAW = r'\\(?:$|.)'
-ESCAPE_BYTES = r'''\\(?:$|[\\'"abfnrtv]|[0-7]{1,3}|x[0-9a-fA-F]{2})'''
-ESCAPE_UNIICODE = _or(ESCAPE_BYTES, r'\\(?:N\{[^}]+\}|u[0-9a-fA-F]{4}|U[0-9a-fA-F]{8})')
-ESCAPE_LENIENT = r'\\.'
-LITERALS = _or(
-	r"'''(?:[^'\\]|%(esc)s|'[^']|''[^'])*?'''",
-	r'"""(?:[^"\\]|%(esc)s|"[^"]|""[^"])*?"""',
-	r"'(?:[^'\\\n]|%(esc)s)*?'",
-	r'"(?:[^"\\\n]|%(esc)s)*?"',
-)
-MATCHED_RAW = r'\b%s%s' % (
-	_or('[Rr]', '[BbFfUu][Rr]', '[Rr][BbFf]'),  # (ur|ru) only in 2, (rb) since 3.3
-	LITERALS % dict(esc=ESCAPE_RAW),
-)
-MATCHED_BYTES = r'\b[Bb]%s' % (
-	LITERALS % dict(esc=ESCAPE_BYTES),
-)
-MATCHED_UNICODE = r'(?:\b[FfUu])?%s' % (  # [u] not in 3.0-3.2, [f] since 3.6
-	LITERALS % dict(esc=ESCAPE_UNIICODE),
-)
-MATCHED_LENIENT = r'(?:\b[BbFfRrUu]{1,2})?%s' % (
-	LITERALS % dict(esc=ESCAPE_LENIENT),
-)
-MATCHED_STRING = _or(MATCHED_RAW, MATCHED_BYTES, MATCHED_UNICODE)  # name='str'
-COMMENT = _or(r'#[^\n]*$')  # name='cmt'
+
 NON_STRING = r"""[^'"#\n]"""
 CONTEXT = _or(NON_STRING, MATCHED_STRING)
 SEPARATOR = r"[([{\s,:]"
@@ -97,16 +67,8 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)
 
-		py_files = []
-		po_files = []
-		for fn in uub.FilteredDirWalkGenerator(path, suffixes=('.py', '.po')):
-			if fn.endswith('.py'):
-				py_files.append(fn)
-			if fn.endswith('.po'):
-				po_files.append(fn)
-
-		self.check_py(py_files)
-		self.check_po(po_files)
+		self.check_py(python_files(path))
+		self.check_po(uub.FilteredDirWalkGenerator(path, suffixes=('.po',)))
 
 	def check_py(self, py_files):
 		"""Check Python files."""
@@ -117,10 +79,9 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 				self.addmsg('0008-2', 'failed to open and read file', filename=fn)
 				continue
 			self.debug('testing %s' % fn)
-			for regex in (RE_TRANSLATION,):
-				pos = 0
-				while True:
-					match = regex.search(content, pos)
+			pos = 0
+			while True:
+					match = RE_TRANSLATION.search(content, pos)
 					if not match:
 						break
 					else:
