@@ -1,7 +1,6 @@
 @%@UCRWARNING=#@%@
 
 @!@
-import sys
 import traceback
 from univention.updater.tools import UniventionUpdater
 
