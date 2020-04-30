@@ -61,9 +61,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0001-18': (uub.RESULT_WARN, 'unjoin script seems not to be copied in any prerm file'),
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	RE_LINE_ENDS_WITH_TRUE = re.compile(r'\|\|[ \t]+true[ \t]*$')
 	RE_LINE_CONTAINS_SET_E = re.compile(r'\n[\t ]*set -e', re.M)
 	RE_DH_UMC = re.compile(r'\bdh-umc-module-install\b')

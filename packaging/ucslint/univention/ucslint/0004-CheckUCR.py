@@ -135,9 +135,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0004-61': (uub.RESULT_ERROR, 'Invalid entry'),
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	@classmethod
 	def check_invalid_variable_name(cls, var):
 		"""

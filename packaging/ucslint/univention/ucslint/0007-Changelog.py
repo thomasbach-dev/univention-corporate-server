@@ -55,9 +55,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0007-6': (uub.RESULT_WARN, 'old debian/changelog entries are not strict-monotonically increasing by version'),
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	def check(self, path):
 		""" the real check """
 		super(UniventionPackageCheck, self).check(path)

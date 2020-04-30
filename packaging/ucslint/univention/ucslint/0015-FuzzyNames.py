@@ -154,9 +154,6 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0015-2': (uub.RESULT_WARN, 'file contains "univention" incorrectly written'),
 		}
 
-	def postinit(self, path):
-		""" checks to be run before real check or to create precalculated data for several runs. Only called once! """
-
 	RE_WHITEWORD = re.compile(r'|'.join(r"""
 		[0-9][0-9]univention
 		punivention
