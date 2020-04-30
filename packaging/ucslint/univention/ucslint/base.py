@@ -29,7 +29,7 @@
 # <https://www.gnu.org/licenses/>.
 
 import os
-from io import open
+from typing import Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
 try:
 	from junit_xml import TestCase  # type: ignore
 	JUNIT = True
@@ -46,10 +46,6 @@ except ImportError:
 		def add_skipped_info(self, message=None, output=None):
 			pass
 
-try:
-	from typing import Dict, Iterable, Iterator, List, Pattern, Optional, Tuple  # noqa F401
-except ImportError:
-	pass
 
 RESULT_UNKNOWN = -1
 RESULT_OK = 0

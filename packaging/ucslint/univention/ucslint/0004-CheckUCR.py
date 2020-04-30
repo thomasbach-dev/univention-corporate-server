@@ -28,23 +28,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-from __future__ import absolute_import
 import univention.ucslint.base as uub
 import re
 import os
 import sys
-from io import open
-try:
-	from configparser import RawConfigParser, ParsingError, MissingSectionHeaderError, DuplicateSectionError, DuplicateOptionError
-	PY3CFG = True
-except ImportError:
-	from ConfigParser import RawConfigParser, ParsingError, MissingSectionHeaderError, DuplicateSectionError, Error as DuplicateOptionError  # type: ignore
-	PY3CFG = False
-try:
-	from typing import Dict, Iterator, List, Set, Tuple, Union  # noqa F401
-except ImportError:
-	pass
+from configparser import RawConfigParser, ParsingError, MissingSectionHeaderError, DuplicateSectionError, DuplicateOptionError
+from typing import Dict, Iterator, List, Set, Tuple, Union  # noqa F401
 
 # Check 4
 # 1) Nach UCR-Templates suchen und prüfen, ob die Templates in einem info-File auftauchen
@@ -304,18 +293,13 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		# type: (str) -> RawConfigParser
 		self.debug('Reading %s' % fn)
 
-		cfg = RawConfigParser(interpolation=None) if PY3CFG else RawConfigParser()
+		cfg = RawConfigParser(interpolation=None)
 		try:
 			if not cfg.read(fn):
 				self.addmsg('0004-27', 'cannot open/read file', fn)
-			if PY3CFG:
-				return cfg
+			return cfg
 		except DuplicateSectionError as ex:
-			if PY3CFG:
-				self.addmsg('0004-60', 'Duplicate section entry: %s' % (ex.section), ex.source, ex.lineno)
-			else:
-				sectname, = ex.args
-				self.addmsg('0004-60', 'Duplicate section entry: %s' % (sectname,), fn)
+			self.addmsg('0004-60', 'Duplicate section entry: %s' % (ex.section), ex.source, ex.lineno)
 		except MissingSectionHeaderError as ex:
 			self.addmsg('0004-61', 'Invalid entry', ex.filename, ex.lineno)  # type: ignore
 		except DuplicateOptionError:
@@ -325,28 +309,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		except UnicodeDecodeError as ex:
 			self.addmsg('0004-30', 'contains invalid characters', fn, ex.start)
 
-		if PY3CFG:
-			cfg = RawConfigParser(strict=False, interpolation=None)
-			try:
-				cfg.read(fn)
-			except (DuplicateSectionError, ParsingError, UnicodeDecodeError):
-				pass
-			return cfg
-
+		cfg = RawConfigParser(strict=False, interpolation=None)
 		try:
-			with open(fn, 'r', encoding='utf-8', errors='replace') as stream:
-				sections = set()  # type: Set[str]
-				for lnr, line in enumerate(stream, start=1):
-					m = cfg.SECTCRE.match(line)  # type: ignore
-					if m:
-						sectname = m.group('header')
-						if sectname in sections:
-							self.addmsg('0004-60', 'Duplicyte section entry: %s' % (sectname,), fn, lnr)
-						else:
-							sections.add(sectname)
-		except EnvironmentError:
-			self.addmsg('0004-27', 'cannot open/read file', fn)
-
+			cfg.read(fn)
+		except (DuplicateSectionError, ParsingError, UnicodeDecodeError):
+			pass
 		return cfg
 
 	def check(self, path):

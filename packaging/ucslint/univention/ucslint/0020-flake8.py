@@ -28,8 +28,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import print_function
-from __future__ import absolute_import
 import univention.ucslint.base as uub
 from univention.ucslint.python import python_files
 import re
@@ -37,7 +35,6 @@ import os
 import io
 import sys
 import subprocess
-from io import open
 from argparse import ArgumentParser
 from typing import List  # noqa F401
 

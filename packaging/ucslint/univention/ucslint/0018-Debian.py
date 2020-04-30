@@ -28,16 +28,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
 import univention.ucslint.base as uub
 from os import walk
 from os.path import basename, dirname, isdir, join, normpath, relpath, splitext
-from io import open
 from glob import glob
-try:
-	from typing import Dict, Iterator, List, Set, Tuple  # noqa F401
-except ImportError:
-	pass
+from typing import Dict, Iterator, List, Set, Tuple  # noqa F401
 
 
 class UniventionPackageCheck(uub.UniventionPackageCheckDebian):

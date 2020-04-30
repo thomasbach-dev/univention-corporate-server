@@ -30,7 +30,6 @@
 import univention.ucslint.base as uub
 import re
 import os
-from io import open
 
 RE_DEP = re.compile(
 	r'''

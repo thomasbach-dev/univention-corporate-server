@@ -31,7 +31,6 @@ import univention.ucslint.base as uub
 import re
 import os
 import time
-from io import open
 
 
 RE_SKIP = re.compile(

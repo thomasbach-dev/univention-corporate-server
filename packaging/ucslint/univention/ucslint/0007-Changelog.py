@@ -32,7 +32,6 @@ import re
 import os
 from email.utils import mktime_tz, parsedate_tz
 from debian.changelog import Changelog, ChangelogParseError
-from io import open
 
 REticket = re.compile(r'''
 	(Bug:?[ ]\#[0-9]{1,6} # Bugzilla

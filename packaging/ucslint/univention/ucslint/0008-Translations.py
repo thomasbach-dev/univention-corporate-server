@@ -27,11 +27,9 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-from __future__ import absolute_import
 import univention.ucslint.base as uub
 from univention.ucslint.python import _or, MATCHED_LENIENT as MATCHED_STRING, python_files
 import re
-from io import open
 
 # 1) check if translation strings are correct; detect something like  _('foo %s bar' % var)  ==> _('foo %s bar') % var
 # 2) check if all translation strings are translated in de.po file

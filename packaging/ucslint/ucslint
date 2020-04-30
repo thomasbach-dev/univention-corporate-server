@@ -41,14 +41,11 @@ from optparse import OptionParser
 import re
 from errno import ENOENT
 import univention.ucslint.base as uub
+from typing import Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
+from types import ModuleType  # noqa F401
+from optparse import Values  # noqa F401
 try:
 	from junit_xml import TestSuite
-except ImportError:
-	pass
-try:
-	from typing import Container, Dict, List, Optional, Sequence, Set, Tuple  # noqa F401
-	from types import ModuleType  # noqa F401
-	from optparse import Values  # noqa F401
 except ImportError:
 	pass
 
