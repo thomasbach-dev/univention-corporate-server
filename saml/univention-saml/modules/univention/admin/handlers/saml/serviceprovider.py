@@ -30,7 +30,6 @@
 from univention.admin.layout import Tab, Group
 import univention.admin.handlers
 import univention.admin.syntax
-
 translation = univention.admin.localization.translation('univention.admin.handlers.saml-serviceprovider')
 _ = translation.translate
 
@@ -143,6 +142,16 @@ property_descriptions = {
 		default="TRUE",
 		size='Two',
 	),
+	'groups': univention.admin.property(
+		short_description=_('Groups'),
+		long_description='',
+		syntax=univention.admin.syntax.GroupDN,
+		multivalue=True,
+		editable=False,
+		readonly_when_synced=True,
+		copyable=True,
+	),
+
 }
 
 layout = [
@@ -166,6 +175,12 @@ layout = [
 			["attributesNameFormat", ],
 			["LDAPattributes", ],
 		]),
+	]),
+	Tab(_('Groups'), _('Groups'), layout=[
+		Group(_('Additional groups'), layout=[
+			'groups',
+		]),
+
 	]),
 ]
 
@@ -194,11 +209,19 @@ mapping.register('singleLogoutService', 'singleLogoutService', None, univention.
 mapping.register('serviceProviderMetadata', 'serviceProviderMetadata', None, univention.admin.mapping.ListToString)
 mapping.register('rawsimplesamlSPconfig', 'rawsimplesamlSPconfig', None, univention.admin.mapping.ListToString)
 mapping.register('signLogouts', 'signLogouts', None, univention.admin.mapping.ListToString)
+mapping.register('groups', 'enabledServiceProviderGroup')
 
 
 class object(univention.admin.handlers.simpleLdap):
 	module = module
 
+#	def open(self):
+#		super(object, self).open()
+#		if self.exists():
+#			serviceprovider = self.lo.search('(&(univentionObjectType=groups/group)(enabledServiceProviderIdentifierGroup=SAMLServiceProviderIdentifier=%s*))'% (self.get('Identifier'))) or []
+#			self.info['groups'] = [dn for dn, attrs in serviceprovider]
+#
+#			self.save()
 
 lookup = object.lookup
 identify = object.identify

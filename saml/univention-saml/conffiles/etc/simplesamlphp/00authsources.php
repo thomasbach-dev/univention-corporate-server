@@ -51,8 +51,7 @@ hostname = getLDAPURIs()
 
 expiry_attributes = "'shadowExpire', 'sambaPwdLastSet', 'shadowLastChange', 'shadowMax', 'sambaKickoffTime', 'krb5ValidEnd', 'krb5PasswordEnd', 'sambaAcctFlags', 'univentionRegisteredThroughSelfService', 'univentionPasswordRecoveryEmailVerified'"
 
-config_attributes = configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\'')
-
+config_attributes = configRegistry.get('saml/idp/ldap/get_attributes', '\'uid\',\'memberOf\'')
 attributes = "%s, %s" % (config_attributes, expiry_attributes)
 
 print("	'hostname'		=> '%s'," % hostname)

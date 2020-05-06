@@ -32,7 +32,7 @@
 
 ## joinscript api: bindpwdfile
 
-VERSION="9"
+VERSION="12"
 
 . /usr/share/univention-lib/all.sh
 . /usr/share/univention-join/joinscripthelper.lib
@@ -256,6 +256,29 @@ udm settings/extended_attribute create "$@" \
 	--set mayChange=1 \
 	--set multivalue=1 || die
 
+udm settings/extended_attribute create "$@" \
+	--ignore_exists \
+	--position "cn=custom attributes,cn=univention,$ldap_base" \
+	--set name="serviceproviderGroup" \
+	--set CLIName="serviceproviderGroup" \
+	--set module="groups/group" \
+	--set module="settings/usertemplate" \
+	--set tabName="SAML" \
+	--set translationTabName='"de_DE" "SAML"' \
+	--set tabPosition=3 \
+	--set groupName="SAML settings" \
+	--set translationGroupName='"de_DE" "SAML Einstellungen"' \
+	--set shortDescription="Enable group for the following service providers" \
+	--append translationShortDescription='"de_DE" "Gruppen für folgende Service Provider freischalten"' \
+	--set longDescription="Enable groups to use the specified service providers" \
+	--append translationLongDescription='"de_DE" "Zulassen der Gruppe für die angegebenen Service Provider"' \
+	--set objectClass="univentionSAMLEnabledGroup" \
+	--set ldapMapping="enabledServiceProviderIdentifierGroup" \
+	--set syntax="samlserviceprovider" \
+	--set tabAdvanced=0 \
+	--set mayChange=1 \
+	--set multivalue=1 || die
+
 if joinscript_check_version_in_range_executed "1" "4"; then
 	udm settings/extended_attribute modify "$@" \
 		--dn "cn=serviceprovider,cn=custom attributes,cn=univention,$ldap_base" \
@@ -360,6 +383,7 @@ if ! joinscript_check_any_version_executed || joinscript_check_version_in_range_
 	done
 	)
 fi
+
 
 # Bug #39739: the listener will be installed and running before univention-saml has configured the 
 # simplesamlphp config. The listener will then not be able to write the SP metadata. Reinitialize it here

@@ -5,3 +5,4 @@ univention-admin-handlers-saml-serviceprovider.mo usr/share/locale/de/LC_MESSAGE
 umc/icons/50x50/udm-saml-serviceprovider.png usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/50x50/
 umc/icons/16x16/udm-saml-serviceprovider.png usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/
 listener/univention-saml-servers.py usr/lib/univention-directory-listener/system/
+listener/univention-saml-group.py usr/lib/univention-directory-listener/system/

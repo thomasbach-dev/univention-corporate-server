@@ -204,7 +204,7 @@ def write_configuration_file(dn, new, filename):
 			fd.write("		10 => array(\n")
 			fd.write("		'class' => 'authorize:Authorize',\n")
 			fd.write("		'regex' => FALSE,\n")
-			fd.write("		'enabledServiceProviderIdentifier' => %s,\n" % php_array([dn]))
+			fd.write("		'search.filter' => %s,\n" % php_array(new.get('enabledServiceProviderGroup')))
 			fd.write("		),\n")
 			if simplesamlLDAPattributes:
 				fd.write("		50 => array(\n		'class' => 'core:AttributeMap',\n")
