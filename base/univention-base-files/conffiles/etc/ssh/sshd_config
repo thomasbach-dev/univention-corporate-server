@@ -131,7 +131,7 @@ print('# some PAM modules and threads)')
 if configRegistry.get('sshd/challengeresponse'):
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
 	if configRegistry.get('sshd/ChallengeResponseAuthentication'):
-		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is ' \
+        sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is '
 			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
 else:
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
@@ -165,6 +165,8 @@ if configRegistry.get('sshd/GSSAPIStrictAcceptorCheck'):
 else:
 	print('#GSSAPIStrictAcceptorCheck yes')
 print('GSSAPIKeyExchange %s' % configRegistry.get('sshd/GSSAPIKeyExchange', 'yes'))
+
+
 @!@
 # Set this to 'yes' to enable PAM authentication, account processing,
 # and session processing. If this is enabled, PAM authentication will
@@ -195,21 +197,21 @@ else:
 if configRegistry.get('sshd/xforwarding'):
 	print("X11Forwarding %s" % configRegistry.get('sshd/xforwarding'))
 	if configRegistry.get('sshd/X11Forwarding'):
-		sys.stderr.write('WARNING: The value for X11Forwarding is ' \
+        sys.stderr.write('WARNING: The value for X11Forwarding is '
 			'set twice: via sshd/X11Forwarding and sshd/xforwarding\n')
 else:
 	print("X11Forwarding %s" % configRegistry.get('sshd/X11Forwarding', 'no'))
 if configRegistry.get('sshd/xdisplayoffset'):
 	print("X11DisplayOffset %s" % configRegistry.get('sshd/xdisplayoffset'))
 	if configRegistry.get('sshd/X11DisplayOffset'):
-		sys.stderr.write('WARNING: The value for X11DisplayOffset is ' \
+        sys.stderr.write('WARNING: The value for X11DisplayOffset is '
 			'set twice: via sshd/X11DisplayOffset and sshd/xdisplayoffset\n')
 elif configRegistry.get('sshd/X11DisplayOffset'):
 	print("X11DisplayOffset %s" % configRegistry.get('sshd/X11DisplayOffset'))
 if configRegistry.get('sshd/xuselocalhost'):
 	print("X11UseLocalHost %s" % configRegistry.get('sshd/xuselocalhost'))
 	if configRegistry.get('sshd/X11UseLocalHost'):
-		sys.stderr.write('WARNING: The value for X11UseLocalHost is ' \
+        sys.stderr.write('WARNING: The value for X11UseLocalHost is '
 			'set twice: via sshd/X11UseLocalHost and sshd/xuselocalhost\n')
 elif configRegistry.get('sshd/X11UseLocalHost'):
 	print("X11UseLocalHost %s" % configRegistry.get('sshd/X11UseLocalHost'))
@@ -277,7 +279,7 @@ if configRegistry.get('sshd/banner'):
 	print('# no default banner path')
 	print("Banner %s" % configRegistry.get('sshd/banner'))
 	if configRegistry.get('sshd/Banner'):
-		sys.stderr.write('WARNING: The value for Banner is ' \
+        sys.stderr.write('WARNING: The value for Banner is '
 			'set twice: via sshd/Banner and sshd/banner\n')
 elif configRegistry.get('sshd/Banner'):
 	print('')
@@ -290,6 +292,8 @@ if configRegistry.get('sshd/AcceptEnv'):
 else:
 	print('# Allow client to pass locale environment variables')
 	print('AcceptEnv LANG LC_*')
+
+
 @!@
 # override default of no subsystems
 Subsystem	sftp	/usr/lib/openssh/sftp-server
@@ -308,17 +312,22 @@ if configRegistry.get('sshd/Ciphers'):
 	print("Ciphers %(sshd/Ciphers)s" % configRegistry)
 if configRegistry.get('sshd/KexAlgorithms'):
 	print("KexAlgorithms %(sshd/KexAlgorithms)s" % configRegistry)
+
+
 @!@
 
 # Start of additional configuration options defined via ucr 'sshd/config/.*'
 @!@
 PREFIX = 'sshd/config/'
 DIGITS = '0123456789'
-config = [
+config =
+[
 	'%s %s' % (key[len(PREFIX):], value)
 	for (key, value) in configRegistry.items()
 	if key.startswith(PREFIX)
 ]
 if config:
 	print('\n'.join(line.lstrip(DIGITS) for line in sorted(config)))
+
+
 @!@
