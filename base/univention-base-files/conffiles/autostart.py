@@ -50,9 +50,9 @@ def handler(configRegistry, changes):
 	log = getLogger(__name__)
 
 	log.debug('Loading service information...')
-    service_info = ServiceInfo()
-    for name in service_info.get_services():
-        service = service_info.get_service(name)
+	si = ServiceInfo()
+	for name in si.get_services():
+		service = si.get_service(name)
 		if not service:
 			log.debug('Service not found: %s', name)
 			continue

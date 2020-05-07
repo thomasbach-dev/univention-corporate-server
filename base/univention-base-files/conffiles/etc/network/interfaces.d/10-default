@@ -80,12 +80,12 @@ def ipv6(interfaces):
 		for name in iface.ipv6_names:
 			addr = iface.ipv6_address(name)
 			if not addr:
-                print('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' %
+				print('# ERROR: incomplete/invalid IPv6 address in interfaces/%s/ipv6/%s/*' % \
 					(iface.name, name))
 				continue
 			addresses = interface_addresses.setdefault(iface.name, set())
 			if addr.ip in addresses:
-                print('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' %
+				print('# ERROR: duplicate IPv6 address in interfaces/%s/ipv6/%s/*' % \
 					(iface.name, name))
 				continue
 			addresses.add(addr.ip)
@@ -149,3 +149,4 @@ main()
 
 
 @!@
+
