@@ -273,20 +273,17 @@ def handler(dn, new, old, command):
 			os.rename('/etc/samba/shares.conf.temp', '/etc/samba/shares.conf')
 			if run_ucs_commit:
 				ucr_handlers.commit(listener.configRegistry, ['/etc/samba/smb.conf'])
-		finally:
-			proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]], stdout=subprocess.PIPE)
-			stdout, stderr = proc.communicate()
-			stdout = str(stdout)
-			res = re.search(r'(S-1-5-21.+?)D:', stdout)
-			if res:
-				group_sid = res.group(1)
+
+			if 'univentionShareSambaBaseDirAppendACL' in new:
+				proc = subprocess.Popen(['samba-tool', 'ntacl', 'get', '--as-sddl', new['univentionSharePath'][0]], stdout=subprocess.PIPE)
+				stdout, stderr = proc.communicate()
 				ace = new['univentionShareSambaBaseDirAppendACL'][0]
-				ace = ace.replace("{}", group_sid)
 				if ace not in stdout:
-					# since deny must be placed before rest => always do that!
+					# Deny must be placed before rest => always do that!
 					owner, acl = stdout.split("D:")
 					sddl = "{}D:{}{}".format(owner, ace, acl).strip()
 					subprocess.call(['samba-tool', 'ntacl', 'set', sddl, new['univentionSharePath'][0]])
+		finally:
 			listener.unsetuid()
 
 
