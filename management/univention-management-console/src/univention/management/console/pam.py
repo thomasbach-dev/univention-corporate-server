@@ -254,6 +254,10 @@ class PamAuth(object):
 		pam.start('univention-management-console')
 		return pam
 
+	def destroy(self):
+		AUTH.info("Destroying PAM object: %s" % str(self.pam))
+		del self.pam
+
 	def start(self, username, data):
 		self.pam.set_item(PAM_CONV, self.conversation)
 		self.pam.set_item(PAM_USER, username)

@@ -1,0 +1,11 @@
+product: ucs
+release: "4.4"
+version: [4]
+scope: ucs_4.4-0-errata4.4-4
+src: 
+fix: 
+desc: |
+ This update addresses the following issue(s):
+ * self service broken after long time of operation. No further file
+   descriptors left caused an 'Errorcode 20' in the logs.
+bug: [51047]

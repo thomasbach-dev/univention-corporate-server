@@ -157,3 +157,6 @@ class AuthHandler(signals.Provider):
 			result = {'username': username, 'password': password, 'auth_type': request.body.get('auth_type')}
 		auth_result = AuthenticationResult(result)
 		self.signal_emit('authenticated', auth_result, request)
+
+                self.pam.destroy()
+                del self.pam
