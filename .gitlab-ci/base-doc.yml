@@ -1,0 +1,43 @@
+default:
+  artifacts:
+    expire_in: 1 day
+
+stages:
+  - build
+  - deploy
+
+variables:
+  ucs: 444
+  GIT_STRATEGY: fetch
+  GIT_SUBMODULE_STRATEGY: none
+  GIT_DEPTH: "3"
+  DEB: docker-registry.knut.univention.de/phahn/ucs-devbase:$ucs
+  DOC: docker-registry.knut.univention.de/docbook
+
+.doc:
+  stage: build
+  image: $DOC
+  script:
+    - make -C $base install DESTDIR=$CI_PROJECT_DIR/public
+  artifacts:
+    paths:
+      - public
+
+pages:
+  variables:
+    GIT_STRATEGY: none
+  stage: deploy
+  rules:
+    - changes:
+      - doc/*/**/*
+  script:
+    - ":"
+  artifacts:
+    paths:
+      - public
+
+# The child pipeline needs at minimum one job to run - otherwise the sub-pipeline fails
+dummy:
+  stage: .post
+  script:
+    - ":"
