@@ -1,3 +1,16 @@
+#!/usr/share/ucs-test/runner /usr/share/ucs-test/selenium
+## desc: Check for unclosed file handles after log ins and password resets
+## packages:
+##  - univention-management-console-module-udm
+##  - univention-management-console-module-passwordchange
+## roles-not:
+##  - memberserver
+##  - basesystem
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+#
 # This is an integration test, but the unittest framework is used to structure
 # it. We are expecting to see a setUp method.
 import unittest
