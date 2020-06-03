@@ -937,12 +937,18 @@ class ucs:
 
 		self.rejected_files = self._list_rejected_filenames_ucs()
 
+		files = os.listdir(self.listener_dir)
+		num_changes = len(files) - 1
+		if self.profiling and num_changes:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM UCS: Incomming %s" % (num_changes,))
+
+
 		print("--------------------------------------")
-		print("try to sync %s changes from UCS" % (len(os.listdir(self.listener_dir)) - 1))
+		print("try to sync %s changes from UCS" % (num_changes,))
 		print("done:", end=' ')
 		sys.stdout.flush()
 		done_counter = 0
-		files = sorted(os.listdir(self.listener_dir))
+		files = sorted(files)
 
 		# We may dropped the parent object, so don't show the traceback in any case
 		traceback_level = ud.WARN
@@ -993,6 +999,9 @@ class ucs:
 			print("Changes from UCS: %s (%s saved rejected)" % (change_counter, '0'))
 		print("--------------------------------------")
 		sys.stdout.flush()
+
+		if self.profiling and change_counter:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM UCS: Processed %s" % (change_counter,))
 		return change_counter
 
 	def poll(self, show_deleted=True):
@@ -1180,9 +1189,7 @@ class ucs:
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		if object['attributes'].get('objectGUID'):
-			guid_unicode = object['attributes'].get('objectGUID')[0]
-			# to compensate for __object_from_element
-			objectGUID = guid_unicode.encode('ISO-8859-1')
+			objectGUID = object['attributes'].get('objectGUID')[0]
 		else:
 			objectGUID = None
 		entryUUID = self._get_entryUUID(object['dn'])
@@ -1237,11 +1244,14 @@ class ucs:
 			return True
 
 		try:
-			guid_unicode = original_object.get('attributes').get('objectGUID')[0]
-			# to compensate for __object_from_element
-			guid_blob = guid_unicode.encode('ISO-8859-1')
+			guid_blob = original_object.get('attributes').get('objectGUID')[0]
 			guid = str(ndr_unpack(misc.GUID, guid_blob))
 
+			ignore_attributes = set(['uSNChanged', 'whenChanged',
+				'lastLogon', 'logonCount', 
+				'badPwdCount', 'badPasswordTime', 'dSCorePropagationData', 'msDS-RevealedDSAs',
+				'msDS-FailedInteractiveLogonCount', 'msDS-FailedInteractiveLogonCountAtLastSuccessfulLogon',
+				'msDS-LastFailedInteractiveLogonTime', 'msDS-LastSuccessfulInteractiveLogonTime'])
 			object['changed_attributes'] = []
 			if object['modtype'] == 'modify' and original_object:
 				old_ad_object = self.adcache.get_entry(guid)
@@ -1258,6 +1268,10 @@ class ucs:
 						if old_ad_object.get(attr) != original_attributes.get(attr):
 							if attr not in object['changed_attributes']:
 								object['changed_attributes'].append(attr)
+					if not (set(object['changed_attributes']) - ignore_attributes):
+						ud.debug(ud.LDAP, ud.INFO, "sync_to_ucs: ignore %r" % (original_object['dn'],))
+						ud.debug(ud.LDAP, ud.ALL, "sync_to_ucs: changed_attributes=%s" % (object['changed_attributes'],))
+						return True
 				else:
 					object['changed_attributes'] = original_attributes.keys()
 			ud.debug(ud.LDAP, ud.INFO,

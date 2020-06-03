@@ -68,6 +68,7 @@ class kerberosAuthenticationFailed(Exception):
 class netbiosDomainnameNotFound(Exception):
 	pass
 
+LDB_CONTROL_DOMAIN_SCOPE_OID = "1.2.840.113556.1.4.1339"
 
 # page results
 PAGE_SIZE = 1000
@@ -634,6 +635,11 @@ def encode_modlist(list, encoding):
 			newattr = attr.encode(encoding)
 		else:
 			newattr = attr
+
+		if attr in BINARY_ATTRIBUTES:
+			newlist.append((modtype, newattr, values))
+			continue
+
 		if isinstance(values, type([])):
 			newlist.append((modtype, newattr, encode_list(values, encoding)))
 		else:
@@ -648,6 +654,11 @@ def decode_modlist(list, encoding):
 			newattr = attr.decode(encoding)
 		else:
 			newattr = attr
+
+		if attr in BINARY_ATTRIBUTES:
+			newlist.append((modtype, newattr, values))
+			continue
+
 		if isinstance(values, type([])):
 			newlist.append((modtype, newattr, decode_list(values, encoding)))
 		else:
@@ -662,6 +673,11 @@ def encode_addlist(list, encoding):
 			newattr = attr.encode(encoding)
 		else:
 			newattr = attr
+
+		if attr in BINARY_ATTRIBUTES:
+			newlist.append((newattr, values))
+			continue
+
 		if isinstance(values, type([])):
 			newlist.append((newattr, encode_list(values, encoding)))
 		else:
@@ -676,6 +692,11 @@ def decode_addlist(list, encoding):
 			newattr = attr.decode(encoding)
 		else:
 			newattr = attr
+
+		if attr in BINARY_ATTRIBUTES:
+			newlist.append((newattr, values))
+			continue
+
 		if isinstance(values, type([])):
 			newlist.append((newattr, decode_list(values, encoding)))
 		else:
@@ -954,6 +975,9 @@ class ad(univention.connector.ucs):
 		self.drs = None
 		self.samr = None
 
+		self.profiling = self.baseConfig.is_true('%s/ad/poll/profiling' % self.CONFIGBASENAME, False)
+
+
 	def open_drs_connection(self):
 		lp = LoadParm()
 		Net(creds=None, lp=lp)
@@ -1037,11 +1061,11 @@ class ad(univention.connector.ucs):
 			os.environ['KRB5CCNAME'] = '/var/cache/univention-ad-connector/krb5.cc'
 			self.get_kerberos_ticket()
 			auth = ldap.sasl.gssapi("")
-			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=None, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=BINARY_ATTRIBUTES)
 			self.get_kerberos_ticket()
 			self.lo_ad.lo.sasl_interactive_bind_s("", auth)
 		else:
-			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
+			self.lo_ad = univention.uldap.access(host=self.ad_ldap_host, port=int(self.ad_ldap_port), base=self.ad_ldap_base, binddn=self.ad_ldap_binddn, bindpw=self.ad_ldap_bindpw, start_tls=tls_mode, use_ldaps=ldaps, ca_certfile=self.ad_ldap_certificate, decode_ignorelist=BINARY_ATTRIBUTES)
 
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS, 0)
 
@@ -1234,8 +1258,10 @@ class ad(univention.connector.ucs):
 		if not base:
 			base = self.lo_ad.base
 
-		ctrls = []
-		ctrls.append(SimplePagedResultsControl(True, PAGE_SIZE, ''))
+		ctrls = [
+				SimplePagedResultsControl(True, PAGE_SIZE, ''),  # Must be the first
+				LDAPControl(LDB_CONTROL_DOMAIN_SCOPE_OID, criticality=0),  # Don't show referrals
+		]
 
 		if show_deleted:
 			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
@@ -1396,9 +1422,9 @@ class ad(univention.connector.ucs):
 
 		object['attributes'] = element[1]
 		for key in object['attributes'].keys():
-			vals = []
-			for value in object['attributes'][key]:
-				vals.append(self.encode(value))
+			vals = object['attributes'][key][:]
+			if key not in BINARY_ATTRIBUTES:
+				vals = [self.encode(value) for value in vals]
 			object['attributes'][key] = vals
 
 		if deleted_object:  # dn is in deleted-objects-container, need to parse to original dn
@@ -2293,6 +2319,9 @@ class ad(univention.connector.ucs):
 		except:  # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN, "Exception during search_ad_changes")
 
+		if self.profiling and changes:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Incoming %s" % (len(changes),))
+
 		print("--------------------------------------")
 		print("try to sync %s changes from AD" % len(changes))
 		print("done:", end=' ')
@@ -2404,6 +2433,8 @@ class ad(univention.connector.ucs):
 			print("Changes from AD:  %s (%s saved rejected)" % (change_count, '0'))
 		print("--------------------------------------")
 		sys.stdout.flush()
+                if self.profiling and change_count:
+			ud.debug(ud.LDAP, ud.PROCESS, "POLL FROM CON: Processed %s" % (change_count,))
 		return change_count
 
 	def __has_attribute_value_changed(self, attribute, old_ucs_object, new_ucs_object):
@@ -2586,7 +2617,7 @@ class ad(univention.connector.ucs):
 								if not attribute_type[attribute].compare_function(list(old_values), list(new_values)):
 									modify = True
 							# FIXME: use defined compare-function from mapping.py
-							elif not univention.adconnector.compare_lowercase(list(old_values), list(new_values)):
+							elif not univention.connector.compare_lowercase(list(old_values), list(new_values)):
 								modify = True
 
 							if not modify:
@@ -2664,7 +2695,7 @@ class ad(univention.connector.ucs):
 									elif attribute_type[attribute].compare_function:
 										if not attribute_type[attribute].compare_function(list(current_ad_values), list(value)):
 											modify = True
-									elif not univention.adconnector.compare_lowercase(list(current_ad_values), list(value)):
+									elif not univention.connector.compare_lowercase(list(current_ad_values), list(value)):
 										modify = True
 									if modify:
 										if hasattr(attribute_type[attribute], 'mapping') and len(attribute_type[attribute].mapping) > 0 and attribute_type[attribute].mapping[0]:
