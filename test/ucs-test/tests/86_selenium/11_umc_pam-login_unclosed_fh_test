@@ -10,10 +10,12 @@
 ##  - skip_admember
 ## join: true
 ## exposure: dangerous
-#
+
 # This is an integration test, but the unittest framework is used to structure
 # it. We are expecting to see a setUp method.
 import unittest
+
+from univention.testing import selenium
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -39,8 +41,9 @@ class OpenFdTests(unittest.TestCase):
         self.addCleanup(self.xvfb.stop)
         self.xvfb.start()
 
-        self.browser = webdriver.Firefox()
-        self.addCleanup(self.browser.quit)
+        with selenium.UMCSeleniumTest() as s:
+            self.browser = s.driver
+            self.addCleanup(self.browser.quit)
 
         with ucr_test.UCSTestConfigRegistry() as ucr:
             self.domainname = ucr.get('domainname')
