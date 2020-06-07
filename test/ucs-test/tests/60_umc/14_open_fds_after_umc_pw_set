@@ -1,0 +1,72 @@
+#!/usr/share/ucs-test/runner bash
+## desc: Check unclosed file handles after umc password change
+## packages:
+##  - univention-management-console-module-udm
+##  - univention-management-console-module-passwordchange
+## roles-not:
+##  - memberserver
+##  - basesystem
+## tags:
+##  - skip_admember
+## join: true
+## exposure: dangerous
+let max_users=4
+
+# we work in parallel and we want to abort all executions with a single CTRL-C:
+function ctrl_c() {
+	killall umc-set $0
+}
+trap ctrl_c INT
+
+# returns the number of open connections by the umc-server
+function get_number_of_close_waits() {
+    return $(lsof -p $(pidof -x univention-management-console-server) | grep CLOSE_WAIT | wc -l)
+}
+
+# $1 = number of users
+function create_sample_users() {
+    for i in $(seq 1 $1); do 
+        set -x
+        # if the user already exists we want to reset the password
+        udm users/user modify --dn uid="max$i",cn=users,dc=server,dc=local \
+            --set overridePWHistory=1 \
+            --set password="univention_0" ||\
+        udm users/user create  --superordinate cn=users,dc=server,dc=local \
+            --set lastname="nobody" \
+            --set username="max$i" \
+            --set password="univention_0"
+        set +x
+    done
+}
+
+function umc_cycle_password {
+	USER=$1
+	umc-set -U "$USER" -P "univention_0" -e -o '{"password": {"password": "univention_0", "new_password": "univention_1"}}';
+	umc-set -U "$USER" -P "univention_1" -e -o '{"password": {"password": "univention_1", "new_password": "univention_2"}}';
+	umc-set -U "$USER" -P "univention_2" -e -o '{"password": {"password": "univention_2", "new_password": "univention_3"}}';
+	umc-set -U "$USER" -P "univention_3" -e -o '{"password": {"password": "univention_3", "new_password": "univention_0"}}';
+}
+
+# $1 = number of users
+function parallel_cycle_passwords() {
+    for i in $(seq 1 $1); do
+        set -x
+        umc_cycle_password "max$i" &
+        set +x
+    done
+}
+
+set -e
+service univention-management-console-server restart
+
+create_sample_users($max_users)
+parallel_cycle_passwords($max_users)
+
+service slapd restart
+sleep 2
+
+parallel_cycle_passwords($max_users)
+
+if [ `get_number_of_close_waits` -gt 0 ]; then
+    exit 1
+fi
