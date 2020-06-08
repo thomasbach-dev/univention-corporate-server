@@ -10,10 +10,11 @@
 ##  - skip_admember
 ## join: true
 ## exposure: dangerous
-let max_users=4
+
+MAX_USERS=4
 
 # we work in parallel and we want to abort all executions with a single CTRL-C:
-function ctrl_c() {
+function ctrl_c {
 	killall umc-set $0
 }
 trap ctrl_c INT
@@ -24,7 +25,7 @@ function get_number_of_close_waits() {
 }
 
 # $1 = number of users
-function create_sample_users() {
+function create_sample_users {
     for i in $(seq 1 $1); do 
         set -x
         # if the user already exists we want to reset the password
@@ -48,7 +49,7 @@ function umc_cycle_password {
 }
 
 # $1 = number of users
-function parallel_cycle_passwords() {
+function parallel_cycle_passwords {
     for i in $(seq 1 $1); do
         set -x
         umc_cycle_password "max$i" &
@@ -59,14 +60,16 @@ function parallel_cycle_passwords() {
 set -e
 service univention-management-console-server restart
 
-create_sample_users($max_users)
-parallel_cycle_passwords($max_users)
+create_sample_users $MAX_USERS
+parallel_cycle_passwords $MAX_USERS
 
 service slapd restart
 sleep 2
 
-parallel_cycle_passwords($max_users)
+parallel_cycle_passwords $MAX_USERS
 
 if [ `get_number_of_close_waits` -gt 0 ]; then
     exit 1
 fi
+
+# vim: ft=bash
