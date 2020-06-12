@@ -13,38 +13,45 @@
 
 import subprocess
 import time
-# This is an integration test, but the unittest framework is used to structure
-# it. We are expecting to see a setUp method.
-import unittest
 
-from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.ui import WebDriverWait
-from xvfbwrapper import Xvfb
+
+from univention.testing import selenium
+from univention.admin import localization
 
 import univention.testing.ucr as ucr_test
 import univention.testing.udm as udm_test
-from univention.testing import selenium
+
+translator = localization.translation("ucs-test-selenium")
+_ = translator.translate
 
 
-class OpenFdTests(unittest.TestCase):
+class UMCTester:
     """
     This test checks problems caused by open file descriptors.
     """
 
-    def setUp(self):
-        self.xvfb = Xvfb(width=1280, height=720)
-        self.addCleanup(self.xvfb.stop)
-        self.xvfb.start()
+    def __init__(self, sel, fqdn):
+        self.selenium = sel
+        self.fqdn = fqdn
+        self.browser = self.selenium.driver
 
-        with selenium.UMCSeleniumTest() as s:
-            self.browser = s.driver
-            self.addCleanup(self.browser.quit)
+    def test_umc(self):
+        """ call all tests """
+        if not self.test_umc_logon():
+            return False
 
-        with ucr_test.UCSTestConfigRegistry() as ucr:
-            self.domainname = ucr.get("domainname")
+        if not self.test_self_service_change_password():
+            return False
+
+    def take_a_screenshot(self):
+        self.selenium.driver.get(
+            s.base_url + "/univention/self-service/#page=passwordchange"
+        )
+        self.selenium.save_screenshot()
 
     def count_fhs(self):
         umc_pid = int(
@@ -58,14 +65,14 @@ class OpenFdTests(unittest.TestCase):
             )
         )
 
-    def restart_umc(self):
+    @classmethod
+    def systemd_restart(self, service):
         """
-        HINT: check_call: Run command with arguments. Wait for command to complete.
+        check_call runs a command with arguments and waits for command to
+        complete. No further wait is necessary.
         """
 
-        subprocess.check_call(
-            ["systemctl", "restart", "univention-management-console-server"]
-        )
+        subprocess.check_call(["systemctl", "restart", service])
 
     def test_self_service_change_password(self):
         """
@@ -74,47 +81,56 @@ class OpenFdTests(unittest.TestCase):
         changed after the password change.
         """
 
-        self.restart_umc()
+        self.systemd_restart("univention-management-console-server")
 
+        username = ""
         password_before = "univention"
         password_after = "thisisatest"
+        url_self_service = (
+            "http://" + self.fqdn + "/univention/self-service/#page=passwordchange"
+        )
 
         with udm_test.UCSTestUDM() as udm:
-            userdn, username = udm.create_user(set={"password": password_before})
+            _, username = udm.create_user(set={"password": password_before})
 
         before_fhs = self.count_fhs()
-        try:
-            self.browser.get(
-                "http://"
-                + self.domainname
-                + "/univention/self-service/#page=passwordchange"
+        print("url to test: %s\n" % url_self_service)
+        self.browser.get(url_self_service)
+        WebDriverWait(self.browser, 10).until(
+            expected_conditions.presence_of_element_located(
+                (By.ID, "selfservice_password_TextBox_7")
             )
-            self.browser.save_screenshot("/tmp/self_service.png")
-            self.browser.find_element(
-                By.ID, "selfservice_password_TextBox_5"
-            ).send_keys(username)
-            self.browser.find_element(
-                By.ID, "selfservice_password_TextBox_6"
-            ).send_keys(password_before)
-            self.browser.find_element(
-                By.ID, "selfservice_password_PasswordBox_2"
-            ).send_keys(password_after)
-            self.browser.find_element(
-                By.ID, "selfservice_password_TextBox_7"
-            ).send_keys(password_after + Keys.RETURN)
-            WebDriverWait(self.browser, 10).until(
-                expected_conditions.presence_of_element_located(
-                    (By.ID, "umc_widgets_ConfirmDialog_0")
-                )
+        )
+        self.browser.save_screenshot("self_service.png")
+        self.browser.find_element(By.ID, "selfservice_password_TextBox_5").send_keys(
+            username
+        )
+        self.browser.find_element(By.ID, "selfservice_password_TextBox_6").send_keys(
+            password_before
+        )
+        self.browser.find_element(
+            By.ID, "selfservice_password_PasswordBox_2"
+        ).send_keys(password_after)
+        self.browser.find_element(By.ID, "selfservice_password_TextBox_7").send_keys(
+            password_after + Keys.RETURN
+        )
+        WebDriverWait(self.browser, 10).until(
+            expected_conditions.presence_of_element_located(
+                (By.ID, "umc_widgets_ConfirmDialog_0")
             )
-            self.browser.save_screenshot("/tmp/change_password.png")
-        finally:
-            self.browser.find_element(By.ID, "umc_widgets_Button_3").send_keys(
-                Keys.RETURN
-            )  # ok button click
+        )
+        self.browser.save_screenshot("/tmp/change_password.png")
+        WebDriverWait(self.browser, 10).until(
+            expected_conditions.presence_of_element_located(
+                (By.ID, "umc_widgets_Button_3")
+            )
+        ).send_keys(
+            Keys.RETURN
+        )  # ok button click
         after_fhs = self.count_fhs()
 
-        self.assertEqual(before_fhs, after_fhs)
+        print("> fhs: %d\n" % (before_fhs == after_fhs))
+        return before_fhs == after_fhs
 
     def umc_logon(self, username, pw):
         """
@@ -122,19 +138,19 @@ class OpenFdTests(unittest.TestCase):
         """
 
         try:
-            self.browser.get("https://" + self.domainname + "/univention/portal/")
+            self.browser.get("http://" + self.fqdn + "/univention/portal/")
 
-            self.browser.Wait(self.browser, 20).until(
+            WebDriverWait(self.browser, 20).until(
                 expected_conditions.element_to_be_clickable(
                     (By.XPATH, '//*[@id="umcLoginButton_label"]')
                 )
             ).click()
-            self.browser.Wait(self.browser, 20).until(
+            WebDriverWait(self.browser, 20).until(
                 expected_conditions.element_to_be_clickable(
                     (By.XPATH, '//*[@id="umcLoginUsername"]')
                 )
             ).send_keys(username)
-            self.browser.Wait(self.browser, 20).until(
+            WebDriverWait(self.browser, 20).until(
                 expected_conditions.element_to_be_clickable(
                     (By.XPATH, '//*[@id="umcLoginPassword"]')
                 )
@@ -143,34 +159,44 @@ class OpenFdTests(unittest.TestCase):
             elem = self.browser.find_elements_by_id("umcLoginSubmit")[0]
             elem.click()
 
-            self.browser.Wait(self.browser, 20).until(
+            WebDriverWait(self.browser, 20).until(
                 expected_conditions.element_to_be_clickable(
                     (By.XPATH, '//*[@id="umcLoginButton_label"]')
                 )
             ).click()
-
-            self.browser.save_screenshot("/tmp/umc_logon.png")
+        except BaseException:
+            self.take_a_screenshot()
         finally:
             print("UMC Logon with {} done".format(username))
 
     def test_umc_logon(self):
         """
         count the number of open file handles in the CLOSE_WAIT state after
-        several logins
+        several logins. Code taken from `repr2.py`, attached to Bug #51047
         """
 
-        self.restart_umc()
+        self.systemd_restart("univention-management-console-server")
 
+        username = ""
+        # this is the default password, but it is made explicit here on purpose
         password = "univention"
 
-        with udm_test.UCSTestUDM() as udm:
-            userdn, username = udm.create_user(set={"password": password})
-
         for i in range(0, 4):
-            self.umc_logon(username, password)
+            with udm_test.UCSTestUDM() as udm:
 
+                _, username = udm.create_user(set={"password": password})
+
+                print(
+                    "Created user %d '%s' with password %s. Logging in..."
+                    % (i, username, password)
+                )
+
+                self.umc_logon(username, password)
+                print("done.\n")
+
+        # wait for timeouts
         time.sleep(60)
-        subprocess.check_call(["service", "slapd", "restart"])
+        self.systemd_restart("slapd")
 
         self.umc_logon(username, password)
 
@@ -184,11 +210,14 @@ class OpenFdTests(unittest.TestCase):
             if "CLOSE_WAIT" in line:
                 close_wait += 1
 
-        self.assertEqual(close_wait, 0)
+        print("> close wait: %d\n" % close_wait)
+        return close_wait == 0
 
 
 if __name__ == "__main__":
-    unittest.main()
-
+    with selenium.UMCSeleniumTest() as s, ucr_test.UCSTestConfigRegistry() as ucr:
+        umc_tester = UMCTester(s, ucr.get("hostname") + "." + ucr.get("domainname"))
+        if not umc_tester.test_umc():
+            raise SystemExit
 
 # vim: ft=python
