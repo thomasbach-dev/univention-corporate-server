@@ -102,24 +102,38 @@ class UMCTester:
             )
         )
         self.browser.save_screenshot("self_service.png")
+
+
+        # TextBox_5 is the id of 'username'
         self.browser.find_element(By.ID, "selfservice_password_TextBox_5").send_keys(
             username
         )
+
+        # TextBox_6 is the id of 'old password'
         self.browser.find_element(By.ID, "selfservice_password_TextBox_6").send_keys(
             password_before
         )
+
+        # TextBox_2 is the id of 'new password'
         self.browser.find_element(
             By.ID, "selfservice_password_PasswordBox_2"
         ).send_keys(password_after)
+
+        # TextBox_7 is the id of 'new password (repeat)'
         self.browser.find_element(By.ID, "selfservice_password_TextBox_7").send_keys(
             password_after + Keys.RETURN
         )
+
+        # the 'change password' button has no id, so we used RETURN in the last
+        # textbox and then wait for the new dialog to appear
+
         WebDriverWait(self.browser, 10).until(
             expected_conditions.presence_of_element_located(
                 (By.ID, "umc_widgets_ConfirmDialog_0")
             )
         )
-        self.browser.save_screenshot("/tmp/change_password.png")
+
+
         WebDriverWait(self.browser, 10).until(
             expected_conditions.presence_of_element_located(
                 (By.ID, "umc_widgets_Button_3")
@@ -127,6 +141,7 @@ class UMCTester:
         ).send_keys(
             Keys.RETURN
         )  # ok button click
+
         after_fhs = self.count_fhs()
 
         print("> fhs: %d\n" % (before_fhs == after_fhs))
