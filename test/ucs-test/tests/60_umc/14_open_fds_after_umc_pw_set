@@ -26,7 +26,7 @@ function get_number_of_close_waits() {
 
 # $1 = number of users
 function create_sample_users {
-    for i in $(seq 1 $1); do 
+    for i in $(seq 1 $1); do
         set -x
         # if the user already exists we want to reset the password
         udm users/user modify --dn uid="max$i",cn=users,dc=server,dc=local \
