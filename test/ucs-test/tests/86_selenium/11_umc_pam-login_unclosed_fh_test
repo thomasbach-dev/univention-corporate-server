@@ -35,11 +35,12 @@ class UMCTester:
     """
 
     def __init__(self, sel, hostname, domainname):
-        self.selenium = sel
+
         self.hostname = hostname
         self.domainname = domainname
-        self.fqdn = "%s.%s" % (hostname, domainname,)
-        self.hostname = hostname
+        self.fqdn = "%s.%s" % (hostname, domainname)
+
+        self.selenium = sel
         self.browser = self.selenium.driver
 
     def test_umc(self, udm):
@@ -61,7 +62,7 @@ class UMCTester:
         self.selenium.save_screenshot()
 
     @classmethod
-    def systemd_restart(self, service):
+    def systemd_restart(cls, service):
         """
         check_call runs a command with arguments and waits for command to
         complete. No further wait is necessary.
@@ -144,18 +145,16 @@ class UMCTester:
 
         close_wait = self.count_fhs()
         print("> close wait: %d\n" % close_wait)
-        """ the hard coded value of 3 has to be adapted """
-        return close_wait < 3
+        return close_wait < 3 # the hard coded value of 3 has to be adapted later
 
 
 if __name__ == "__main__":
-    with selenium.UMCSeleniumTest() as s,
-    ucr_test.UCSTestConfigRegistry() as ucr,
-    udm_test.UCSTestUDM() as udm:
 
-        umc_tester = UMCTester(
-            s, ucr.get("hostname"), ucr.get("domainname"), ucr.get("ldap/base")
-        )
+    with selenium.UMCSeleniumTest() as s,\
+         ucr_test.UCSTestConfigRegistry() as ucr,\
+         udm_test.UCSTestUDM() as udm:
+
+        umc_tester = UMCTester(s, ucr.get("hostname"), ucr.get("domainname"))
 
         retval, msg = umc_tester.test_umc(udm)
 
