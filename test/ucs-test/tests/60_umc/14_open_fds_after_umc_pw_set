@@ -21,18 +21,23 @@ trap ctrl_c INT
 
 # returns the number of open connections by the umc-server
 function get_number_of_close_waits() {
-    return $(lsof -p $(pidof -x univention-management-console-server) | grep CLOSE_WAIT | wc -l)
+    echo $(lsof -p $(pidof -x univention-management-console-server) | grep CLOSE_WAIT | wc -l)
+}
+
+function get_user_ldap_domain() {
+	echo $(ucr get tests/domainadmin/account | egrep -o 'cn=.*')
 }
 
 # $1 = number of users
 function create_sample_users {
+	DOMAIN=$(get_user_ldap_domain)
     for i in $(seq 1 $1); do
         set -x
         # if the user already exists we want to reset the password
-        udm users/user modify --dn uid="max$i",cn=users,dc=server,dc=local \
+        udm users/user modify --dn uid="max$i",$DOMAIN \
             --set overridePWHistory=1 \
             --set password="univention_0" ||\
-        udm users/user create  --superordinate cn=users,dc=server,dc=local \
+        udm users/user create  --superordinate $DOMAIN \
             --set lastname="nobody" \
             --set username="max$i" \
             --set password="univention_0"
@@ -72,4 +77,4 @@ if [ `get_number_of_close_waits` -gt 0 ]; then
     exit 1
 fi
 
-# vim: ft=bash
+# vim: ft=sh
