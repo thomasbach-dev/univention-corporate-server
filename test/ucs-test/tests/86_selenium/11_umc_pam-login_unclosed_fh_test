@@ -196,18 +196,18 @@ class UMCTester:
         # this is the default password, but it is made explicit here on purpose
         password = "univention"
 
-        for i in range(0, 4):
-            with udm_test.UCSTestUDM() as udm:
+        with udm_test.UCSTestUDM() as udm:
 
-                _, username = udm.create_user(set={"password": password})
+            for i in range(0, 4):
+                    _, username = udm.create_user(set={"password": password})
 
-                print(
-                    "Created user %d '%s' with password %s. Logging in..."
-                    % (i, username, password)
-                )
+                    print(
+                        "Created user %d '%s' with password %s. Logging in..."
+                        % (i, username, password)
+                    )
 
-                self.umc_logon(username, password)
-                print("done.\n")
+                    self.umc_logon(username, password)
+                    print("done.\n")
 
         # wait for timeouts
         time.sleep(60)
