@@ -55,6 +55,13 @@ class UMCTester:
 
         return True, ""
 
+    def count_fhs(self):
+        umc_pid = int(subprocess.check_output(
+            "pidof -x univention-management-console-server".split(" ")))
+
+        return int(subprocess.check_output(
+            ["bash", "-c", "lsof -p " + str(umc_pid) + " | grep 7389 | wc -l"]))
+
     def take_a_screenshot(self):
         self.selenium.driver.get(
             s.base_url + "/univention/self-service/#page=passwordchange"
