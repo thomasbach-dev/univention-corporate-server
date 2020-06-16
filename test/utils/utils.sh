@@ -35,6 +35,10 @@ is_ec2 () {
 }
 
 basic_setup () {
+	echo -e "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.0-0/all/" >> /etc/apt/sources.list
+	echo -e "deb [trusted=yes] http://omar.knut.univention.de/build2/ ucs_5.0-0/\$(ARCH)/" >> /etc/apt/sources.list
+	rdate time.fu-berlin.de || true
+	apt-get update -qq
 	# force dpkg not to call "sync" during package installations/updates
 	echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/force-unsafe-io
 	if grep "QEMU Virtual CPU" /proc/cpuinfo ; then
@@ -208,6 +212,7 @@ _fix_ssh47233 () { # Bug #47233: ssh connection stuck on reboot
 
 run_setup_join () {
 	local srv rv=0
+	chown _apt /var/cache/univention-system-setup/packages/Packages
 	patch_setup_join # temp. remove me
 	/usr/lib/univention-system-setup/scripts/setup-join.sh ${1:+"$@"} || rv=$?
 	ucr set apache2/startsite='univention/' # Bug #31682
