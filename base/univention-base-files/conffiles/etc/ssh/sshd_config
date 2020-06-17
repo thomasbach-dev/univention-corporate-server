@@ -30,11 +30,6 @@ from os.path import exists
 for key in configRegistry.get('sshd/HostKey', 'rsa,ecdsa,ed25519').split(','):
 	if '/' in key:
 		filename = key
-	elif key == 'rsa1':
-		if '1' not in protocols:
-			continue
-		else:
-			filename = '/etc/ssh/ssh_host_key'
 	else:
 		filename = '/etc/ssh/ssh_host_%s_key' % (key,)
 	if exists(filename):
@@ -132,7 +127,7 @@ if configRegistry.get('sshd/challengeresponse'):
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
 	if configRegistry.get('sshd/ChallengeResponseAuthentication'):
 		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is ' \
-			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
+						 'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
 else:
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
 print('')
