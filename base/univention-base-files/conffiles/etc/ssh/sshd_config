@@ -132,7 +132,7 @@ if configRegistry.get('sshd/challengeresponse'):
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/challengeresponse'))
 	if configRegistry.get('sshd/ChallengeResponseAuthentication'):
 		sys.stderr.write('WARNING: The value for ChallengeResponseAuthentication is ' \
-			             'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
+						 'set twice: via sshd/ChallengeResponseAuthentication and sshd/challengeresponse\n')
 else:
 	print("ChallengeResponseAuthentication %s" % configRegistry.get('sshd/ChallengeResponseAuthentication', 'yes'))
 print('')
@@ -323,4 +323,3 @@ config =
 if config:
 	print('\n'.join(line.lstrip(DIGITS) for line in sorted(config)))
 @!@
-

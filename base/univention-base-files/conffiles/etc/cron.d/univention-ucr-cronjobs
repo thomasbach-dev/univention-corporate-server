@@ -9,7 +9,7 @@ jobs = []
 def setup_cronjob(key):
 	global jobs
 
-    if not key.startswith('cron/') or
+	if not key.startswith('cron/') or
 		key == 'cron/autostart' or
 		key == 'cron/path' or
 		key == 'cron/ucrdisabled':
@@ -61,4 +61,3 @@ else:
 		if key.startswith('cron/'):
 			setup_cronjob(key)
 @!@
-
