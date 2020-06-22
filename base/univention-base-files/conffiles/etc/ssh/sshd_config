@@ -314,8 +314,7 @@ if configRegistry.get('sshd/KexAlgorithms'):
 @!@
 PREFIX = 'sshd/config/'
 DIGITS = '0123456789'
-config =
-[
+config = [
 	'%s %s' % (key[len(PREFIX):], value)
 	for (key, value) in configRegistry.items()
 	if key.startswith(PREFIX)
