@@ -54,6 +54,21 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 		self.tester.addTest(
 			re.compile(r'\b(?:/sbin/)?ip6?tables\b +(?!--wait\b)'),
 			'0017-4', 'iptables without --wait', cntmax=0)
+		self.tester.addTest(
+			re.compile(r'\\\(\.\*\\\) (.) \\1 \1 p', re.VERBOSE),
+			'0017-5', 'Use `sed -n "s/^prefix: //p"`', cntmax=0)
+		self.tester.addTest(
+			re.compile(r'\bldapsearch\b.+\bldapsearch-wrapper\b'),
+			'0017-6', 'Use `ldapsearch -o ldif-wrap=no`', cntmax=0)
+		self.tester.addTest(
+			re.compile(r'\b(\w+)\[\${#\1\[[@*]\]}\]='),
+			'0017-7', 'Use `array+=(val)`', cntmax=0)
+		self.tester.addTest(
+			re.compile(r'\b cat \b [^*?|]* \|', re.VERBOSE),
+			'0017-8', "Useless use of `cat`; redirect STDIN instead", cntmax=0)
+		self.tester.addTest(
+			re.compile(r'\b grep \b .* \| .* \b (?:sed|awk) \b', re.VERBOSE),
+			'0017-9', "Useless use of `grep`; use PATTERNs instead", cntmax=0)
 
 	def getMsgIds(self):
 		return {
@@ -61,6 +76,11 @@ class UniventionPackageCheck(uub.UniventionPackageCheckDebian):
 			'0017-2': (uub.RESULT_ERROR, 'script contains unquoted arguments of tr'),
 			'0017-3': (uub.RESULT_WARN, 'LDAP simple bind is an internal detail of "univention-ldapsearch"'),
 			'0017-4': (uub.RESULT_ERROR, 'ip[6]tables --wait must be used since UCS-4.2'),
+			'0017-5': (uub.RESULT_STYLE, 'Use `sed -n "s/^prefix: //p"`'),
+			'0017-6': (uub.RESULT_STYLE, 'Use `ldapsearch -LLLo ldif-wrap=no`'),
+			'0017-7': (uub.RESULT_STYLE, 'Use `array+=(val)`'),
+			'0017-8': (uub.RESULT_STYLE, "Useless use of `cat`; redirect STDIN instead"),
+			'0017-9': (uub.RESULT_STYLE, "Useless use of `grep`; use PATTERNs instead"),
 		}
 
 	def check(self, path):

@@ -1,0 +1,5 @@
+S:0017-5: shell.sh:2:116: Use `sed -n "s/^prefix: //p"`
+S:0017-6: shell.sh:3:12: Use `ldapsearch -o ldif-wrap=no`
+S:0017-7: shell.sh:5:1: Use `array+=(val)`
+S:0017-8: shell.sh:6:1: Useless use of `cat`; redirect STDIN instead
+S:0017-9: shell.sh:7:67: Useless use of `grep`; use PATTERNs instead
