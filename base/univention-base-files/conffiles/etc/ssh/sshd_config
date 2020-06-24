@@ -272,8 +272,7 @@ if configRegistry.get('sshd/banner'):
 	print('# no default banner path')
 	print("Banner %s" % configRegistry.get('sshd/banner'))
 	if configRegistry.get('sshd/Banner'):
-		sys.stderr.write('WARNING: The value for Banner is ' \
-			'set twice: via sshd/Banner and sshd/banner\n')
+		sys.stderr.write('WARNING: The value for Banner is set twice: via sshd/Banner and sshd/banner\n')
 elif configRegistry.get('sshd/Banner'):
 	print('')
 	print('# no default banner path')

@@ -110,7 +110,7 @@ def ipv6(interfaces):
 			except KeyError:
 				continue  # invalid or duplicate
 			print('# %s' % (name,))
-			if i == 0:	# first
+			if i == 0:  # first
 				print('\taddress %s' % (addr.ip,))
 				print('\tnetmask %s' % (addr.prefixlen,))
 			else:
@@ -146,6 +146,4 @@ def main():
 
 
 main()
-
-
 @!@
