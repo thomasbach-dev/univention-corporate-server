@@ -1,4 +1,4 @@
-univention-base-files (8.0.0-10) unstable; urgency=medium
+univention-base-files (8.0.0-11) unstable; urgency=medium
 
   * Bug #51006: Fixed python3 compatiblity and formatting
 
