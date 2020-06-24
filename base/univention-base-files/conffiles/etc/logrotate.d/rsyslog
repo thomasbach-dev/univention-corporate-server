@@ -23,7 +23,7 @@ LOGS = """
 /var/log/messages
 """
 FILES = {}
-for (path, cat) in findall('(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
+for (path, cat) in findall(r'(/var/log/(\w+)(?:[.]\w+)?)', LOGS):
 	FILES.setdefault(cat, (set(), {}))[0].add(path)
 
 other_logfiles = set()

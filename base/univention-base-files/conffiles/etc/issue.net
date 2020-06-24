@@ -1,5 +1,4 @@
 @!@
-
 if configRegistry.get('server/role') == 'fatclient':
 	menutitle = "Univention Managed Client"
 elif configRegistry.get('server/role') == 'mobileclient':

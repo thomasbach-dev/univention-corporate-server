@@ -74,7 +74,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 		re.compile(r'univention-directory-manager-modules/'): 'W601',  # UDM allows has_key() Bug #W601
 	}
 
-	DEFAULT_IGNORE = os.environ.get('UCSLINT_FLAKE8_IGNORE', 'N,B,E501,W191,E265,E266')
+	DEFAULT_IGNORE = os.environ.get('UCSLINT_FLAKE8_IGNORE', 'N,B,D,E501,W191,E265,E266')
 	DEFAULT_SELECT = None
 	MAX_LINE_LENGTH = 220
 	GRACEFUL = not os.environ.get('UCSLINT_FLAKE8_STRICT')
@@ -387,6 +387,7 @@ class UniventionPackageCheck(uub.UniventionPackageCheckBase):
 			for ignore, pathes in self._iter_pathes(path):
 				errors += self.flake8(python, pathes, ignore)
 
+		for python in ['python2', 'python3']:
 			errors += self.check_conffiles(python)
 
 		self.format_errors(errors)
