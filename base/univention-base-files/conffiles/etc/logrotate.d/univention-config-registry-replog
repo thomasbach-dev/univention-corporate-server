@@ -12,7 +12,7 @@ for setting in settings.values():
 	print("\t%s" % setting)
 print("}")
 
-# dpkg-divert 
+# dpkg-divert
 name = "dpkg-divert"
 settings = univention.lib.ucrLogrotate.getLogrotateConfig(name, configRegistry)
 

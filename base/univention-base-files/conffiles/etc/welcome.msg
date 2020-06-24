@@ -1,5 +1,4 @@
 @!@
-
 if configRegistry.get('server/role') == 'fatclient':
 	menutitle = "Univention Managed Client"
 elif configRegistry.get('server/role') == 'mobileclient':
@@ -48,3 +47,4 @@ if configRegistry.get('server/role') in ['domaincontroller_master', 'domaincontr
 	print('users, groups, etc. - using the "Administrator" account and the password selected ')
 	print('for the root user on the master domain controller.')
 @!@
+
