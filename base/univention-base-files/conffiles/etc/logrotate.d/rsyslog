@@ -3,6 +3,7 @@
 @!@
 from univention.lib.ucrLogrotate import getLogrotateConfig
 from re import findall
+
 LOGS = """
 /var/log/syslog
 /var/log/mail.info
