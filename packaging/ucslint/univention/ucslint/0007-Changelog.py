@@ -27,10 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <https://www.gnu.org/licenses/>.
 
-import univention.ucslint.base as uub
-import re
 import os
+import re
 from email.utils import mktime_tz, parsedate_tz
+
+import univention.ucslint.base as uub
 from debian.changelog import Changelog, ChangelogParseError
 
 REticket = re.compile(r'''
