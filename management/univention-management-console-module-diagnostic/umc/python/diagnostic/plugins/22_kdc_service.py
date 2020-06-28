@@ -34,6 +34,7 @@
 import struct
 import socket
 import random
+import datetime
 
 import ipaddr
 import dns.resolver
@@ -41,15 +42,25 @@ import dns.exception
 from pyasn1.type import tag
 from pyasn1.type import char
 from pyasn1.type import univ
+from pyasn1.type.univ import noValue
 from pyasn1.type import useful
 from pyasn1.type import namedtype
-import pyasn1.codec.der.encoder
-import pyasn1.codec.der.decoder
+from pyasn1.type import constraint
+import pyasn1.codec.der.encoder as encoder
+import pyasn1.codec.der.decoder as decoder
 import pyasn1.error
 from univention.config_registry import handler_set as ucr_set
 import univention.config_registry
 from univention.management.console.modules.diagnostic import Warning, Critical, ProblemFixed, MODULE
 from univention.management.console.modules.diagnostic import util
+
+import argparse
+import logging
+import sys
+from binascii import unhexlify
+
+from impacket.krb5 import constants
+from impacket.krb5.types import Principal
 
 from univention.lib.i18n import Translation
 _ = Translation('univention-management-console-module-diagnostic').translate
@@ -82,131 +93,180 @@ run_descr = ["Performs a KDC reachability check"]
 # [1]: https://tools.ietf.org/html/rfc4120
 # [2]: https://tools.ietf.org/html/rfc3244
 
-
-def add_lo_to_samba_interfaces(umc_instance):
-	configRegistry = univention.config_registry.ConfigRegistry()
-	configRegistry.load()
-
-	interfaces = configRegistry.get('samba/interfaces', '').split()
-	interfaces.append('lo')
-	MODULE.process('Setting samba/interfaces')
-	ucr_set(['samba/interfaces={}'.format(' '.join(interfaces))])
-	return run(umc_instance, retest=True)
+class Int32(univ.Integer):
+	subtypeSpec = univ.Integer.subtypeSpec + constraint.ValueRangeConstraint(
+		-2147483648, 2147483647)
 
 
-def reset_kerberos_kdc(umc_instance):
-	MODULE.process('Resetting kerberos/kdc=127.0.0.1')
-	ucr_set(['kerberos/kdc=127.0.0.1'])
-	return run(umc_instance, retest=True)
+def _msg_type_component(tag_value, values):
+	c = constraint.ConstraintsUnion(
+		*(constraint.SingleValueConstraint(int(v)) for v in values))
+	return _sequence_component('msg-type', tag_value, univ.Integer(),
+							   subtypeSpec=c)
 
+def _sequence_component(name, tag_value, type, **subkwargs):
+	return namedtype.NamedType(name, type.subtype(
+		explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple,
+							tag_value),
+		**subkwargs))
 
-description = _('ph ')
-actions = {
-	'add_lo_to_samba_interfaces': add_lo_to_samba_interfaces,
-	'reset_kerberos_kdc': reset_kerberos_kdc,
-}
+def _sequence_optional_component(name, tag_value, type, **subkwargs):
+	return namedtype.OptionalNamedType(name, type.subtype(
+		explicitTag=tag.Tag(tag.tagClassContext, tag.tagFormatSimple,
+							tag_value),
+		**subkwargs))
+class Microseconds(univ.Integer):
+	subtypeSpec = univ.Integer.subtypeSpec + constraint.ValueRangeConstraint(
+		0, 999999)
 
+class EncryptedData(univ.Sequence):
+	componentType = namedtype.NamedTypes(
+		_sequence_component("etype", 0, Int32()),
+		_sequence_optional_component("kvno", 1, univ.Integer()),
+		_sequence_component("cipher", 2, univ.OctetString())
+		)
 
-def _c(n, t):
-	return t.clone(tagSet=t.tagSet + tag.Tag(tag.tagClassContext, tag.tagFormatSimple, n))
+def _application_tag(tag_value):
+	return univ.Sequence.tagSet.tagExplicitly(
+		tag.Tag(tag.tagClassApplication, tag.tagFormatConstructed,
+				int(tag_value)))
+
+def _vno_component(tag_value, name="pvno"):
+	return _sequence_component(
+		name, tag_value, univ.Integer(),
+		subtypeSpec=constraint.ValueRangeConstraint(5, 5))
+
+class PA_DATA(univ.Sequence):
+	componentType = namedtype.NamedTypes(
+		_sequence_component('padata-type', 1, Int32()),
+		_sequence_component('padata-value', 2, univ.OctetString())
+		)
 
 
 class PrincipalName(univ.Sequence):
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('name-type', _c(0, univ.Integer())),
-		namedtype.NamedType('name-string', _c(1, univ.SequenceOf(componentType=char.GeneralString()))))
+		_sequence_component("name-type", 0, Int32()),
+		_sequence_component("name-string", 1,
+							univ.SequenceOf(componentType=char.GeneralString()))
+							)
 
 
-class KdcReqBody(univ.Sequence):
-	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassContext, tag.tagFormatSimple, 4)
+class KDC_REQ_BODY(univ.Sequence):
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('kdc-options', _c(0, univ.BitString())),
-		namedtype.OptionalNamedType('cname', _c(1, PrincipalName())),
-		namedtype.NamedType('realm', _c(2, char.GeneralString())),
-		namedtype.OptionalNamedType('sname', _c(3, PrincipalName())),
-		namedtype.NamedType('till', _c(5, useful.GeneralizedTime())),
-		namedtype.NamedType('nonce', _c(7, univ.Integer())),
-		namedtype.NamedType('etype', _c(8, univ.SequenceOf(componentType=univ.Integer()))))
+		_sequence_component('kdc-options', 0, univ.BitString()),
+		_sequence_optional_component('cname', 1, PrincipalName()),
+		_sequence_component('realm', 2, char.GeneralString()),
+		_sequence_optional_component('sname', 3, PrincipalName()),
+		_sequence_optional_component('from', 4, useful.GeneralizedTime()),
+		_sequence_component('till', 5, useful.GeneralizedTime()),
+		_sequence_component('nonce', 7, univ.Integer()),
+		_sequence_component('etype', 8,
+							univ.SequenceOf(componentType=Int32())),
+		)
 
-
-class PAData(univ.Sequence):
+class AS_REQ(univ.Sequence):
+	tagSet = _application_tag(constants.ApplicationTagNumbers.AS_REQ.value)
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('padata-type', _c(1, univ.Integer())),
-		namedtype.NamedType('padata-value', _c(2, univ.OctetString())))
+		_vno_component(1),
+		_msg_type_component(2, (constants.ApplicationTagNumbers.AS_REQ.value,
+								constants.ApplicationTagNumbers.TGS_REQ.value)),
+		_sequence_optional_component('padata', 3,
+									 univ.SequenceOf(componentType=PA_DATA())),
+		_sequence_component('req-body', 4, KDC_REQ_BODY())
+		)
+
+def seq_set(seq, name, builder=None, *args, **kwargs):
+	component = seq.setComponentByName(name).getComponentByName(name)
+	if builder is not None:
+		seq.setComponentByName(name, builder(component, *args, **kwargs))
+	else:
+		seq.setComponentByName(name)
+	return seq.getComponentByName(name)
+
+def seq_set_iter(seq, name, iterable):
+	component = seq.setComponentByName(name).getComponentByName(name)
+	for pos, v in enumerate(iterable):
+		component.setComponentByPosition(pos, v)
+
+class SessionError(Exception):
+	"""
+	This is the exception every client should catch regardless of the underlying
+	SMB version used. We'll take care of that. NETBIOS exceptions are NOT included,
+	since all SMB versions share the same NETBIOS instances.
+	"""
+	def __init__( self, error = 0, packet=0):
+		Exception.__init__(self)
+		self.error = error
+		self.packet = packet
+
+	def getErrorCode( self ):
+		return self.error
+
+	def getErrorPacket( self ):
+		return self.packet
+
+	def getErrorString( self ):
+		return nt_errors.ERROR_MESSAGES[self.error]
+
+	def __str__( self ):
+		if self.error in nt_errors.ERROR_MESSAGES:
+			return 'SMB SessionError: %s(%s)' % (nt_errors.ERROR_MESSAGES[self.error])
+		else:
+			return 'SMB SessionError: 0x%x' % self.error
+
+class KerberosError(SessionError):
+	"""
+	This is the exception every client should catch regardless of the underlying
+	SMB version used. We'll take care of that. NETBIOS exceptions are NOT included,
+	since all SMB versions share the same NETBIOS instances.
+	"""
+	def __init__( self, error = 0, packet=0):
+		SessionError.__init__(self)
+		self.error = error
+		self.packet = packet
+		if packet != 0:
+			self.error = self.packet['error-code']
+	   
+	def getErrorCode( self ):
+		return self.error
+
+	def getErrorPacket( self ):
+		return self.packet
+
+	def getErrorString( self ):
+		return constants.ERROR_MESSAGES[self.error]
+
+	def __str__( self ):
+		retString = 'Kerberos SessionError: %s(%s)' % (constants.ERROR_MESSAGES[self.error])
+		try:
+			# Let's try to get the NT ERROR, if not, we quit and give the general one
+			if self.error == constants.ErrorCodes.KRB_ERR_GENERIC.value:
+				eData = decoder.decode(self.packet['e-data'], asn1Spec = KERB_ERROR_DATA())[0]
+				nt_error = struct.unpack('<L', eData['data-value'].asOctets()[:4])[0]
+				retString += '\nNT ERROR: %s(%s)' % (nt_errors.ERROR_MESSAGES[nt_error])
+		except:
+			pass
+
+		return retString
 
 
-class AsReq(univ.Sequence):
-	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 10)
+class KRB_ERROR(univ.Sequence):
+	tagSet = _application_tag(constants.ApplicationTagNumbers.KRB_ERROR.value)
 	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('pvno', _c(1, univ.Integer())),
-		namedtype.NamedType('msg-type', _c(2, univ.Integer())),
-		namedtype.NamedType('padata', _c(3, univ.SequenceOf(componentType=PAData()))),
-		namedtype.NamedType('req-body', KdcReqBody()))
-
-
-class AsRep(univ.Sequence):
-	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 11)
-	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('pvno', _c(0, univ.Integer())),
-		namedtype.NamedType('msg-type', _c(1, univ.Integer()))
-		# some more omitted
-	)
-
-
-class KrbError(univ.Sequence):
-	tagSet = univ.Sequence.tagSet + tag.Tag(tag.tagClassApplication, tag.tagFormatSimple, 30)
-	componentType = namedtype.NamedTypes(
-		namedtype.NamedType('pvno', _c(0, univ.Integer())),
-		namedtype.NamedType('msg-type', _c(1, univ.Integer()))
-		# some more omitted
-	)
-
-
-class KerberosException(Exception):
-	pass
-
-
-class ServerUnreachable(KerberosException):
-	pass
-
-
-class InvalidResponse(KerberosException):
-	pass
-
-
-class EmptyResponse(KerberosException):
-	pass
-
-
-def build_kerberos_request(target_realm, user_name):
-	req_body = KdcReqBody()
-	req_body['kdc-options'] = "'01010000100000000000000000000000'B"
-
-	req_body['cname'] = None
-	req_body['cname']['name-type'] = 1  # NT_PRINCIPAL
-	req_body['cname']['name-string'] = None
-	req_body['cname']['name-string'][0] = user_name
-
-	req_body['realm'] = target_realm
-
-	req_body['sname'] = None
-	req_body['sname']['name-type'] = 2  # NT_SRV_INST
-	req_body['sname']['name-string'] = None
-	req_body['sname']['name-string'][0] = 'krbtgt'
-	req_body['sname']['name-string'][1] = target_realm
-
-	req_body['till'] = '19700101000000Z'
-	req_body['nonce'] = random.SystemRandom().getrandbits(31)
-	req_body['etype'] = None
-	req_body['etype'][0] = 18  # AES256_CTS_HMAC_SHA1_96
-
-	as_req = AsReq()
-	as_req['pvno'] = 5
-	as_req['msg-type'] = 10  # AS-REQ
-	as_req['padata'] = None
-	as_req['req-body'] = req_body
-
-	return pyasn1.codec.der.encoder.encode(as_req)
+		_vno_component(0),
+		_msg_type_component(1, (constants.ApplicationTagNumbers.KRB_ERROR.value,)),
+		_sequence_optional_component('ctime', 2, useful.GeneralizedTime()),
+		_sequence_optional_component('cusec', 3, Microseconds()),
+		_sequence_component('stime', 4, useful.GeneralizedTime()),
+		_sequence_component('susec', 5, Microseconds()),
+		_sequence_component('error-code', 6, Int32()),
+		_sequence_optional_component('crealm', 7, char.GeneralString()),
+		_sequence_optional_component('cname', 8, PrincipalName()),
+		_sequence_component('realm', 9, char.GeneralString()),
+		_sequence_component('sname', 10, PrincipalName()),
+		_sequence_optional_component('e-text', 11, char.GeneralString()),
+		_sequence_optional_component('e-data', 12, univ.OctetString())
+		)
 
 
 def send_and_receive(kdc, port, protocol, as_req):
@@ -215,7 +275,7 @@ def send_and_receive(kdc, port, protocol, as_req):
 	sock.settimeout(1)
 
 	if protocol == 'tcp':
-		packed = struct.pack('>I', len(as_req)) + as_req
+		packed = struct.pack('!i', len(as_req)) + as_req
 	else:
 		packed = as_req
 
@@ -223,6 +283,7 @@ def send_and_receive(kdc, port, protocol, as_req):
 		sock.connect((kdc, port))
 		sock.sendall(packed)
 	except (socket.error, socket.timeout):
+		raise
 		sock.close()
 		raise ServerUnreachable()
 
@@ -246,51 +307,96 @@ def send_and_receive(kdc, port, protocol, as_req):
 
 	return received
 
+def sendReceive(data, host, kdcHost, port, prot):
+	socktype = socket.IPPROTO_IP if prot == 'udp' else socket.SOCK_STREAM
+	if prot == 'tcp':
+		messageLen = struct.pack('!i', len(data))
+	try:
+		outlist = []
+		af, socket_type, proto, canonname, sa = socket.getaddrinfo(kdcHost, port, socket.AF_UNSPEC, socktype)[0]
+		#p =socket.getprotobyname('udp')
+		#p2 =socket.getprotobyname('tcp')
+		s = socket.socket(af, socket_type)
+		s.settimeout(1)
+		s.connect(sa)
+	except socket.error as e:
+		s.close()
+		raise socket.error("Connection error (%s:%s)" % (kdcHost, port), e)
 
-def probe_kdc(kdc, port, protocol, target_realm, user_name):
-	request = build_kerberos_request(target_realm, user_name)
-	if protocol == 'udp':
-		MODULE.process("Trying to contact KDC %s on udp port %d Similar to running: nmap %s -sU -p %d" % (kdc, port, kdc, port))
+	if prot == 'tcp':
+		s.sendall(messageLen + data)
 	else:
-		MODULE.process("Trying to contact KDC %s on tcp port %d Similar to running: nmap %s -sT -p %d" % (kdc, port, kdc, port))
-	try:
-		received = send_and_receive(kdc, port, protocol, request)
-	except KerberosException:
-		return False
+		s.sendall(data)
 
-	if target_realm in received:
-		return True
+	recvDataLen = struct.unpack('!i', s.recv(4))[0]
 
-	return False
-
-	# this no longer works with >= 4.3, ??
-	# I think the new pyasn1 version might need the full asn1Spec to work?:
-	# http://snmplabs.com/pyasn1/changelog.html
-	# Keyword: require strict two-zeros sentinel encoding
-	try:
-		(error, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=KrbError())
-	except pyasn1.error.PyAsn1Error:
-		pass
-	else:
-		return True
+	r = s.recv(recvDataLen)
+	while len(r) < recvDataLen:
+		r += s.recv(recvDataLen-len(r))
 
 	try:
-		(rep, _sub) = pyasn1.codec.der.decoder.decode(received, asn1Spec=AsRep())
-	except pyasn1.error.PyAsn1Error:
-		return False
+		krbError = KerberosError(packet = decoder.decode(r, asn1Spec = KRB_ERROR())[0])
+	except:
+		raise
 
-	return True
+	if krbError.getErrorCode() not in [0, 6, 14, 24, 25, 52, 60]: #!= constants.ErrorCodes.KDC_ERR_PREAUTH_REQUIRED.value:
+		raise krbError
 
+	return r
+
+
+def make_as_req(clientName, password, domain, kdc, port, prot):
+
+	asReq = AS_REQ()
+
+	domain = domain.upper()
+	serverName = Principal('krbtgt/%s'%domain, type=constants.PrincipalNameType.NT_PRINCIPAL.value)  
+
+	asReq['pvno'] = 5
+	asReq['msg-type'] =  int(constants.ApplicationTagNumbers.AS_REQ.value)
+
+	asReq['padata'] = noValue
+	asReq['padata'][0] = noValue
+	asReq['padata'][0]['padata-type'] = int(constants.PreAuthenticationDataTypes.PA_PAC_REQUEST.value)
+	asReq['padata'][0]['padata-value'] = noValue #encodedPacRequest
+
+	reqBody = seq_set(asReq, 'req-body')
+
+	reqBody['kdc-options'] = [0 for i in range(0,32)]
+
+	seq_set(reqBody, 'sname', serverName.components_to_asn1)
+	seq_set(reqBody, 'cname', clientName.components_to_asn1)
+
+	if domain == '':
+		raise Exception('Empty Domain not allowed in Kerberos')
+
+	reqBody['realm'] = domain
+
+	reqBody['till'] = '19700101000000Z'
+	reqBody['nonce'] = random.SystemRandom().getrandbits(31)
+
+
+	supportedCiphers = (int(constants.EncryptionTypes.aes256_cts_hmac_sha1_96.value),)
+
+	seq_set_iter(reqBody, 'etype', supportedCiphers)
+
+	message = encoder.encode(asReq)
+	try:
+		#r = sendReceive(kdc, port, prot)
+		r = sendReceive(message, domain, kdc, port, prot)
+		return r
+	except KerberosError as e:
+		raise
 
 def resolve_kdc_record(protocol, domainname):
-	kerberos_dns_fqdn = '_kerberos._{}.{}'.format(protocol, domainname)
-	try:
-		result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')
-	except dns.exception.DNSException:
-		result = list()
+		kerberos_dns_fqdn = '_kerberos._{}.{}'.format(protocol, domainname)
+		try:
+			result = dns.resolver.query(kerberos_dns_fqdn, 'SRV')
+		except dns.exception.DNSException:
+			result = list()
 
-	for record in result:
-		yield (record.target.to_text(True), record.port, protocol)
+		for record in result:
+			yield (record.target.to_text(True), record.port, protocol)
 
 
 def run(_umc_instance, retest=False):
@@ -298,72 +404,26 @@ def run(_umc_instance, retest=False):
 	configRegistry.load()
 
 	target_realm = configRegistry.get('kerberos/realm')
-	user_name = 'kdc-reachability-check'
+	username = 'kdc-reachability-check'
 
 	kdc_fqds = configRegistry.get('kerberos/kdc', '').split()
-	dns_lookup_kdc = configRegistry.is_true('kerberos/defaults/dns_lookup_kdc', True)
+	ns_lookup_kdc = configRegistry.is_true('kerberos/defaults/dns_lookup_kdc', True)
+
 	if not kdc_fqds or dns_lookup_kdc:
-		domainname = configRegistry.get('domainname')
-		kdc_to_check = list(resolve_kdc_record('tcp', domainname))
-		kdc_to_check.extend(resolve_kdc_record('udp', domainname))
+			domainname = configRegistry.get('domainname')
+			kdc_to_check = list(resolve_kdc_record('tcp', domainname))
+			kdc_to_check.extend(resolve_kdc_record('udp', domainname))
 	else:
 		kdc_to_check = [(kdc, 88, 'tcp') for kdc in kdc_fqds]
 		kdc_to_check.extend((kdc, 88, 'udp') for kdc in kdc_fqds)
+	username = Principal(username, type=1)
+	r = make_as_req(username, '', target_realm, kdc_to_check[1][0], kdc_to_check[1][1], kdc_to_check[0][2])
+#	for kdc, port, prot in kdc_to_check:
+#		r = make_as_req(username, '', target_realm, kdc, port, prot)
 
-	kdc_reachabe = [(probe_kdc(kdc, port, protocol, target_realm, user_name), (kdc, port, protocol)) for (kdc, port, protocol) in kdc_to_check]
-	reachable_kdc = [
-		(kdc, port, protocol) for (reachable, (kdc, port, protocol))
-		in kdc_reachabe if reachable]
-	unreachable_kdc = [
-		(kdc, port, protocol) for (reachable, (kdc, port, protocol))
-		in kdc_reachabe if not reachable]
-
-	error_descriptions = list()
-
-	if unreachable_kdc:
-		error = _('The following KDCs were unreachable: {}')
-		unreach_string = ('{} {}:{}'.format(protocol, kdc, port) for (kdc, port, protocol) in unreachable_kdc)
-		error_descriptions.append(error.format(', '.join(unreach_string)))
-
-	if not reachable_kdc:
-		is_dc = configRegistry.get('server/role') == 'domaincontroller_master'
-		is_s4_dc = is_dc and util.is_service_active('Samba 4')
-		if is_s4_dc and configRegistry.is_true('samba/interfaces/bindonly', False):
-			local_included = False
-			for interface in configRegistry.get('samba/interfaces', '').split():
-				try:
-					addr = ipaddr.IPAddress(interface)
-				except ValueError:
-					local_included |= interface == 'lo'
-				else:
-					local_included |= addr.is_loopback or addr.is_unspecified
-			if not local_included:
-				error = _('samba/interfaces does not contain lo, 127.0.0.1 or 0.0.0.0.')
-				error_descriptions.append(error)
-
-			description = '\n'.join(error_descriptions)
-			buttons = [{
-				'action': 'add_lo_to_samba_interfaces',
-				'label': _('Add lo to samba/interfaces'),
-			}, {
-				'action': 'reset_kerberos_kdc',
-				'label': _('Reset kerberos/kdc to 127.0.0.1'),
-			}]
-			raise Critical(description=description, buttons=buttons)
-
-		error_descriptions.append(_('No reachable KDCs were found.'))
-		description = '\n'.join(error_descriptions)
-		raise Critical(description=description)
-
-	if error_descriptions:
-		error = '\n'.join(error_descriptions)
-		MODULE.error(error)
-		raise Warning(description=error)
-
-	if retest:
-		raise ProblemFixed()
 
 
 if __name__ == '__main__':
 	from univention.management.console.modules.diagnostic import main
 	main()
+
