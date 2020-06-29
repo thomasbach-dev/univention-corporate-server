@@ -81,6 +81,52 @@ Warnung: Diese Datei wurde automatisch generiert und kann durch
 '''  # noqa: E101
 
 
+def run_python2(code):
+	proc = subprocess.Popen(
+		('/usr/bin/python2',),
+		stdin=subprocess.PIPE,
+		stdout=subprocess.PIPE,
+		close_fds=True)
+	stdout, stderr = proc.communicate(('''\
+# -*- coding: utf-8 -*-
+import univention.config_registry
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+# for compatibility
+baseConfig = configRegistry
+%s
+''' % code).encode('UTF-8'))
+	if stdout:
+		stdout = stdout.decode('UTF-8')
+	if stderr:
+		stderr = stderr.decode('UTF-8')
+	return stdout, stderr, proc.returncode
+
+def run_python(code):
+	proc = subprocess.Popen(
+		(sys.executable,),
+		stdin=subprocess.PIPE,
+		stdout=subprocess.PIPE,
+		stderr=subprocess.PIPE,
+		close_fds=True, universal_newlines=six.PY3)
+	stdout, stderr = proc.communicate('''\
+# -*- coding: utf-8 -*-
+import univention.config_registry
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
+# for compatibility
+baseConfig = configRegistry
+%s
+''' % (code,))
+	if proc.returncode != 0:
+		stdout2, stderr2, rc = run_python2(code)
+		if rc == 0:
+			stdout = stdout2
+			stderr = stderr2
+	if stderr:
+		print(stderr, file=sys.stderr)
+	return stdout
+
 def run_filter(template, directory, srcfiles=set(), opts=dict()):
 	# type: (str, _UCR, Iterable[str], _OPT) -> str
 	"""
@@ -127,19 +173,7 @@ def run_filter(template, directory, srcfiles=set(), opts=dict()):
 			start = next(i)
 			end = next(i)
 
-			proc = subprocess.Popen(
-				(sys.executable,),
-				stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-				close_fds=True, universal_newlines=six.PY3)
-			value = proc.communicate('''\
-# -*- coding: utf-8 -*-
-import univention.config_registry
-configRegistry = univention.config_registry.ConfigRegistry()
-configRegistry.load()
-# for compatibility
-baseConfig = configRegistry
-%s
-''' % template[start.end():end.start()])[0]
+			value = run_python(template[start.end():end.start()])
 			template = template[:start.start()] + value + template[end.end():]
 
 		except StopIteration:
