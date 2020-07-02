@@ -106,6 +106,7 @@ declare -a cmd=("$exe" -c "$CFG")
 "$SHUTDOWN" && cmd+=("-s")
 # shellcheck disable=SC2123
 PATH="./ucs-ec2-tools${PATH:+:$PATH}"
+export PYTHONPATH="./ucs-ec2-tools"
 echo "starting test with ${cmd[*]}"
 echo "	CURRENT_AMI=$CURRENT_AMI"
 echo "	OLD_AMI=$OLD_AMI"
