@@ -96,6 +96,7 @@ if "$KVM"; then
 else
 	exe='ucs-ec2-create'
 fi
+exe='ucs-kvm-create'
 
 # start the test
 declare -a cmd=("$exe" -c "$CFG")
