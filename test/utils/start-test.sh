@@ -134,5 +134,7 @@ echo "	REPLACE=$REPLACE"
 echo "	UCSSCHOOL_BRANCH=$UCSSCHOOL_BRANCH"
 echo "	UCS_BRANCH=$UCS_BRANCH"
 
+python -c 'import univention.ec2.lib; print(univention.ec2.lib)'
+
 "${cmd[@]}" &&
 	[ -e "./COMMAND_SUCCESS" ]
