@@ -458,18 +458,22 @@ class Instance(Base):
 			}
 		return res
 
-	@forward_to_master
 	@sanitize(
-		username=StringSanitizer(required=True, minimum=1),
-		password=StringSanitizer(required=True, minimum=1))
+		username=StringSanitizer(required=False, minimum=1),
+		password=StringSanitizer(required=False, minimum=1))
 	@simple_response
-	def set_user_attributes(self, username, password, attributes):
-		dn, username = self.auth(username, password)
+	def set_user_attributes(self, username=None, password=None, attributes=None):
+		username = username or self.username
+		if password:
+			dn, username = self.auth(username, password)
+			lo, po = get_user_connection(binddn=dn, bindpw=password)
+		else:
+			lo = self.get_user_ldap_connection()
+			po = univention.admin.uldap.position(lo.base)
 		if self.is_blacklisted(username, 'profiledata'):
 			raise ServiceForbidden()
 
 		user_attributes = [attr.strip() for attr in ucr.get('self-service/udm_attributes', '').split(',')]
-		lo, po = get_user_connection(binddn=dn, bindpw=password)
 		user = self.usersmod.object(None, lo, po, dn)
 		user.open()
 		for propname, value in attributes.items():
