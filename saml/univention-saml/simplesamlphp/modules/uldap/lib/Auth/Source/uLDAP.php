@@ -53,6 +53,8 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		assert('is_string($username)');
 		assert('is_string($password)');
 
+		$password = $this->checkPasswordChange($username, $password);
+
 		try {
 			$attributes = $this->ldapConfig->login($username, $password, $sasl_args);
 		} catch (SimpleSAML_Error_Error $e) {
@@ -67,6 +69,43 @@ class sspmod_uldap_Auth_Source_uLDAP extends sspmod_core_Auth_UserPassBase {
 		$this->throw_selfservice_login_errors($attributes);
 		return $attributes;
 
+	}
+
+	private function checkPasswordChange($username, $password) {
+		if (!isset($_POST['new_password'])) {
+			return $password;
+		}
+		$new_password = $_POST['new_password'];
+		assert('is_string($new_password)');
+
+		$config = SimpleSAML_Configuration::getInstance();
+		$language = new \SimpleSAML\Locale\Language($config);
+		$url = 'https://' . $config->getValue('hostfqdn') . '/univention/auth';
+		$data =  json_encode(array("options" => array("username" => $username, "password" => $password, "new_password" => $new_password)));
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', sprintf('Accept-Language: %s; q=1, en; q=0.5', $language->getLanguage())));
+		curl_setopt($ch, CURLOPT_USERAGENT, 'simplesamlphp');
+		curl_setopt($ch, CURLOPT_REFERER, 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+		curl_setopt($ch, CURLOPT_POST, TRUE);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		$response = curl_exec($ch);
+		if ($response === FALSE) {
+			SimpleSAML\Logger::debug('Error: ' . curl_error($ch));
+		}
+		$httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+		SimpleSAML\Logger::debug('Password changing response: ' . var_export(array($httpcode, $response), true));
+		if (FALSE !== $response && strpos(curl_getinfo($ch, CURLINFO_CONTENT_TYPE), 'application/json') >= 0) {
+			$response = json_decode($response, TRUE);
+		} else {
+			$response = array('message' => $response);
+		}
+		if ($httpcode !== 200) {
+			throw new SimpleSAML_Error_Error(array('PW_CHANGE_FAILED', '%s' => $response['message']));
+		}
+		curl_close($ch);
+		return $new_password;
 	}
 
 

@@ -5,6 +5,12 @@
 	"descr_WRONGUSERPASS": {
 		"de": "Entweder es konnte kein Nutzer mit dem angegebenen Nutzernamen gefunden werden oder das Passwort ist falsch. \u00dcberpr\u00fcfen Sie die Zugangsdaten und probieren Sie es nochmal"
 	},
+	"title_PW_CHANGE_FAILED": {
+		"de": "Passwort ändern fehlgeschlagen"
+	},
+	"descr_PW_CHANGE_FAILED": {
+		"de": "%s"
+	},
 	"title_LDAP_ACCDISABLED": {
 		"de": "Account deaktiviert"
 	},

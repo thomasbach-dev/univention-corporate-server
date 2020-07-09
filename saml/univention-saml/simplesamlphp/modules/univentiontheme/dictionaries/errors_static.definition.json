@@ -5,6 +5,12 @@
 	"descr_WRONGUSERPASS": {
 		"en": "Either no user with the given username could be found, or the password you gave was wrong. Please check the username and try again."
 	},
+	"title_PW_CHANGE_FAILED": {
+		"en": "Changing password failed"
+	},
+	"descr_PW_CHANGE_FAILED": {
+		"en": "%s"
+	},
 	"title_LDAP_ACCDISABLED": {
 		"en": "Account disabled"
 	},
