@@ -408,6 +408,7 @@ class Server(signals.Provider):
 		categoryManager.load()
 		RESOURCES.info('Reloading UCR variables')
 		ucr.load()
+		Server.analyse_memory()
 
 	@staticmethod
 	def analyse_memory():
@@ -436,6 +437,18 @@ class Server(signals.Provider):
 		CORE.warn('')
 		for component in components:
 			CORE.warn('%s: %d' % (component, len(objgraph.by_type('univention.management.console.%s' % (component,)))))
+
+		CORE.error('GROWTH:\n%s' % (objgraph.show_growth(limit=3),))
+		#for backref in ('protocol.message.Message', 'protocol.message.Request', 'module.Command'):
+		backrefs = ('pam.PamAuth',)
+		backrefs = ('protocol.session.SessionHandler',)
+		for backref in backrefs:
+			try:
+				obj = objgraph.by_type('univention.management.console.%s' % (backref,))[0]
+			except IndexError:
+				pass
+			else:
+				objgraph.show_backrefs([obj], max_depth=3)
 
 
 class State(object):
