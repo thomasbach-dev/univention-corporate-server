@@ -171,19 +171,18 @@ class ProcessorBase(Base):
 		self._password = password
 		self.auth_type = auth_type
 		self._search_user_dn()
-		self._reload_acls_and_permitted_commands()
+		try:
+			if self.acls is None:
+				self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
+			self._reload_acls_and_permitted_commands()
+		except (ldap.LDAPError, udm_errors.ldapError):
+			reset_ldap_connection_cache(self.lo)
+			raise
 		self.update_module_passwords()
 
 	def _reload_acls_and_permitted_commands(self):
-		self._reload_acls()
+		self.acls.reload()
 		self.__command_list = moduleManager.permitted_commands(ucr['hostname'], self.acls)
-
-	def _reload_acls(self):
-		try:
-			self.acls = LDAP_ACLs(self.lo, self._username, ucr['ldap/base'])
-		except (ldap.LDAPError, udm_errors.ldapError):
-			reset_ldap_connection_cache()
-			raise
 
 	def _reload_i18n(self):
 		self.i18n.set_locale(str(self.i18n.locale))
@@ -928,15 +927,13 @@ class SessionHandler(ProcessorBase):
 		self.authenticated = False
 		self.__credentials = None
 		self.__locale = None
+		# All unauthenticated requests are passed here. We need to set empty ACL's
+		self.acls = ACLs()
 		self._reload_acls_and_permitted_commands()
 
 	def has_active_module_processes(self):
 		if self.processor:
 			return self.processor._ProcessorBase__processes
-
-	def _reload_acls(self):
-		"""All unauthenticated requests are passed here. We need to set empty ACL's"""
-		self.acls = ACLs()
 
 	def error_handling(self, etype, exc, etraceback):
 		super(SessionHandler, self).error_handling(etype, exc, etraceback)
