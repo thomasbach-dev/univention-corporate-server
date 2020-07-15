@@ -35,6 +35,8 @@ from __future__ import print_function
 import os
 import re
 
+import univention.fstab
+
 
 class File(list):
 	"""
@@ -56,13 +58,14 @@ class File(list):
 		"""
 		Load entries from file.
 		"""
-		fd = open(self.__file, 'r')
-		for line in fd.readlines():
-			if File._is_comment(line):
-				self.append(line[:-1])
-			elif line.strip():
-				self.append(self.__parse(line))
-		fd.close()
+		fstab = univention.fstab.fstab(self.__file)
+		for i in range(len(fstab)):
+			entry = fstab[i]
+			if not isinstance(entry, (str, bytes)):
+				entry = self.__parse(entry)
+			elif entry.strip() and not entry.strip().startswith('#'):
+				raise InvalidEntry('The following is not a valid fstab entry: %s' % (entry,))  # TODO
+			self.append(entry)
 
 	def find(self, **kargs):
 		# type: (**str) -> Optional[Entry]
@@ -131,25 +134,7 @@ class File(list):
 		:rtype: Entry
 		:raises InvalidEntry: if the line cannot be parsed.
 		"""
-		fields = line.split(None, 7)
-		if len(fields) < 4:
-			raise InvalidEntry('The following is not a valid fstab entry: %s' % line)  # TODO
-		entry = Entry(*fields[: 4])
-		if len(fields) > 4:
-			dump = fields[4]
-			if not File._is_comment(dump):
-				entry.dump = int(dump)
-			else:
-				entry.comment = dump
-		if len(fields) > 5:
-			passno = fields[5]
-			if not File._is_comment(passno):
-				entry.passno = int(passno)
-			else:
-				entry.comment = passno
-		if len(fields) > 6:
-			entry.comment = ' '.join(fields[6:])
-		return entry
+		return Entry(line.fsname, line.dir, line.type, line.opts, line.freq, line.passno, ('#' + line.comment if line.comment else ''))
 
 
 class Entry(object):
@@ -168,7 +153,7 @@ class Entry(object):
 	:ivar str uuid: The file system |UUID| if the file system is mounted by it. Otherwise `None`.
 	"""
 
-	def __init__(self, spec, mount_point, type, options, dump=0, passno=0, comment=''):
+	def __init__(self, spec, mount_point, type, options, dump=None, passno=None, comment=''):
 		# type: (str, str, str, str, int, int, str) -> None
 		self.spec = spec.strip()
 		if self.spec.startswith('UUID='):
@@ -180,12 +165,15 @@ class Entry(object):
 			self.uuid = None
 		self.mount_point = mount_point.strip()
 		self.type = type.strip()
-		self.options = options.split(',')
-		self.dump = int(dump)
-		self.passno = int(passno)
+		self.options = options.split(',') if not isinstance(options, list) else options
+		self.dump = int(dump) if dump else dump
+		self.passno = int(passno) if passno else passno
 		self.comment = comment
 
 	def __str__(self):
+		entry = univention.fstab.mntent('UUID=%s' % self.uuid if self.uuid else self.spec, self.mount_point, self.type, freq=self.dump, passno=self.passno, comment=self.comment)
+		entry.opts = self.options
+		return str(entry)
 		if self.uuid:
 			return 'UUID=%s\t%s\t%s\t%s\t%d\t%d\t%s' % (self.uuid, self.mount_point, self.type, ','.join(self.options), self.dump, self.passno, self.comment)
 		else:

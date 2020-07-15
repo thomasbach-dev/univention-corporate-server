@@ -43,7 +43,7 @@ class mntent(object):
 		self.fsname = mntent.unquote(fsname)
 		self.dir = mntent.unquote(dir)
 		self.type = mntent.unquote(type)
-		self.opts = mntent.unquote(opts).split(',')
+		self.opts = mntent.unquote(opts).split(',') if opts is not None else []
 		try:
 			self.freq = int(freq)
 		except ValueError:
@@ -172,9 +172,13 @@ class fstab(object):
 				if line.startswith('#'):
 					self.__cache.append(line)
 				else:
-					fields = line.split(None, 6)
-					ent = mntent(*fields)
-					self.__cache.append(ent)
+					line, has_comment, comment = line.partition('#')
+					fields = line.split(None, 5)
+					if len(fields) < 4:
+						self.__cache.append(line)
+					else:
+						ent = mntent(*fields, comment=comment)
+						self.__cache.append(ent)
 		finally:
 			f.close()
 
