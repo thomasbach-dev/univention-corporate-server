@@ -1,4 +1,4 @@
-#!/usr/bin/python2.7
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
@@ -41,6 +41,8 @@ import functools
 import inspect
 import locale
 from json import load
+
+import six
 
 from univention.management.console import Translation
 from univention.management.console.protocol.definitions import BAD_REQUEST_UNAUTH
@@ -360,13 +362,13 @@ class UDM_Error(Exception):
 
 	def reraise(self):
 		if self.exc_info and self.exc_info != (None, None, None):
-			raise self.__class__, self, self.exc_info[2]
+			six.reraise(self.__class__, self, self.exc_info[2])
 		raise self
 
 	def __str__(self):
 		msg = getattr(self.exc, 'message', '')
 		for arg in self.exc.args:
-			if isinstance(arg, unicode):
+			if six.PY2 and isinstance(arg, unicode):  # noqa: F821
 				arg = arg.encode('utf-8')
 			if str(arg) not in msg:
 				msg = '%s %s' % (msg, arg)
@@ -671,9 +673,9 @@ class UDM_Module(object):
 					result = []
 				else:
 					if simple_attrs is not None:
-						result = ldap_connection.search(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
+						result = ldap_connection.search(filter=six.text_type(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, attr=simple_attrs, serverctrls=serverctrls, response=response)
 					else:
-						result = ldap_connection.searchDn(filter=unicode(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
+						result = ldap_connection.searchDn(filter=six.text_type(lookup_filter), base=container, scope=scope, sizelimit=sizelimit, serverctrls=serverctrls, response=response)
 			else:
 				if self.module:
 					kwargs = {}
@@ -931,7 +933,7 @@ class UDM_Module(object):
 					_scanLayout(ielement)
 			elif isinstance(_layout, dict) and 'layout' in _layout:
 				_scanLayout(_layout['layout'])
-			elif isinstance(_layout, basestring):
+			elif isinstance(_layout, six.string_types):
 				inLayout.add(_layout)
 		_scanLayout(self.get_layout(ldap_dn))
 
