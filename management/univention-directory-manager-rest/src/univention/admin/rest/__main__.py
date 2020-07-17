@@ -114,7 +114,7 @@ class Server(object):
 			raise
 
 	def signal_handler_stop(self, server, sig, frame):
-		io_loop = tornado.ioloop.IOLoop.instance()
+		io_loop = tornado.ioloop.IOLoop.instance().asyncio_loop
 
 		def stop_loop(deadline):
 			now = time.time()

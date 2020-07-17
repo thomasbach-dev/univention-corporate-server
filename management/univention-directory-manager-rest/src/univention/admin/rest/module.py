@@ -137,7 +137,7 @@ class RequestSanitizer(DictSanitizer):
 
 	def sanitize(self, resource, *args, **kwargs):
 		payload = {
-			'query_string': resource.request.query_arguments or {},
+			'query_string': dict((k, [v.decode('UTF-8') for v in val]) for k, val in resource.request.query_arguments.items()) if resource.request.query_arguments else {},
 			'body_arguments': resource.request.body_arguments or {},
 			'__resource': resource,
 			'__args': args,
@@ -148,7 +148,7 @@ class RequestSanitizer(DictSanitizer):
 		if isinstance(payload['body_arguments'], dict):
 			payload['body_arguments']['__resource'] = resource
 		value = super(RequestSanitizer, self).sanitize('request.arguments', {'request.arguments': payload, 'resource': resource})
-		resource.request.query_arguments = value['query_string']
+		resource.request.decoded_query_arguments = value['query_string']
 		resource.request.body_arguments = value['body_arguments']
 		return value
 
@@ -232,10 +232,10 @@ class PropertiesSanitizer(DictSanitizer):
 		# The following code is a workaround to make sure that this is the
 		# case, however, this should be fixed correctly.
 		# This workaround has been documented as Bug #25163.
-		def _tmp_cmp(i, j):
+		def _tmp_cmp(i):
 			if i[0] == 'network':
-				return -1
-			return 0
+				return ("\x00", i[1])
+			return i
 		properties = resource.request.body_arguments['properties']
 		# TODO: add sanitizer for e.g. required properties (respect options!)
 
@@ -250,7 +250,7 @@ class PropertiesSanitizer(DictSanitizer):
 			self.default_sanitizer._obj = None
 
 		password_properties = module.password_properties
-		for property_name, value in sorted(properties.items(), _tmp_cmp):
+		for property_name, value in sorted(properties.items(), key=_tmp_cmp):
 			if property_name in password_properties:
 				MODULE.info('Setting password property %s' % (property_name,))
 			else:
@@ -377,6 +377,7 @@ class ResourceBase(object):
 	def prepare(self):
 		self.request.content_negotiation_lang = 'html'
 		self.request.path_decoded = unquote(self.request.path)
+		self.request.decoded_query_arguments = self.request.query_arguments.copy()
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
 			if self.requires_authentication:
@@ -1132,10 +1133,10 @@ class OpenAPI(Resource):
 		}
 
 		def global_response_headers(responses={}):
-			return dict(_global_response_headers, **responses)
+			return dict(_global_response_headers, **dict((str(k), v) for k, v in responses.items()))
 
 		def global_responses(responses):
-			return dict(_global_responses, **responses)
+			return dict(_global_responses, **dict((str(k), v) for k, v in responses.items()))
 
 		base_object_definition = {
 			"dn": {
@@ -1797,7 +1798,7 @@ class ObjectTypes(Resource):
 		module = None
 		if '/' in object_type:
 			# FIXME: what was/is the superordinate for?
-			superordinate = self.request.query_arguments['superordinate']
+			superordinate = self.request.decoded_query_arguments['superordinate']
 			module = UDM_Module(object_type, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
 			if superordinate:
 				module = get_module(object_type, superordinate, self.ldap_connection) or module  # FIXME: the object_type param is wrong?!
@@ -2004,7 +2005,7 @@ class Tree(ContainerQueryBase):
 	@tornado.gen.coroutine
 	def get(self, object_type):
 		ldap_base = ucr['ldap/base']
-		container = self.request.query_arguments['container']
+		container = self.request.decoded_query_arguments['container']
 
 		modules = container_modules()
 		scope = 'one'
@@ -2030,7 +2031,7 @@ class MoveDestinations(ContainerQueryBase):
 	def get(self, object_type):
 		scope = 'one'
 		modules = container_modules()
-		container = self.request.query_arguments['container']
+		container = self.request.decoded_query_arguments['container']
 		if not container:
 			scope = 'base'
 
@@ -2332,25 +2333,25 @@ class Objects(FormBase, ReportingBase):
 		result = self._options(object_type)
 
 		search = bool(self.request.query)
-		container = self.request.query_arguments['position']
-		hidden = self.request.query_arguments['hidden']
-		ldap_filter = self.request.query_arguments['filter']
-		scope = self.request.query_arguments['scope']
-		properties = self.request.query_arguments['properties'][:]
-		direction = self.request.query_arguments['dir']
-		property_ = self.request.query_arguments['property']
+		container = self.request.decoded_query_arguments['position']
+		hidden = self.request.decoded_query_arguments['hidden']
+		ldap_filter = self.request.decoded_query_arguments['filter']
+		scope = self.request.decoded_query_arguments['scope']
+		properties = self.request.decoded_query_arguments['properties'][:]
+		direction = self.request.decoded_query_arguments['dir']
+		property_ = self.request.decoded_query_arguments['property']
 		reverse = direction == 'DESC'
-		by = self.request.query_arguments['by']
-		page = self.request.query_arguments['page']
-		items_per_page = self.request.query_arguments['limit']
+		by = self.request.decoded_query_arguments['by']
+		page = self.request.decoded_query_arguments['page']
+		items_per_page = self.request.decoded_query_arguments['limit']
 
 		if not ldap_filter:
-			filters = filter(None, [(_object_property_filter(module, attribute or property_ or None, value, hidden)) for attribute, value in self.request.query_arguments['query'].items()])
+			filters = filter(None, [(_object_property_filter(module, attribute or property_ or None, value, hidden)) for attribute, value in self.request.decoded_query_arguments['query'].items()])
 			if filters:
 				ldap_filter = six.text_type(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 
 		# TODO: replace the superordinate concept with container
-		superordinate = self.superordinate_dn_to_object(module, self.request.query_arguments['superordinate'])
+		superordinate = self.superordinate_dn_to_object(module, self.request.decoded_query_arguments['superordinate'])
 		if superordinate:
 			container = container or superordinate.dn
 
@@ -2410,7 +2411,7 @@ class Objects(FormBase, ReportingBase):
 			search_layout.append(['superordinate'])
 		searchable_properties = [{'value': '', 'label': _('Defaults')}] + [{'value': prop['id'], 'label': prop['label']} for prop in module.properties(None) if prop.get('searchable')]
 		self.add_form_element(form, 'property', property_ or '', element='select', options=searchable_properties, label=_('Property'))
-		self.add_form_element(form, 'query[]', self.request.query_arguments['query'].get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
+		self.add_form_element(form, 'query[]', self.request.decoded_query_arguments['query'].get('', '*'), label=_('Search for'), placeholder=_('Search value (e.g. *)'))
 		self.add_form_element(form, 'scope', scope, element='select', options=[{'value': 'sub'}, {'value': 'one'}, {'value': 'base'}, {'value': 'base+one'}], label=_('Search scope'))
 		self.add_form_element(form, 'hidden', '1', type='checkbox', checked=bool(hidden), label=_('Include hidden objects'))
 		search_layout.append(['property', 'query[]'])
@@ -2675,7 +2676,7 @@ class Object(FormBase, Resource):
 		return props
 
 	def set_metadata(self, obj):  # FIXME: move into UDM core!
-		obj.oldattr.update(self.ldap_connection.get(obj.dn, attr=[b'+']))
+		obj.oldattr.update(self.ldap_connection.get(obj.dn, attr=['+']))
 
 	def set_entity_tags(self, obj):
 		self.set_header('Etag', self.get_etag(obj))
@@ -2876,23 +2877,29 @@ class Object(FormBase, Resource):
 	def handle_udm_errors(self, action):
 		try:
 			exists_msg = None
-			exc = None
+			error = None
 			try:
 				return action()
 			except udm_errors.objectExists as exc:
 				exists_msg = 'dn: %s' % (exc.args[0],)
-			except udm_errors.uidAlreadyUsed:
+				error = exc
+			except udm_errors.uidAlreadyUsed as exc:
 				exists_msg = '(uid)'
-			except udm_errors.groupNameAlreadyUsed:
+				error = exc
+			except udm_errors.groupNameAlreadyUsed as exc:
 				exists_msg = '(group)'
-			except udm_errors.dhcpServerAlreadyUsed:
+				error = exc
+			except udm_errors.dhcpServerAlreadyUsed as exc:
 				exists_msg = '(dhcpserver)'
-			except udm_errors.macAlreadyUsed:
+				error = exc
+			except udm_errors.macAlreadyUsed as exc:
 				exists_msg = '(mac)'
-			except udm_errors.noLock:
+				error = exc
+			except udm_errors.noLock as exc:
 				exists_msg = '(nolock)'
-			if exists_msg and exc:
-				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(exc))))
+				error = exc
+			if exists_msg and error:
+				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(error))))
 		except (udm_errors.pwQuality, udm_errors.pwToShort, udm_errors.pwalreadyused) as exc:
 			self.raise_sanitization_error('password', str(UDM_Error(exc)))
 		except udm_errors.invalidOptions as exc:
@@ -2963,8 +2970,8 @@ class Object(FormBase, Resource):
 		if not module:
 			raise NotFound(object_type)
 
-		cleanup = bool(self.request.query_arguments['cleanup'])
-		recursive = bool(self.request.query_arguments['recursive'])
+		cleanup = bool(self.request.decoded_query_arguments['cleanup'])
+		recursive = bool(self.request.decoded_query_arguments['recursive'])
 		try:
 			yield self.pool.submit(module.remove, dn, cleanup, recursive)
 		except udm_errors.primaryGroupUsed:
@@ -3003,7 +3010,7 @@ class Object(FormBase, Resource):
 		safe_request = self.request.method in ('GET', 'HEAD', 'OPTIONS')
 
 		def wheak(x):
-			return x[2:] if x.startswith(b'W/') else x
+			return x[2:] if x.startswith('W/') else x
 		etag_matches = re.compile(r'\*|(?:W/)?"[^"]*"')
 
 		def check_conditional_request_if_none_match():
@@ -3104,8 +3111,8 @@ class ObjectAdd(FormBase, Resource):
 		self.add_link(result, 'self', self.urljoin(''), title=_('Add %s') % (module.object_name,))
 		template = None
 		if module.template:
-			template = self.request.query_arguments.get('template')
-		result.update(self.get_create_form(module, template=template, position=self.request.query_arguments.get('position'), superordinate=self.request.query_arguments.get('superordinate')))
+			template = self.request.decoded_query_arguments.get('template')
+		result.update(self.get_create_form(module, template=template, position=self.request.decoded_query_arguments.get('position'), superordinate=self.request.decoded_query_arguments.get('superordinate')))
 
 		if module.template:
 			template = UDM_Module(module.template, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position)
@@ -3203,7 +3210,7 @@ class ObjectCopy(ObjectAdd):
 
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('Copy %s') % (module.object_name,))
-		result.update(self.get_create_form(module, dn=self.request.query_arguments['dn'], copy=True))
+		result.update(self.get_create_form(module, dn=self.request.decoded_query_arguments['dn'], copy=True))
 		self.add_caching(public=True, must_revalidate=True)
 		self.content_negotiation(result)
 
@@ -3355,7 +3362,7 @@ class PolicyResultBase(Resource):
 		"""Returns a virtual policy object containing the values that
 		the given object or container inherits"""
 
-		policy_dn = self.request.query_arguments['policy']
+		policy_dn = self.request.decoded_query_arguments['policy']
 
 		if is_container:
 			# editing a new (i.e. non existing) object -> use the parent container
@@ -3441,7 +3448,7 @@ class PolicyResultContainer(PolicyResultBase):
 	)
 	@tornado.gen.coroutine
 	def get(self, object_type, policy_type):
-		container = self.request.query_arguments['position']
+		container = self.request.decoded_query_arguments['position']
 		infos = yield self._get(object_type, policy_type, container, is_container=True)
 		self.add_caching(public=False, no_cache=True, must_revalidate=True, no_store=True)
 		self.content_negotiation(infos)
@@ -3488,7 +3495,7 @@ class LicenseRequest(Resource):
 	@tornado.gen.coroutine
 	def get(self):
 		data = {
-			'email': self.request.query_arguments['email'],
+			'email': self.request.decoded_query_arguments['email'],
 			'licence': dump_license(),
 		}
 		if not data['licence']:
