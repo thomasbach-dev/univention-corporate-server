@@ -44,7 +44,6 @@ import copy
 import uuid
 import zlib
 import base64
-import httplib
 import hashlib
 import binascii
 import datetime
@@ -54,6 +53,7 @@ from email.utils import parsedate
 
 import six
 from six.moves.urllib.parse import urljoin, urlparse, urlencode, urlunparse, parse_qs, quote, unquote
+from six.moves.http_client import responses
 
 import tornado.web
 import tornado.gen
@@ -850,7 +850,7 @@ class ResourceBase(object):
 			if status_code == 503:
 				self.add_header('Retry-After', '15')
 			if title == message:
-				title = httplib.responses.get(status_code)
+				title = responses.get(status_code)
 			if isinstance(exc.result, dict):
 				result = exc.result
 		if isinstance(exc, UnprocessableEntity):
@@ -1759,7 +1759,7 @@ class Modules(Resource):
 	def get(self):
 		result = {}
 		self.add_link(result, 'self', self.urljoin(''), title=_('All modules'))
-		for main_type, name in sorted(self.mapping.items(), key=lambda x: 0 if x[0] == 'navigation' else x[0]):
+		for main_type, name in sorted(self.mapping.items(), key=lambda x: "\x00" if x[0] == 'navigation' else x[0]):
 			title = _('All %s types') % (name,)
 			if '/' in name:
 				title = UDM_Module(name, ldap_connection=self.ldap_connection, ldap_position=self.ldap_position).object_name_plural
