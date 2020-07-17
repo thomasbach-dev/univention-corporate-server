@@ -34,7 +34,6 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
 import re
@@ -44,7 +43,6 @@ import time
 import copy
 import uuid
 import zlib
-import urllib
 import base64
 import httplib
 import hashlib
@@ -53,10 +51,9 @@ import datetime
 import traceback
 import functools
 from email.utils import parsedate
-from urlparse import urljoin, urlparse, urlunparse, parse_qs
-from urllib import quote, unquote
 
 import six
+from six.moves.urllib.parse import urljoin, urlparse, urlencode, urlunparse, parse_qs, quote, unquote
 
 import tornado.web
 import tornado.gen
@@ -379,7 +376,7 @@ class ResourceBase(object):
 
 	def prepare(self):
 		self.request.content_negotiation_lang = 'html'
-		self.request.path_decoded = urllib.unquote(self.request.path)
+		self.request.path_decoded = unquote(self.request.path)
 		authorization = self.request.headers.get('Authorization')
 		if not authorization:
 			if self.requires_authentication:
@@ -401,7 +398,7 @@ class ResourceBase(object):
 		try:
 			if not authorization.lower().startswith('basic '):
 				raise ValueError()
-			username, password = base64.decodestring(authorization.split(' ', 1)[1]).split(':', 1)
+			username, password = base64.b64decode(authorization.split(' ', 1)[1].encode('ISO8859-1')).decode('ISO8859-1').split(':', 1)
 		except (ValueError, IndexError, binascii.Error):
 			raise HTTPError(400)
 
@@ -419,7 +416,7 @@ class ResourceBase(object):
 
 	def _auth_check_allowed_groups(self):
 		allowed_groups = [value for key, value in ucr.items() if key.startswith('directory/manager/rest/authorized-groups/')]
-		memberof = self.ldap_connection.getAttr(self.request.user_dn, b'memberOf')
+		memberof = self.ldap_connection.getAttr(self.request.user_dn, 'memberOf')
 		if not set(_map_normalized_dn(memberof)) & set(_map_normalized_dn(allowed_groups)):
 			raise HTTPError(403, 'Not in allowed groups.')
 
@@ -751,7 +748,7 @@ class ResourceBase(object):
 		if query:
 			qs = parse_qs(base.query)
 			qs.update(dict((key, val if isinstance(val, (list, tuple)) else [val]) for key, val in query.items()))
-			query_string = '?%s' % (urllib.urlencode(qs, True),)
+			query_string = '?%s' % (urlencode(qs, True),)
 		scheme = base.scheme
 		for _scheme in self.request.headers.get_list('X-Forwarded-Proto'):
 			if _scheme == 'https':
@@ -772,8 +769,8 @@ class ResourceBase(object):
 			return
 
 		def quote_param(s):
-			for i in range(32):  # remove non printable characters
-				s = s.replace(unichr(i), '')
+			for char in u'\x00\x01\x02\x03\x04\x05\x06\x07\x08\t\n\x0b\x0c\r\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f':  # remove non printable characters
+				s = s.replace(char, '')
 			return s.replace('\\', '\\\\').replace('"', '\\"')
 		kwargs['rel'] = relation
 		params = []
@@ -1105,7 +1102,7 @@ class Relations(Resource):
 
 class OpenAPI(Resource):
 
-	requires_authentication =  ucr.is_true('directory/manager/rest/require-auth', True)
+	requires_authentication = ucr.is_true('directory/manager/rest/require-auth', True)
 
 	def prepare(self):
 		super(OpenAPI, self).prepare()
@@ -2350,7 +2347,7 @@ class Objects(FormBase, ReportingBase):
 		if not ldap_filter:
 			filters = filter(None, [(_object_property_filter(module, attribute or property_ or None, value, hidden)) for attribute, value in self.request.query_arguments['query'].items()])
 			if filters:
-				ldap_filter = unicode(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
+				ldap_filter = six.text_type(univention.admin.filter.conjunction('&', [univention.admin.filter.parse(fil) for fil in filters]))
 
 		# TODO: replace the superordinate concept with container
 		superordinate = self.superordinate_dn_to_object(module, self.request.query_arguments['superordinate'])
@@ -2578,7 +2575,7 @@ class ObjectsMove(Resource):
 				status['description'] = _('Moved %d of %d objects. Last object was: %s.') % (i, len(dns), dn)
 				status['max'] = len(dns)
 				status['value'] = i
-		except:
+		except Exception:
 			status['errors'] = True
 			status['traceback'] = traceback.format_exc()  # FIXME: error handling
 			raise
@@ -2884,15 +2881,15 @@ class Object(FormBase, Resource):
 				return action()
 			except udm_errors.objectExists as exc:
 				exists_msg = 'dn: %s' % (exc.args[0],)
-			except udm_errors.uidAlreadyUsed as exc:
+			except udm_errors.uidAlreadyUsed:
 				exists_msg = '(uid)'
-			except udm_errors.groupNameAlreadyUsed as exc:
+			except udm_errors.groupNameAlreadyUsed:
 				exists_msg = '(group)'
-			except udm_errors.dhcpServerAlreadyUsed as exc:
+			except udm_errors.dhcpServerAlreadyUsed:
 				exists_msg = '(dhcpserver)'
-			except udm_errors.macAlreadyUsed as exc:
+			except udm_errors.macAlreadyUsed:
 				exists_msg = '(mac)'
-			except udm_errors.noLock as exc:
+			except udm_errors.noLock:
 				exists_msg = '(nolock)'
 			if exists_msg and exc:
 				self.raise_sanitization_error('dn', _('Object exists: %s: %s') % (exists_msg, str(UDM_Error(exc))))
@@ -2945,7 +2942,7 @@ class Object(FormBase, Resource):
 		self.content_negotiation(status)
 		try:
 			dn = yield self.pool.submit(module.move, dn, position)
-		except:
+		except Exception:
 			status['errors'] = True
 			status['traceback'] = traceback.format_exc()  # FIXME: error handling
 			raise
@@ -3054,7 +3051,7 @@ class UserPhoto(Resource):
 			raise NotFound(object_type, dn)
 
 		data = obj.info.get('jpegPhoto', '').decode('base64')
-		modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, b'modifyTimestamp')[0].decode('utf-8'))
+		modified = self.modified_from_timestamp(self.ldap_connection.getAttr(obj.dn, 'modifyTimestamp')[0].decode('utf-8'))
 		if modified:
 			self.add_header('Last-Modified', last_modified(modified))
 		self.set_header('Content-Type', 'image/jpeg')
@@ -3498,9 +3495,9 @@ class LicenseRequest(Resource):
 			raise HTTPError(500, _('Cannot parse License from LDAP'))
 
 		# TODO: we should also send a link (self.request.full_url()) to the license server, so that the email can link to a url which automatically inserts the license:
-		# self.request.urljoin('import', license=urllib.quote(zlib.compress(''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith('univentionLicense')), 6)[2:-4].encode('base64').rstrip()))
+		# self.request.urljoin('import', license=quote(zlib.compress(''.join(_[17:] for _ in open('license.ldif', 'rb').readlines() if _.startswith('univentionLicense')), 6)[2:-4].encode('base64').rstrip()))
 
-		data = urllib.urlencode(data)
+		data = urlencode(data)
 		url = 'https://license.univention.de/keyid/conversion/submit'
 		http_client = tornado.httpclient.HTTPClient()
 		try:
@@ -3551,7 +3548,7 @@ class License(Resource):
 
 		try:
 			import univention.admin.license as udm_license
-		except:
+		except ImportError:
 			license_data['licenseVersion'] = 'gpl'
 		else:
 			license_data['licenseVersion'] = udm_license._license.version
@@ -3563,7 +3560,7 @@ class License(Resource):
 						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
-							except:
+							except ValueError:
 								count = None
 						license_data[item][lic_type.lower()] = count
 
@@ -3577,7 +3574,7 @@ class License(Resource):
 						if isinstance(count, six.string_types):
 							try:
 								count = int(count)
-							except:
+							except ValueError:
 								count = None
 						license_data[item][lic_type.lower()] = count
 				license_data['keyID'] = udm_license._license.licenseKeyID
@@ -3746,4 +3743,4 @@ class Application(tornado.web.Application):
 
 	def multi_regex(self, chars):
 		# Bug in tornado: requests go against the raw url; https://github.com/tornadoweb/tornado/issues/2548, therefore we must match =, %3d, %3D
-		return ''.join('(?:%s|%s|%s)' % (re.escape(c), re.escape(urllib.quote(c).lower()), re.escape(urllib.quote(c).upper())) if c in '=,' else re.escape(c) for c in chars)
+		return ''.join('(?:%s|%s|%s)' % (re.escape(c), re.escape(quote(c).lower()), re.escape(quote(c).upper())) if c in '=,' else re.escape(c) for c in chars)
