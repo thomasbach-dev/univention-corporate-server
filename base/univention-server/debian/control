@@ -189,7 +189,6 @@ Depends:
  univention-appcenter,
  univention-archive-key,
  univention-config,
- univention-config-registry,
  univention-firewall,
  univention-grub,
  univention-join,
