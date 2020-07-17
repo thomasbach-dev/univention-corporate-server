@@ -470,13 +470,13 @@ class UDM_Module(object):
 		# The following code is a workaround to make sure that this is the
 		# case, however, this should be fixed correctly.
 		# This workaround has been documented as Bug #25163.
-		def _tmp_cmp(i, j):
+		def _tmp_cmp(i):
 			if i[0] == 'network':
-				return -1
-			return 0
+				return ("\x00", i[1])
+			return i
 
 		password_properties = self.password_properties
-		for property_name, value in sorted(properties.items(), _tmp_cmp):
+		for property_name, value in sorted(properties.items(), key=_tmp_cmp):
 			if property_name in password_properties:
 				MODULE.info('Setting password property %s' % (property_name,))
 			else:
@@ -928,7 +928,7 @@ class UDM_Module(object):
 		"""All properties of the UDM module"""
 		ldap_connection, ldap_position = self.get_ldap_connection()
 		props = [{'id': '$dn$', 'type': 'HiddenInput', 'label': '', 'searchable': False}]
-		for key, prop in getattr(self.module, 'property_descriptions', {}).items():
+		for key, prop in list(getattr(self.module, 'property_descriptions', {}).items()):
 			if key == 'filler':
 				continue  # FIXME: should be removed from all UDM modules
 			if key in AppAttributes.options_for_module(self.name):
