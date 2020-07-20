@@ -254,16 +254,14 @@ class Interfaces(object):
 	Handle network interfaces configured by UCR.
 
 	:param ucr: UCR instance.
-
-	:param use_python3_api: Whether to use the ipaddress module as interface.
-	:ptype use_python3_api: bool
+	:param use_python3_api bool: Whether to use the module :py:mod:`ipaddress` from Python 3 or the legacy module :py:mod:`ipaddr` for Python 2 as the interface.
 
 	.. deprecated:: 5.0
-		Has no effect in Python 3
+		`use_python3_api` is only relevant for Python 2 code.
 	"""
 
 	def __init__(self, ucr=None, use_python3_api=six.PY3):
-		# type: (ConfigRegistry) -> None
+		# type: (ConfigRegistry, bool) -> None
 		if ucr is None:
 			ucr = ConfigRegistry()
 			ucr.load()
