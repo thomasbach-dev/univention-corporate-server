@@ -356,13 +356,13 @@ def handler_search(args, opts=dict()):
 	search_keys |= search_all
 
 	if not args:
-		search = lambda x: True  # noqa: E731
-	else:
 		try:
 			search = re.compile('|'.join(('(?:%s)' % (_,) for _ in args))).search
 		except re.error as ex:
 			print('E: invalid regular expression: %s' % (ex,), file=sys.stderr)
 			sys.exit(1)
+	else:
+		search = lambda x: True  # type: ignore # noqa: E731
 
 	info = _get_config_registry_info()
 
