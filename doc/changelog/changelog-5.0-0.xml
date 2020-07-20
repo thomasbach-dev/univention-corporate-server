@@ -58,7 +58,7 @@
 					&ucsUCR;-Variables may define default values now (<u:bug>38938</u:bug>)
 				</simpara></listitem>
 				<listitem><simpara>
-					The performance of <command>&ucsUCR; shell</command> has been improoved (<u:bug>31257</u:bug>)
+					The performance of <command>ucr shell</command> has been improved (<u:bug>31257</u:bug>)
 				</simpara></listitem>
 			</itemizedlist>
 
