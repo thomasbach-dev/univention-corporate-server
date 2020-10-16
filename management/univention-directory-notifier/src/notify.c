@@ -665,6 +665,8 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 		}
 
 		fclose_lock(&l_file);
+	} else {
+		set_listener_callback();
 	}
 
 	if ( ( file = fopen_lock (FILE_NAME_NOTIFIER_PRIV, "r+") ) == NULL ) {
